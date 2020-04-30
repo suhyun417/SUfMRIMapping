@@ -1,0 +1,136 @@
+
+type  = string-attribute
+name  = HISTORY_NOTE
+count  = 2516
+'[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] ===================================\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] === History of inputs to 3dcalc ===\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] === Input a:\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] [lab@nambu: Thu Apr 26 16:03:18 2012] to3d -prefix ava_T1_E4 MRIm001 MRIm002 MRIm003 ... MRIm191 MRIm192\n[lab@nambu: Thu Apr 26 16:05:13 2012] 3dbucket -prefix ava_t1_raw T1_E4/ava_T1_E4+orig.HEAD T1_E5/ava_T1_E5+orig.HEAD T1_E6/ava_T1_E6+orig.HEAD\n[lab@nambu: Thu Apr 26 16:06:34 2012] 3dvolreg -base 0 -prefix ava_t1_reg ava_t1_raw+orig\n[lab@nambu: Thu Apr 26 16:07:06 2012] 3dTstat -prefix ava_t1_avg ava_t1_reg+orig\n[lab@nambu: Mon Jul  9 17:51:10 2012] 3dLRflip -prefix ava_t1_avg_lr -LR ava_t1_avg+orig\n[lab@nambu: Mon Jul  9 17:51:11 2012] 3dLRflip -prefix ava_t1_avg_flipped -IS ava_t1_avg_lr+orig\n[lab@nambu: Mon Jul  9 17:51:11 2012] 3drefit -dxorigin 33.500000 -dyorigin 44.000000 -dzorigin 25.500000 /einstein0/USRlab/data/russbe/AFNI_processed/Anatomy/ava_t1_avg_flipped+orig\n[lab@nambu: Mon Jul  9 17:55:11 2012] 3dAllineate -cost lpa -warpfreeze -mast_dxyz 0.5 -base /einstein0/USRlab/data/russbe/AFNI_processed/ava.7M1/ava.7M1_F_reg+orig -input /einstein0/USRlab/data/russbe/AFNI_processed/Anatomy/ava_t1_avg_flipped+orig -prefix /einstein0/USRlab/data/russbe/AFNI_processed/Anatomy/ava_t1_avg_reg2\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Dec 18 14:36:12 2012] 3drefit -xdel 0.5 -ydel 0.5 -zdel 0.5 ava_t1_avg_reg2+orig.\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] === Input b:\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] [ucniuser@nimh-nifs-imac.nih.gov: Tue Dec 18 14:50:17 2012] 3dSkullStrip -input ava_t1_avg_reg2+orig -no_avoid_eyes -surface_coil -pushout -no_use_skull -monkey -ld 50 -niter 750 -orig_vol -prefix ava_T1_noskull+orig -visual\n[ucniuser@nimh-nifs-imac.nih.gov: Thu Jan 17 10:19:36 2013] Drawing plugin COPY: Fill->Data Type->Func\n[ucniuser@nimh-nifs-imac.nih.gov: Thu Jan 17 19:04:25 2013] Drawing plugin COPY: Fill->Data\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] ===================================\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 14:28:27 2013] 3dcalc -a ava_t1_avg_reg2+orig -b ava_ss_mask1+orig -expr 'a*step(b-.99)' -prefix ava_t1_ss+orig\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan 22 15:36:35 2013] 3dUniformize -anat ava_t1_ss+orig -auto_clip -prefix ava_t1_ss_uni+orig~
+
+type  = string-attribute
+name  = TYPESTRING
+count  = 15
+'3DIM_HEAD_ANAT~
+
+type  = string-attribute
+name  = IDCODE_STRING
+count  = 27
+'AFN_VgO2dMAUyUrUtYTP4DwxWQ~
+
+type  = string-attribute
+name  = IDCODE_DATE
+count  = 21
+'22 Jan 2013 16:02:48~
+
+type  = integer-attribute
+name  = SCENE_DATA
+count = 8
+      0 3 0 -999 -999 -999 
+      -999 -999 
+
+type  = string-attribute
+name  = LABEL_1
+count  = 19
+'ava_t1_ss_uni+orig~
+
+type  = string-attribute
+name  = LABEL_2
+count  = 5
+'zyxt~
+
+type  = string-attribute
+name  = DATASET_NAME
+count  = 19
+'ava_t1_ss_uni+orig~
+
+type  = integer-attribute
+name  = ORIENT_SPECIFIC
+count = 3
+      1 2 4 
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+      29.5 51.5 -24.5 
+
+type  = float-attribute
+name  = DELTA
+count = 3
+      -0.5 -0.5 0.5 
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+      0 0 -0.5 -0.5 0.5 0 
+      0 0 0 -0.5 0 
+      0 
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+      0 0 -0.5 -0.5 0.5 0 
+      0 0 0 -0.5 0 
+      0 
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 2
+      0 255 
+
+type  = integer-attribute
+name  = DATASET_RANK
+count = 2
+      3 1 
+
+type  = integer-attribute
+name  = DATASET_DIMENSIONS
+count = 3
+      120 192 96 
+
+type  = integer-attribute
+name  = BRICK_TYPES
+count = 1
+      0 
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 1
+      0 
+
+type  = string-attribute
+name  = BRICK_LABS
+count  = 6
+'Mean~~
+
+type  = string-attribute
+name  = BRICK_KEYWORDS
+count  = 1
+'~
+
+type  = string-attribute
+name  = TEMPLATE_SPACE
+count  = 5
+'ORIG~
+
+type  = integer-attribute
+name  = INT_CMAP
+count = 1
+      0 
+
+type  = string-attribute
+name  = BYTEORDER_STRING
+count  = 10
+'LSB_FIRST~
+
+type  = string-attribute
+name  = CARET_TYPE
+count  = 8
+'Anatomy~
+
+type  = string-attribute
+name  = CARET_METADATA_LINK
+count  = 1
+'~
+
+type  = string-attribute
+name  = CARET_PUBMED_ID
+count  = 1
+'~
+

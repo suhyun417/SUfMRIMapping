@@ -1,0 +1,136 @@
+
+type  = string-attribute
+name  = HISTORY_NOTE
+count  = 128
+'[ucniuser@nimh-nifs-imac.nih.gov: Tue Jan  1 14:33:46 2013] 3dUniformize -anat e66_T1_ss4+orig -auto_clip -prefix e66_T1_ss_uni~
+
+type  = string-attribute
+name  = TYPESTRING
+count  = 15
+'3DIM_HEAD_ANAT~
+
+type  = string-attribute
+name  = IDCODE_STRING
+count  = 27
+'AFN_EupBcVxK2-llEfT9MtCYiQ~
+
+type  = string-attribute
+name  = IDCODE_DATE
+count  = 20
+'1 Jan 2013 15:07:39~
+
+type  = integer-attribute
+name  = SCENE_DATA
+count = 8
+      0 3 0 -999 -999 -999 
+      -999 -999 
+
+type  = string-attribute
+name  = LABEL_1
+count  = 14
+'e66_T1_ss_uni~
+
+type  = string-attribute
+name  = LABEL_2
+count  = 5
+'zyxt~
+
+type  = string-attribute
+name  = DATASET_NAME
+count  = 14
+'e66_T1_ss_uni~
+
+type  = integer-attribute
+name  = ORIENT_SPECIFIC
+count = 3
+      1 2 4 
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+      28 64 -22.5 
+
+type  = float-attribute
+name  = DELTA
+count = 3
+      -0.5 -0.5 0.5 
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+      0 0 -0.5 -0.5 0.5 0 
+      0 0 0 -0.5 0 
+      0 
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+      0 0 -0.5 -0.5 0.5 0 
+      0 0 0 -0.5 0 
+      0 
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 2
+      0 255 
+
+type  = integer-attribute
+name  = DATASET_RANK
+count = 2
+      3 1 
+
+type  = integer-attribute
+name  = DATASET_DIMENSIONS
+count = 3
+      120 192 96 
+
+type  = integer-attribute
+name  = BRICK_TYPES
+count = 1
+      0 
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 1
+      0.405296 
+
+type  = string-attribute
+name  = BRICK_LABS
+count  = 6
+'Mean~~
+
+type  = string-attribute
+name  = BRICK_KEYWORDS
+count  = 1
+'~
+
+type  = string-attribute
+name  = TEMPLATE_SPACE
+count  = 5
+'ORIG~
+
+type  = integer-attribute
+name  = INT_CMAP
+count = 1
+      0 
+
+type  = string-attribute
+name  = BYTEORDER_STRING
+count  = 10
+'LSB_FIRST~
+
+type  = string-attribute
+name  = CARET_TYPE
+count  = 8
+'Anatomy~
+
+type  = string-attribute
+name  = CARET_METADATA_LINK
+count  = 1
+'~
+
+type  = string-attribute
+name  = CARET_PUBMED_ID
+count  = 1
+'~
+

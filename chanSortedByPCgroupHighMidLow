@@ -1,0 +1,62 @@
+high population 
+spk4 = chan073a
+spk6 = chan076a
+spk7 = chan078a
+spk13 = chan086a
+spk16 = chan088a
+spk17 = chan088b
+spk18 = chan089a
+spk26 = chan096a
+spk31 = chan102a
+spk34 = chan107a
+spk36 = chan109a
+spk38 = chan111a
+spk40 = chan113a
+spk44 = chan118a
+spk45 = chan119a
+spk46 = chan122a
+spk48 = chan128a
+-- (below this line signals have less than 8 trials)
+spk19 = chan089b
+spk28 = chan097a
+
+
+mid population 
+spk1 = chan065a 
+spk2 = chan069a
+spk3 = chan070a
+spk8 = chan079a
+spk9 = chan082a
+spk10 = chan082b
+spk14 = chan086b
+spk15 = chan087a
+spk24 = chan094a
+spk27 = chan096b
+spk29 = chan100a
+spk30 = chan101a
+spk32 = chan105a
+spk33 = chan106a
+spk35 = chan108a
+spk37 = chan110a
+spk39 = chan112a
+spk47 = chan122b
+-- (below this line signals have less than 8 trials)
+spk20 = chan090a
+spk22 = chan091b
+spk23 = chan092a
+spk25 = chan095a
+spk42 = chan115a
+
+
+low population 
+spk5 = chan075a
+spk43 = chan116a
+-- (below this line signals have less than 8 trials)
+spk11 = chan085a
+spk12 = chan085b
+spk21 = chan091a
+spk41 = chan114a
+
+
+
+

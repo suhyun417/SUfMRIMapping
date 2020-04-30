@@ -1,0 +1,48 @@
+function loadLFP
+% This function converts the output of VisionAnalyzer into a Matlab matrix.
+% Its output is a 3D LFP matrix where the first dimension represents
+% timepoints, the second epoch (segment) and the third channel. Currently it 
+% only works for segmented data, i.e. data from scanning sessions. 
+% MLS 10/04/08
+
+date = '11-08-08';  date2 = '110808';  sess = '_0002'; monkey = 'Varia'; chan = 16;
+
+cd(['/einstein0/USRlab/projects/scholvinckm/data/' monkey '/inside scanner/' date '/Export files']);
+load([date sess '_sampling_rate_250_Hz_new']);
+cd(['/einstein0/USRlab/projects/scholvinckm/data/' monkey '/inside scanner/' date '/Matlab']);
+
+% Make LFP matrix
+for i=1:chan
+    if chan == 16
+      eval(['C = C' int2str(2*i) ';']);
+    else 
+      eval(['C = C' int2str(i) ';']);  
+    end
+    LFP(:,:,i) = C';
+end
+
+% Decide which segments are bad
+remove=zeros(1,size(LFP,2)); k=0;
+for j=1:size(Markers,1)
+    if size(Markers,2) == 2 s=1;t=2; else s=1;t=1; end % to deal with Markers having various sizes
+    if strcmp('Bad Interval', Markers(j,s).Type) || strcmp('Bad Interval', Markers(j,t).Type)
+        k=k+1;
+        remove(k)=j;
+    end
+end
+
+% Remove bad segments from LFP matrix
+LFPnew=zeros(size(LFP)); m=1; n=0;
+for scan=1:size(LFP,2)
+    if scan == remove(m)
+        m=m+1;
+    else
+        n=n+1;
+        LFPnew(:,n,:)=LFP(:,scan,:);
+    end
+end
+
+LFP=LFPnew(:,1:n,:);
+remove=remove(1:k);
+
+eval(['save ' date2 sess '_LFP_epochs_new LFP remove']);

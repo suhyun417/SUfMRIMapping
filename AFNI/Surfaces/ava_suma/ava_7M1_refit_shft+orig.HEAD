@@ -1,0 +1,2860 @@
+
+type = string-attribute
+name = HISTORY_NOTE
+count = 1553
+'\n[lab@nambu: 12-Jun-2012 21:09:03]\n\t/einstein0/USRlab/data/russbe/AFNI_processed/ava.7M1\n\tmakeAllAFNIDatafiles(ln16)->convert2dseq(ln293)->dumpBrik(ln29)\n[lab@nambu: Tue Jun 12 21:09:07 2012] 3dTshift -tpattern alt+z -tzero 0 -quintic -prefix ava.7M1_E_11.tshift ava.7M1_E_11+orig\n[lab@nambu: Tue Jun 12 21:09:08 2012] 3dvolreg -dfile ava.7M1_E_11_motion.1D -base 'ava.7M1_E_11.tshift+orig[0]' -prefix ava.7M1_E_11_mot ava.7M1_E_11.tshift+orig\n[lab@nambu: 12-Jun-2012 21:09:18]\n\t/einstein0/USRlab/data/russbe/AFNI_processed/ava.7M1\n\tmakeAllAFNIDatafiles(ln21)->preprocessAllAFNI(ln104)->WriteBrik(ln423)\n[lab@nambu: Tue Jun 12 21:11:01 2012] 3dAllineate -final wsinc5 -1Dmatrix_apply /einstein0/USRlab/data/russbe/AFNI_processed/ava.7M1/ava.7M1_ava.7M1_flash_trans.mat.1D -base /einstein0/USRlab/data/russbe/AFNI_processed/ava.7M1/ava.7M1_E_11_mot_plc+orig -input ava.7M1_E_11_mot_plc+orig -prefix ./ava.7M1_E_11_mot_plc_reg\n[ucniuser@nimh-nifs-imac.nih.gov: Thu Oct 17 09:29:45 2013] 3dcopy ava.7M1_E_11_mot_plc_reg ava_7M1_refit\n[ucniuser@nimh-nifs-imac.nih.gov: Thu Oct 17 09:30:57 2013] 3drefit -xdel 1.5 -ydel 1.5 -zdel 1.5 ava_7M1_refit+orig.\n[ucniuser@nimh-nifs-imac.nih.gov: Thu Oct 17 09:32:02 2013] 3dcopy ./ava_7M1_refit+orig ./ava_7M1_refit_shft\n[ucniuser@nimh-nifs-imac.nih.gov: Thu Oct 17 09:32:02 2013] 3drefit -dxorigin -43.500000 -dyorigin 22.500000 -dzorigin 29.000000 ./ava_7M1_refit_shft+orig\n[ucniuser@nimh-nifs-imac.nih.gov: Thu Oct 17 09:32:49 2013] 3drefit -dyorigin -0.5 -dzorigin 0.5 ava_7M1_refit_shft+orig.~
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000000
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000000
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type = string-attribute
+name = ALLINEATE_WARP_TYPE
+count = 15
+'affine_general~
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000000
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000001
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000001
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000001
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000002
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000002
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000002
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000003
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000003
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000003
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000004
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000004
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000004
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000005
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000005
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000005
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000006
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000006
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000006
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000007
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000007
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000007
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000008
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000008
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000008
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000009
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000009
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000009
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000010
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000010
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000010
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000011
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000011
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000011
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000012
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000012
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000012
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000013
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000013
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000013
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000014
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000014
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000014
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000015
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000015
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000015
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000016
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000016
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000016
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000017
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000017
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000017
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000018
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000018
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000018
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000019
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000019
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000019
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000020
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000020
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000020
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000021
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000021
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000021
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000022
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000022
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000022
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000023
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000023
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000023
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000024
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000024
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000024
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000025
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000025
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000025
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000026
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000026
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000026
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000027
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000027
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000027
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000028
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000028
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000028
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000029
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000029
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000029
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000030
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000030
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000030
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000031
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000031
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000031
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000032
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000032
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000032
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000033
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000033
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000033
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000034
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000034
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000034
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000035
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000035
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000035
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000036
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000036
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000036
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000037
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000037
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000037
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000038
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000038
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000038
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000039
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000039
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000039
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000040
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000040
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000040
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000041
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000041
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000041
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000042
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000042
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000042
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000043
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000043
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000043
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000044
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000044
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000044
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000045
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000045
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000045
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000046
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000046
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000046
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000047
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000047
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000047
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000048
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000048
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000048
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000049
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000049
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000049
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000050
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000050
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000050
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000051
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000051
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000051
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000052
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000052
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000052
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000053
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000053
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000053
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000054
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000054
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000054
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000055
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000055
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000055
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000056
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000056
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000056
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000057
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000057
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000057
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000058
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000058
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000058
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000059
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000059
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000059
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000060
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000060
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000060
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000061
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000061
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000061
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000062
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000062
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000062
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000063
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000063
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000063
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000064
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000064
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000064
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000065
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000065
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000065
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000066
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000066
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000066
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000067
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000067
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000067
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000068
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000068
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000068
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000069
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000069
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000069
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000070
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000070
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000070
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000071
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000071
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000071
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000072
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000072
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000072
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000073
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000073
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000073
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000074
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000074
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000074
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000075
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000075
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000075
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000076
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000076
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000076
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000077
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000077
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000077
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000078
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000078
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000078
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000079
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000079
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000079
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000080
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000080
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000080
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000081
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000081
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000081
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000082
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000082
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000082
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000083
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000083
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000083
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000084
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000084
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000084
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000085
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000085
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000085
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000086
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000086
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000086
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000087
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000087
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000087
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000088
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000088
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000088
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000089
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000089
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000089
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000090
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000090
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000090
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000091
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000091
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000091
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000092
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000092
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000092
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000093
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000093
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000093
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000094
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000094
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000094
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000095
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000095
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000095
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000096
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000096
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000096
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000097
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000097
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000097
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000098
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000098
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000098
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000099
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000099
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000099
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000100
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000100
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000100
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000101
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000101
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000101
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000102
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000102
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000102
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000103
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000103
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000103
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000104
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000104
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000104
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000105
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000105
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000105
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000106
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000106
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000106
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000107
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000107
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000107
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000108
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000108
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000108
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000109
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000109
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000109
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000110
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000110
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000110
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000111
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000111
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000111
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000112
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000112
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000112
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000113
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000113
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000113
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000114
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000114
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000114
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000115
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000115
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000115
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000116
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000116
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000116
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000117
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000117
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000117
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000118
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000118
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000118
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000119
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000119
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000119
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000120
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000120
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000120
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000121
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000121
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000121
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000122
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000122
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000122
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000123
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000123
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000123
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000124
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000124
+count = 12
+              1              0              0              0              0
+              1              0              0              0              0
+              1              0
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000124
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type = string-attribute
+name = TYPESTRING
+count = 15
+'3DIM_HEAD_ANAT~
+
+type = string-attribute
+name = IDCODE_STRING
+count = 27
+'AFN_V2ZJR_5Lux6_aFooKbnG1Q~
+
+type = string-attribute
+name = IDCODE_DATE
+count = 25
+'Thu Oct 17 09:32:02 2013~
+
+type = integer-attribute
+name = SCENE_DATA
+count = 8
+ 0 2 0 -999 -999
+ -999 -999 -999
+
+type = string-attribute
+name = LABEL_1
+count = 5
+'zyxt~
+
+type = string-attribute
+name = LABEL_2
+count = 5
+'zyxt~
+
+type = string-attribute
+name = DATASET_NAME
+count = 5
+'zyxt~
+
+type = integer-attribute
+name = ORIENT_SPECIFIC
+count = 3
+ 3 5 1
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+          -43.5             22           29.5
+
+type  = float-attribute
+name  = DELTA
+count = 3
+            1.5           -1.5           -1.5
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+              0              0           -1.5             29            1.5
+              0              0          -43.5              0           -1.5
+              0           22.5
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+              0              0           -1.5           29.5            1.5
+              0              0          -43.5              0           -1.5
+              0             22
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 250
+             19           7708             15           6571             11
+           4503             16           3959             13           3622
+             11           3700             15           4255             19
+           3826             15           3867             15           3463
+             13           3518             17           4061             13
+           3743             12           3688             14           3724
+             14           4546             12           3774             13
+           3673             14           3678             18           3867
+             15           3898             14           3785             14
+           3585             13           3992             15           4124
+              9           4001             12           3708             13
+           3580             11           3646             12           3626
+             15           3765             12           3807             13
+           3866             13           3645             15           4461
+             14           3821             14           3669             15
+           3777             11           4416             15           4151
+             13           3878             13           3591             15
+           3903             14           4058             16           3695
+             13           3728             15           3715             14
+           3531             10           4300             15           3955
+             15           3738             14           3718             15
+           3578             16           3852             14           3732
+             12           3800             13           4129             15
+           3809             13           3602             14           4135
+             14           3636             16           3704             16
+           3733              9           3645             15           3951
+             14           3655             13           3776             13
+           3742             15           4020             15           3744
+             12           3754             11           4024             15
+           4026             16           3665             13           3791
+             16           3772             11           4018             15
+           3477             13           4010             15           4158
+             11           3800             17           3762             12
+           3759             15           3702             14           3828
+             13           4009             12           3693             14
+           3762             13           3711             14           3573
+             14           3848             16           4549             15
+           3463             13           3733             12           4005
+             14           3906             15           3773             16
+           4238             15           3772             14           3737
+             14           3735             15           3792             15
+           3744             15           3896             10           3729
+             12           3646             14           3935             13
+           4025              8           4040             14           3910
+             14           3721             14           3731             13
+           3615             11           3991             12           3717
+             10           3704             13           3717             16
+           3770             15           4114             11           3727
+             15           3708             17           3694             15
+           3769             15           3490             15           3929
+
+type = integer-attribute
+name = TAXIS_NUMS
+count = 8
+ 125 0 77002 -999 -999
+ -999 -999 -999
+
+type  = float-attribute
+name  = TAXIS_FLOATS
+count = 8
+              0            2.4              0              0              0
+        -999999        -999999        -999999
+
+type = integer-attribute
+name = DATASET_RANK
+count = 8
+ 3 125 0 0 0
+ 0 0 0
+
+type = integer-attribute
+name = DATASET_DIMENSIONS
+count = 5
+ 64 32 40 0 0
+
+type = integer-attribute
+name = BRICK_TYPES
+count = 125
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+ 1 1 1 1 1
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 125
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+              0              0              0              0              0
+
+type = string-attribute
+name = BRICK_LABS
+count = 515
+'#0~#1~#2~#3~#4~#5~#6~#7~#8~#9~#10~#11~#12~#13~#14~#15~#16~#17~#18~#19~#20~#21~#22~#23~#24~#25~#26~#27~#28~#29~#30~#31~#32~#33~#34~#35~#36~#37~#38~#39~#40~#41~#42~#43~#44~#45~#46~#47~#48~#49~#50~#51~#52~#53~#54~#55~#56~#57~#58~#59~#60~#61~#62~#63~#64~#65~#66~#67~#68~#69~#70~#71~#72~#73~#74~#75~#76~#77~#78~#79~#80~#81~#82~#83~#84~#85~#86~#87~#88~#89~#90~#91~#92~#93~#94~#95~#96~#97~#98~#99~#100~#101~#102~#103~#104~#105~#106~#107~#108~#109~#110~#111~#112~#113~#114~#115~#116~#117~#118~#119~#120~#121~#122~#123~#124~
+
+type = string-attribute
+name = BRICK_KEYWORDS
+count = 125
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+type = string-attribute
+name = TEMPLATE_SPACE
+count = 5
+'ORIG~
+
+type = integer-attribute
+name = INT_CMAP
+count = 1
+ 0
+
+type = string-attribute
+name = BYTEORDER_STRING
+count = 10
+'LSB_FIRST~

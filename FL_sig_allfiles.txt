@@ -1,0 +1,68 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%%  sig_allfiles.txt - movies 1-15 for Siglinde
+%%
+%%   File Lists to be read by blockana script
+%%
+%%	 FORMAT: monkey session scan
+%%  
+%%   (use '%' for comments)
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Movie 1 
+
+AZ2 dl1 13
+AZ2 dl1 16
+AZ2 dl1 18
+
+%% Movie 2 
+
+AZ2 dl1 14
+AZ2 dl1 15
+AZ2 dl1 17
+
+%% Movie 3 
+
+AZ2 dl1 11
+AZ2 dl1 12
+AZ2 dl1 19
+
+%% Movie 4 
+
+AZ2 dz1 15
+AZ2 dz1 18
+AZ2 dz1 20
+
+%% Movie 5 
+
+AZ2 dz1 16
+AZ2 dz1 17
+AZ2 dz1 19
+
+%% Movie 6 
+
+AZ2 dz1 13
+AZ2 dz1 14
+AZ2 dz1 21
+
+%% Movie 7 
+
+AZ2 dL1 11
+AZ2 dL1 12
+AZ2 dL1 15
+AZ2 dL1 20
+
+%% Movie 8 
+
+AZ2 dL1 13
+AZ2 dL1 16
+AZ2 dL1 19
+AZ2 dL1 21
+
+%% Movie 9 
+
+AZ2 dL1 14
+AZ2 dL1 17
+AZ2 dL1 18
+AZ2 dL1 22

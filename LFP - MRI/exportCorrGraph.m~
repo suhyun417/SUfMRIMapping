@@ -1,0 +1,31 @@
+function exportCorrGraph
+% This function exports an average correlation graph from a user-specified 
+% ROI computed in Blockana to an independent Matlab variable for further 
+% analysis. Remember to compute the model map with zero lag correlation! 
+% MLS June 2008
+
+global GH
+
+monkey = 'Varia';
+date = '16-04-08';
+sessCode = 'MW1_17';
+regressor = 'ch5_gamma'; % channel-bandwidth
+ROI = 'L_around_electrode';
+
+CorrGraph.xdata = get(GH.roiXCorr,'XData');
+CorrGraph.ydata = get(GH.roiXCoorr,'YData')*-1;  % *-1 for MION inversion
+
+% plot
+h = figure; plot(CorrGraph.xdata,CorrGraph.ydata,'linewidth',2); grid on; 
+title([sessCode '_' regressor],'Interpreter','none','fontsize',16); 
+xlabel('time (s)','fontsize',16); ylabel('correlation','fontsize',16);
+set(gca,'fontsize',16); ylim([-0.2 0.5]);
+
+% save
+cd(['/einstein0/USRlab/projects/scholvinckm/data/' monkey '/inside scanner/' date '/Matlab']);
+mkdir('CorrGraphs');
+cd(['/einstein0/USRlab/projects/scholvinckm/data/' monkey '/inside scanner/' date '/Matlab/CorrGraphs']);
+filename = [sessCode '_' regressor '_corrgraph_' ROI];
+saveas(h,[filename '.fig']);
+eval(['save ' filename ' CorrGraph']);
+cd('/einstein0/share/UCNI_Library/Matlab/MRI_Matlab/Analysis/BlockAna');

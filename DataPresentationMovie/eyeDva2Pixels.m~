@@ -1,0 +1,26 @@
+function [cols rows] = eyeDva2Pixels(x,y,framePix,frameDva);
+%
+% Transforms X and Y eye position coordinates from dva to pixel row and
+% column indices. For plotting eye traces overlaid onto movie frames.
+%
+% Input arguments
+% X and Y must be vectors of the same length specifying eye position in
+% degrees of visual angle, relative to center of the screen. FRAMESIZE
+% spefices the size of the movie display in pixels, [WIDTH HEIGHT].
+%
+% Output arguments
+% [COLS ROWS] are the points in the image frame (in pixels) corresponding
+% to locations in X and Y.
+%
+% last modified 2013-jul-16
+% dbtm
+
+
+ppdX = framePix(1)/frameDva(1);
+ppdY = framePix(2)/frameDva(2);
+
+ctrX = round(framePix(1)/2);
+ctrY = round(framePix(2)/2);
+
+cols = x*ppdX - ctrX;
+rows = y*ppdY - ctrY;

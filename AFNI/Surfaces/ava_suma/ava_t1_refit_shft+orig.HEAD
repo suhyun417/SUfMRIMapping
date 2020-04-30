@@ -1,0 +1,147 @@
+
+type = string-attribute
+name = HISTORY_NOTE
+count = 1506
+'[lab@nambu: Thu Apr 26 16:03:18 2012] to3d -prefix ava_T1_E4 MRIm001 MRIm002 MRIm003 ... MRIm191 MRIm192\n[lab@nambu: Thu Apr 26 16:05:13 2012] 3dbucket -prefix ava_t1_raw T1_E4/ava_T1_E4+orig.HEAD T1_E5/ava_T1_E5+orig.HEAD T1_E6/ava_T1_E6+orig.HEAD\n[lab@nambu: Thu Apr 26 16:06:34 2012] 3dvolreg -base 0 -prefix ava_t1_reg ava_t1_raw+orig\n[lab@nambu: Thu Apr 26 16:07:06 2012] 3dTstat -prefix ava_t1_avg ava_t1_reg+orig\n[lab@nambu: Mon Jul  9 17:51:10 2012] 3dLRflip -prefix ava_t1_avg_lr -LR ava_t1_avg+orig\n[lab@nambu: Mon Jul  9 17:51:11 2012] 3dLRflip -prefix ava_t1_avg_flipped -IS ava_t1_avg_lr+orig\n[lab@nambu: Mon Jul  9 17:51:11 2012] 3drefit -dxorigin 33.500000 -dyorigin 44.000000 -dzorigin 25.500000 /einstein0/USRlab/data/russbe/AFNI_processed/Anatomy/ava_t1_avg_flipped+orig\n[lab@nambu: Mon Jul  9 17:55:11 2012] 3dAllineate -cost lpa -warpfreeze -mast_dxyz 0.5 -base /einstein0/USRlab/data/russbe/AFNI_processed/ava.7M1/ava.7M1_F_reg+orig -input /einstein0/USRlab/data/russbe/AFNI_processed/Anatomy/ava_t1_avg_flipped+orig -prefix /einstein0/USRlab/data/russbe/AFNI_processed/Anatomy/ava_t1_avg_reg2\n[ucniuser@nimh-nifs-imac.nih.gov: Tue Dec 18 14:36:12 2012] 3drefit -xdel 0.5 -ydel 0.5 -zdel 0.5 ava_t1_avg_reg2+orig.\n[ucniuser@nimh-nifs-imac.nih.gov: Mon Apr  1 16:00:26 2013] 3dcopy ./ava_t1_refit+orig ./ava_t1_refit_shft\n[ucniuser@nimh-nifs-imac.nih.gov: Mon Apr  1 16:00:26 2013] 3drefit -dxorigin -44.000000 -dyorigin 23.000000 -dzorigin 30.000000 ./ava_t1_refit_shft+orig~
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000000
+count = 12
+       1.004014     0.04623734     0.01330136      -2.311684    -0.04685413
+       1.009616      0.0038806      -22.94095    -0.01349435    -0.01688305
+        1.01582       9.445297
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000000
+count = 12
+      0.9936955    -0.04572287    -0.01283699       1.369433     0.04606159
+      0.9882924   -0.004378579        22.8202     0.01396599     0.01581814
+      0.9841827       -8.90073
+
+type = string-attribute
+name = ALLINEATE_WARP_TYPE
+count = 15
+'affine_general~
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000000
+count = 12
+      -2.311684      -22.94095       9.445295       2.639664      0.2202168
+     -0.7582226       1.005166        1.01071       1.015975  -0.0003054515
+  -0.0008089691    -0.01220848
+
+type = string-attribute
+name = TYPESTRING
+count = 15
+'3DIM_HEAD_ANAT~
+
+type = string-attribute
+name = IDCODE_STRING
+count = 27
+'AFN_U8IHzLGiA-l-vRpRYxcN8g~
+
+type = string-attribute
+name = IDCODE_DATE
+count = 25
+'Mon Apr  1 16:00:26 2013~
+
+type = integer-attribute
+name = SCENE_DATA
+count = 8
+ 0 11 0 -999 -999
+ -999 -999 -999
+
+type = string-attribute
+name = LABEL_1
+count = 5
+'zyxt~
+
+type = string-attribute
+name = LABEL_2
+count = 5
+'zyxt~
+
+type = string-attribute
+name = DATASET_NAME
+count = 5
+'zyxt~
+
+type = integer-attribute
+name = ORIENT_SPECIFIC
+count = 3
+ 3 5 1
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+            -44             23           29.5
+
+type  = float-attribute
+name  = DELTA
+count = 3
+            0.5           -0.5           -0.5
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+              0              0           -0.5           -0.5            0.5
+              0              0              0              0           -0.5
+              0              0
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+              0              0           -0.5           29.5            0.5
+              0              0            -44              0           -0.5
+              0             23
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 2
+       87.33334       13581.05
+
+type = integer-attribute
+name = DATASET_RANK
+count = 8
+ 3 1 0 0 0
+ 0 0 0
+
+type = integer-attribute
+name = DATASET_DIMENSIONS
+count = 5
+ 192 96 120 0 0
+
+type = integer-attribute
+name = BRICK_TYPES
+count = 1
+ 3
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 1
+              0
+
+type = string-attribute
+name = BRICK_LABS
+count = 5
+'Mean~
+
+type = string-attribute
+name = BRICK_KEYWORDS
+count = 1
+'~
+
+type = string-attribute
+name = TEMPLATE_SPACE
+count = 5
+'ORIG~
+
+type = integer-attribute
+name = INT_CMAP
+count = 1
+ 0
+
+type = string-attribute
+name = BYTEORDER_STRING
+count = 10
+'LSB_FIRST~
