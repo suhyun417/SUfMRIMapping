@@ -4,6 +4,8 @@
 % Load the correlation matrix (unmasked, not pca-res) for all 368 cells
 % from cortical face patches and compute 1) maximum of absolute correlation
 % across cells in each area and 2) average map across cells in each area
+% and 3) for each voxel, fraction of neurons that have the correlation
+% higher than certain criterion (e.g. 0.3)
 
 clear all;
 
