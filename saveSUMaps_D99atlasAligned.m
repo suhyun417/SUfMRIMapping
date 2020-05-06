@@ -22,7 +22,7 @@ addpath('/projects/parksh/_toolbox/afni_matlab/')
 
 %% Set directories
 % Important input
-nameSubjNeural = 'Spi'; % 'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
+nameSubjNeural = 'Was'; %'Spi'; % 'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
 nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
 setMovie = [1 2 3]; %1; %[1 2 3]; %[4 5 6]; %[1 2 3 4 5 6]; %
 

@@ -1,5 +1,5 @@
 function [] = doClusteringCorrMap_multipleSubjects_multiplePatches(flagParallel, flagSave)
-% 2017/01/22 SHP
+%
 % Apply K-means clustering to correlation map of single units from multiple
 % subjects
 % Modified from 'doClusteringCorrMap.m'
