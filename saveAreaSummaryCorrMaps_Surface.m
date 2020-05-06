@@ -42,10 +42,15 @@ S_neuralRegressor('Tor', nameSubjBOLD);
 global STDPATH DSP DATA GH
 
 % convert the map to the surface
-for iArea = 3 %1:length(corrMap_Area)
+for iArea = 1:length(corrMap_Area)
     
-    nameArea = 'AAM'; %corrMap_Area(iArea).nameArea;
-    for iMap = 1:2
+    if iArea == 3
+        nameArea = 'AAM'; %corrMap_Area(iArea).nameArea;
+    else
+        nameArea = corrMap_Area(iArea).nameArea;
+    end
+    
+    for iMap = 3 %1:3
         
         clear matR
         switch iMap
@@ -55,6 +60,9 @@ for iArea = 3 %1:length(corrMap_Area)
             case 2 % average across neurons
                 matR = corrMap_Area(iArea).matR_avg;
                 fileHead = 'Avg';
+            case 3 % fraction of neurons with r>0.3 (or corrMap_Area(iArea).critCorr)
+                matR = corrMap_Area(iArea).fractionHighCorrCell;
+                fileHead = 'FractHighCorrCell';
         end
         
         for iMask = 1:2

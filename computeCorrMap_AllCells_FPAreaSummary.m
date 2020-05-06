@@ -100,13 +100,20 @@ for iArea = 1:length(unique(catAreaID))
     setR = matR_SU_all(:, catAreaID == iArea);
     matR_maxAbs = max(abs(setR), [], 2);
     matR_avg = mean(setR, 2);    
+
+    critCorr = 0.3;
+    matValidVox = abs(setR)>critCorr;
+    fractionHighCorrCell = sum(matValidVox, 2)./size(matValidVox,2);
     
     corrMap_Area(iArea).nameArea = setArea{iArea};
     corrMap_Area(iArea).setSubjID = unique(catSubjID(catAreaID == iArea));
     corrMap_Area(iArea).setSubjName = unique(catSubjName(catAreaID == iArea, :));
     corrMap_Area(iArea).setChanID = catChanID(catAreaID == iArea);
+    corrMap_Area(iArea).matR = setR;
     corrMap_Area(iArea).matR_max = matR_maxAbs;
     corrMap_Area(iArea).matR_avg = matR_avg;
+    corrMap_Area(iArea).critCorr = critCorr;
+    corrMap_Area(iArea).fractionHighCorrCell = fractionHighCorrCell;
 end
     
 corrMap_merged.catChanID = catChanID;
