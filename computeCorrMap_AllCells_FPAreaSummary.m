@@ -124,6 +124,10 @@ corrMap_merged.catSubjID = catSubjName;
 corrMap_merged.catAreaID = catAreaID;
 corrMap_merged.matR = matR_SU_all;
 
+% average fraction of neurons across areas
+catMap_fraction = cat(2, corrMap_Area.fractionHighCorrCell);
+corrMap_merged.meanFractionAcrossArea = mean(catMap_fraction, 2);
+
 %% save the file
 save('/procdata/parksh/_macaque/CorrMap_SU_AllCellsArt_corticalFPMerged.mat', 'info*', 'corrMap_Area', 'corrMap_merged')
     

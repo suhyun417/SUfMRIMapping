@@ -67,9 +67,7 @@ for iArea = 1:length(corrMap_Area)
         
         for iMask = 1:2
             
-            cd /projects/parksh/_toolbox/BlockAna/ %/projects/parksh/NeuralBOLD/analysis/BlockAna/
-            %         cellID = paramCorr.validChanID(iUnit,:);
-            %         fprintf(1, 'Unit # %d, Cell ID: %s, %s \n', iUnit, cellID);
+            cd /projects/parksh/_toolbox/BlockAna/ 
             
             switch iMask
                 case 1 % unmasked (everything within brain)
@@ -80,21 +78,9 @@ for iArea = 1:length(corrMap_Area)
                     DSP.proc.fncvol_3d = reshape(matR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
             end
             
-            %         fname = sprintf('%s%s_%s_Movie123_noFiltering+orig.BRIK', fileHead, nameSubjNeural, cellID);%
-            %         vol = single(DSP.proc.fncvol_3d);
-            
             fname = sprintf('AreaSummary_%s_%s_AllCellsMovie123%s_noFiltering+orig.BRIK', nameArea, fileHead, fileTail);%
+%             fname = sprintf('AreaSummary_MeanAcAreas_FractHighCorrCell_AllCellsMovie123%s_noFiltering+orig.BRIK', fileTail);
             vol = single(DSP.proc.fncvol_3d);
-            
-            % %     % case1: unmasked version
-            % %     fname = sprintf('%s_%s_Movie123_noFiltering_new+orig.BRIK', cellID, nameSubjNeural);%sprintf('new_masked_%s_%s_Movie123_noFiltering+orig.BRIK', cellID, nameSubjNeural);%
-            % %     DSP.proc.fncvol_3d = reshape(matR_SU(:,iUnit), [nx, ny, nz]); %.*movieDrivenAmp.mask_amp1;
-            %
-            % %     % case2: masked version
-            % %     fname = sprintf('new_masked_%s_%s_Movie123_noFiltering+orig.BRIK', cellID, nameSubjNeural);%
-            % %     DSP.proc.fncvol_3d = reshape(matR_SU(:,iUnit), [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
-            %
-            % %     vol = single(DSP.proc.fncvol_3d);  %single(mapR_Cluster(:,:,:,iK)); % vol = single(DSP.proc.fncvol_3d);
             
             
             %% Do dumpFunctionalBrik
@@ -184,5 +170,6 @@ for iArea = 1:length(corrMap_Area)
     end
 end
 
+cd /projects/parksh/_toolbox/BlockAna/ 
 
 
