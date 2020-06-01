@@ -28,7 +28,7 @@ for m = 1:length(selMovID_fmri)
     curtc = dataBOLD.catmvoltc{selMovID_fmri(m)};
     [nx, ny, nz, nt] = size(curtc);
     nVox = nx*ny*nz;
-    tempTC = reshape(curtc, nVox, nt)';
+    tempTC = reshape(curtc, nVox, nt)';z`
     tempTC_sub=tempTC-repmat(nanmean(tempTC), size(tempTC,1),1);
     tempPS = 100.*tempTC_sub./repmat(nanmean(tempTC), size(tempTC,1),1);
 

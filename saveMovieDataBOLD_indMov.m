@@ -1,6 +1,5 @@
 function [] = saveMovieDataBOLD_indMov() %, saveFileName_matSDF, saveFileName) %[dataBOLD] = genMovieDataBOLD_indMov(nameSubjBOLD) %,
-
-%
+% 
 % Save fMRI data for individual movies for a particular subject under the individual data folder
 % Modified from "genMovieDataBOLD_indMov.m" and "savemovietseries.m"
 % 3/20/15, SHP
@@ -9,7 +8,7 @@ function [] = saveMovieDataBOLD_indMov() %, saveFileName_matSDF, saveFileName) %
 
 % Subject name and directory
 fprintf(1, '\nSave fMRI time series for individual movies separately\n');
-nameSubjBOLD = input('\nName of subject? (e.g. Art, Ava):', 's');
+nameSubjBOLD = input('\nName of subject? (e.g. Art, Ava, Sig):', 's');
 if sum(strcmpi(nameSubjBOLD, {'artemis', 'art', 'ar', 'e66'}))
     nameSubjBOLD = 'Art';
 elseif sum(strcmpi(nameSubjBOLD, {'avalanche', 'ava', 'av'}))
@@ -18,7 +17,7 @@ elseif sum(strcmpi(nameSubjBOLD, {'Ziggy', 'Sieglinde', 'Si', 'Sieggie', 'Sig', 
     nameSubjBOLD = 'Sig';
 end
 
-dirData = '/procdata/parksh/';
+dirData = '/procdata/parksh/macaque';
 dirDataBOLD = [dirData, nameSubjBOLD, '/'];
 saveFileName = fullfile(dirDataBOLD, sprintf('%s_movieTS_fMRI_indMov.mat', nameSubjBOLD));
 
@@ -41,6 +40,15 @@ fprintf(1, '\n Filelist in *.txt is "%s" \n', sessionFileList);
 skip=7; % number of TRs to skip
 
 fprintf(1, '\n Skipping first %d TRs of each movie by replacing them with NaNs \n', skip);
+
+% cd /projects/parksh/NeuralBOLD/analysis/BlockAna/
+
+% S_neuralRegressor(nameSubjNeural, nameSubjBOLD);
+% global STDPATH DSP DATA GH
+
+addpath('/projects/parksh/_toolbox/BlockAna/')
+blockana;
+
 SI = SU_createSessInfo(sessionFileList,[],skip); 
 filelist = SU_makeFileList(SI.monkID,SI.sessID,SI.scanID);
 
@@ -87,11 +95,17 @@ for u = 1:nunimov
         SI.scanID(movindxs));
     
     totfiles = length(filelist);
-    
+
     for f=1:totfiles
         s_sub = filelist{f}.subj;
         s_ses = filelist{f}.sess;
         s_sc  = filelist{f}.scan;
+                        
+        fmri_tc_3d = DSP.proc.fmri_tc_3d;
+        dgz = [];
+        if isfield(DATA,'dgz')
+            dgz     = DATA.dgz;
+        end
         
         [fmri_tc,dgz,notes] = SU_loadFile(s_sub,s_ses,s_sc);
         
@@ -173,8 +187,8 @@ paramBOLD.unimov = unimov;
 % MCD.unimov    = unimov;
 
 % save the data file
-save(sessdatafile, 'voltcIndMov', 'paramBOLD', 'catData');  
-fprintf(1, 'Time series are saved in %s\n', sessdatafile)
+save(saveFileName, 'voltcIndMov', 'paramBOLD', 'catData');  
+fprintf(1, 'Time series are saved in %s\n', saveFileName)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% bis
