@@ -37,7 +37,7 @@ dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
 filenameNeural = [nameSubjNeural, '_movieTS_SU_indMov.mat'];
 % fileNameNeural_BLP = [nameSubjNeural, '_movieTS_BLPLFP_indMov.mat'];
-filenameBOLD = [nameSubjBOLD, '_movieTS_fMRI_indMov.mat'];
+filenameBOLD = [nameSubjBOLD,  '_movieTS_fMRI_indMov.mat']; % '_movieTS_fMRI_indMov.mat'];
 
 fprintf(1, '\nLoading single unit data of %s: %s ....', nameSubjNeural, filenameNeural)
 load(fullfile(dirDataNeural, filenameNeural))

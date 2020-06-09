@@ -44,13 +44,13 @@ global STDPATH DSP DATA GH
 % convert the map to the surface
 for iArea = 1:length(corrMap_Area)
     
-    if iArea == 3
-        nameArea = 'AAM'; %corrMap_Area(iArea).nameArea;
-    else
+%     if iArea == 3
+%         nameArea = 'AAM'; %corrMap_Area(iArea).nameArea;
+%     else
         nameArea = corrMap_Area(iArea).nameArea;
-    end
+%     end
     
-    for iMap = 3 %1:3
+    for iMap = 1:3
         
         clear matR
         switch iMap
@@ -65,7 +65,7 @@ for iArea = 1:length(corrMap_Area)
                 fileHead = 'FractHighCorrCell';
         end
         
-        for iMask = 1:2
+        for iMask = 1 %1:2
             
             cd /projects/parksh/_toolbox/BlockAna/ 
             

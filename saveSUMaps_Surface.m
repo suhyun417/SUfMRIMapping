@@ -7,11 +7,16 @@
 % 3) for each cluster, average the corr maps
 % 4) save it as AFNI brik/head format so that it can be mapped onto the surface anatomy
 
-nameSubjNeural = 'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
-nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
-
+% setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was'};
 %
 addpath('/library/matlab_utils/')
+
+% for iSubj = 1:length(setNameSubjNeural)
+nameSubjNeural = 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
+nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
+
+
+cd /projects/parksh/NeuroMRI/analysis
 
 % Load files
 dirDataHome = '/procdata/parksh/_macaque';
@@ -42,10 +47,10 @@ nx = 40; ny = 64; nz = 32;
 
 
 pname = [dirDataBOLD, '/tempSURF/'];
-dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/']; %[dirDataBOLD, '/Anatomy/_suma/'];
-if sum(strcmpi(nameSubjNeural, {'spice', 'spi'}))
-    dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/_2018Jan/'];
-end
+dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural]; %, '/_afterExcludingLaterFMRIsessions_20200512/']; %[dirDataBOLD, '/Anatomy/_suma/'];
+% if sum(strcmpi(nameSubjNeural, {'spice', 'spi'}))
+%     dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/_2018Jan/'];
+% end
 if ~exist(dirSPEC, 'dir')
     mkdir(dirSPEC)
 end
@@ -89,7 +94,7 @@ for iMask = 1:2
         switch iMask
             case 1 % unmasked (everything within brain)
                 fileHead = '';
-                DSP.proc.fncvol_3d =  reshape(matR_SU(:,iUnit), [nx, ny, nz]).*brainMask_BlockAna3D; %mapR_Cluster(:,:,:,iK).*brainMask_BlockAna3D;
+                DSP.proc.fncvol_3d =  reshape(matR_SU(:,iUnit), [nx, ny, nz]); %.*brainMask_BlockAna3D; %mapR_Cluster(:,:,:,iK).*brainMask_BlockAna3D;
             case 2 % masked
                 fileHead = 'new_masked_';
                 DSP.proc.fncvol_3d = reshape(matR_SU(:,iUnit), [nx, ny, nz]).*movieDrivenAmp.mask_amp1; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
@@ -197,5 +202,6 @@ for iMask = 1:2
         end
     end
 end
+% end
 
 

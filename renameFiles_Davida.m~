@@ -1,5 +1,15 @@
 % renameFiles_Davida.m
 %
+% 2020/06/04 SHP
+%        Updated to incorporate newly collected data in July 2018 in addition to the data from May 2018. 
+%        Now the new excel file of the cell list that contains one
+%        integrated list of cells across May and July dataset
+%        (Davida_cell_list*_merged_SHP.xls). This excel contains the cell
+%        identity across days (by Kenji/Elena) and evaluation of cell
+%        quality (by SHP, based on reliability of responses across days to
+%        fingerprinting stimuli and movies: 1 is good, 2 is so-so, 0 is
+%        bad, -1 is strange (e.g. file is missing)
+%
 % 2018/08/17 SHP
 %         Rename (and store) mat files containing Davida movie data collected by Elena/Kenji in May 2018, so that
 %         they can be matched to other files previously collected from other monkeys
@@ -12,15 +22,16 @@
 clear all;
 
 nameSubjNeural = 'Dav'; 
-directory.dataHome = '/procdata/parksh';
+directory.dataHome = '/procdata/parksh/_macaque';
 
 % Directory info
 directory.dataNeural = fullfile(directory.dataHome, nameSubjNeural); 
-directory.source = fullfile(directory.dataNeural, '_orgData', 'Dango180515_1_movie');
+directory.source{1} = fullfile(directory.dataNeural, '_orgData', 'Davida180515_18_movie');
+directory.source{2} = fullfile(directory.dataNeural, '_orgData', 'Davida180723-25_movie');
 directory.destination = fullfile(directory.dataNeural);
 
 % read the excel file of cell list
-filename_xls =  fullfile(directory.dataNeural, '_orgData/Dango_cell_list_180123_SHP.xls');
+filename_xls =  fullfile(directory.dataNeural, '_orgData/Davida_cell_list_180515_180723_merged_SHP.xls'); %Davida_cell_list_180515_SHP.xls');
 T = readtable(filename_xls, 'ReadRowNames', true);
 
 
@@ -28,7 +39,7 @@ d_n =[]; clear listMatSUFile listSU_all listSUchannelID locB locC
 d_n = dir(fullfile(directory.source, '*sig*.mat'));
 [listMatSUFile{1:length(d_n), 1}] = deal(d_n.name); % Get the list of single unit files
 
-diary(fullfile(directory.destination, sprintf('renameFiles_Dango_%s', date)))
+diary(fullfile(directory.destination, sprintf('renameFiles_Davida_%s', date)))
 diary on
 % Copy files with new names
 for iFile = 1:length(listMatSUFile)

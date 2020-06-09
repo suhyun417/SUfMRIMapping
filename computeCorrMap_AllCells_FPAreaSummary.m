@@ -25,7 +25,7 @@ end
 addpath(fullfile(dirLibrary, 'matlab_utils')) % for convolution
 
 % Set directories 
-setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was', 'Dav'};
+setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was'}; %, 'Dav'};
 nameSubjBOLD ='Art'; 
 dirDataHome = fullfile(dirProcdata, 'parksh/_macaque');
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
@@ -42,7 +42,7 @@ load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDr
 %% Load the corr map and select valid channel: subject by subject
 numSubject = size(setNameSubjNeural, 2);
 matR_SU_all = [];
-setArea = {'AF', 'AM', 'AM+', 'ML'};
+setArea = {'AF', 'AM', 'AAM', 'ML'};
 for iSubj = 1:numSubject
     nameSubjNeural = setNameSubjNeural{iSubj}; %'Spi'; %'Tor';
     dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
