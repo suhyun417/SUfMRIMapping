@@ -1,5 +1,7 @@
-% prepROI.m
-% 2017/02/20 SHP
+% createROIVolumeIndices_BlockAnaCoords_setROIs.m
+% 2020/06/23 SHP
+% 
+% modified from "createROIVolumeIndices_BlockAnaCoords.m"
 % Load manually drawn ROI (converted into AFNI BRIK/HEAD 3d volume from
 % surface dataset) 
 % Get ROI indices from each hemisphere
