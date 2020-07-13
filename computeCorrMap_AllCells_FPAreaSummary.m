@@ -1,5 +1,8 @@
 % computeCorrMap_AllCells_FPAreaSummary.m
 %
+% 2020/07/09 SHP: compute grand summary of all face patch areas (mean and
+% sum of individual summary maps)
+% 2020/06/29 SHP: include new ML neurons and Dango's peri-AM neurons
 % 2020/05/04 SHP
 % Load the correlation matrix (unmasked, not pca-res) for all 368 cells
 % from cortical face patches and compute 1) maximum of absolute correlation
@@ -25,13 +28,13 @@ end
 addpath(fullfile(dirLibrary, 'matlab_utils')) % for convolution
 
 % Set directories 
-setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was'}; %, 'Dav'};
-nameSubjBOLD ='Art'; 
+setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was', 'Dav'};
+nameSubjBOLD = 'Ava'; %'Art';  %'Ava'; % 'Art'; 
 dirDataHome = fullfile(dirProcdata, 'parksh/_macaque');
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
-% load the masks (movie-driven & brain-only mask)
-load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp', 'brainMask_BlockAna3D');
+% % load the masks (movie-driven & brain-only mask)
+% load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp', 'brainMask_BlockAna3D');
 
 
 
@@ -42,7 +45,7 @@ load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDr
 %% Load the corr map and select valid channel: subject by subject
 numSubject = size(setNameSubjNeural, 2);
 matR_SU_all = [];
-setArea = {'AF', 'AM', 'AAM', 'ML'};
+setArea = {'AF', 'AM', 'AAM', 'ML', 'NFP'};
 for iSubj = 1:numSubject
     nameSubjNeural = setNameSubjNeural{iSubj}; %'Spi'; %'Tor';
     dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
@@ -61,8 +64,8 @@ for iSubj = 1:numSubject
             subjID = 14;
         case 'mat' %AM
             subjID = 21;
-        case 'dan' %AM+
-            subjID = 31;
+        case 'dan' %AM+ and peri-AM+ (no face patch)
+            subjID = [31 100];
         case 'moc' % AF and AM+
             subjID = [15 32];
         case 'was' %AM
@@ -78,6 +81,10 @@ for iSubj = 1:numSubject
      if strcmpi(nameSubjNeural, 'moc') % Mochi has both AF and AM+ cells, so assign different IDs for cells from each area
         locAM = ~cellfun(@isempty, strfind(cellstr(paramCorr.validChanID), 'AM'));
         infoPopulation_subj(iSubj).validChan_subjID(locAM) = subjID(2);
+     end
+     if strcmpi(nameSubjNeural, 'dan') % Dango has both AM+ and non-face patch cells, so assign different IDs for cells from each area
+        locNFP = ~cellfun(@isempty, strfind(cellstr(paramCorr.validChanID), 'NFP'));
+        infoPopulation_subj(iSubj).validChan_subjID(locNFP) = subjID(2);
      end
     
     matR_SU_valid = matR_SU(:, infoPopulation_subj(iSubj).validChanIndex);
@@ -96,10 +103,12 @@ catChanID = cat(1, curTS.validChanID);
 catSubjName = cat(1, curTS.setSubjName);
 catSubjID = cat(1, infoPopulation_subj.validChan_subjID);
 catAreaID = floor(catSubjID./10);
+setAreaID = unique(catAreaID);
 
 corrMap_Area = struct([]);
-for iArea = 1:length(unique(catAreaID))
-    setR = matR_SU_all(:, catAreaID == iArea);
+for iArea = 1:length(setAreaID)
+    idArea = setAreaID(iArea);
+    setR = matR_SU_all(:, catAreaID == idArea);
     matR_maxAbs = max(abs(setR), [], 2);
     matR_avg = mean(setR, 2);    
 
@@ -108,19 +117,22 @@ for iArea = 1:length(unique(catAreaID))
     fractionHighCorrCell = sum(matValidVox, 2)./size(matValidVox,2);
     
     corrMap_Area(iArea).nameArea = setArea{iArea};
-    corrMap_Area(iArea).setSubjID = unique(catSubjID(catAreaID == iArea));
-    corrMap_Area(iArea).setSubjName = unique(catSubjName(catAreaID == iArea, :));
-    corrMap_Area(iArea).setChanID = catChanID(catAreaID == iArea);
+    corrMap_Area(iArea).setSubjID = unique(catSubjID(catAreaID == idArea));
+    corrMap_Area(iArea).setSubjName = unique(catSubjName(catAreaID == idArea, :));
+    corrMap_Area(iArea).setChanID = catChanID(catAreaID == idArea);
+    corrMap_Area(iArea).catSubjID = catSubjID(catAreaID==idArea);
     corrMap_Area(iArea).matR = setR;
     corrMap_Area(iArea).matR_max = matR_maxAbs;
     corrMap_Area(iArea).matR_avg = matR_avg;
     corrMap_Area(iArea).critCorr = critCorr;
     corrMap_Area(iArea).fractionHighCorrCell = fractionHighCorrCell;
 end
-    
+
+
+%% Merge all the neurons and all the areas together
 corrMap_merged.catChanID = catChanID;
 corrMap_merged.catSubjID = catSubjID;
-corrMap_merged.catSubjID = catSubjName;
+corrMap_merged.catSubjName = catSubjName;
 corrMap_merged.catAreaID = catAreaID;
 corrMap_merged.matR = matR_SU_all;
 
@@ -128,8 +140,27 @@ corrMap_merged.matR = matR_SU_all;
 catMap_fraction = cat(2, corrMap_Area.fractionHighCorrCell);
 corrMap_merged.meanFractionAcrossArea = mean(catMap_fraction, 2);
 
+%% Merge only face patches
+setAreaFP = 1:4;
+
+corrMap_merged_FP.catChanID = cat(1, corrMap_Area(setAreaFP).setChanID); % catChanID;
+corrMap_merged_FP.catSubjID = cat(1, corrMap_Area(setAreaFP).catSubjID); % catSubjID;
+corrMap_merged_FP.setArea = {corrMap_Area(setAreaFP).nameArea}; % catSubjName;
+corrMap_merged_FP.catAreaID = floor(corrMap_merged_FP.catSubjID./10); % catAreaID;
+corrMap_merged_FP.matR = cat(2, corrMap_Area(setAreaFP).matR); % matR_SU_all;
+
+% average fraction of neurons across areas
+catMap_fraction_FP = cat(2, corrMap_Area(setAreaFP).fractionHighCorrCell);
+catMap_matR_max_FP = cat(2, corrMap_Area(setAreaFP).matR_max);
+catMap_matR_avg_FP = cat(2, corrMap_Area(setAreaFP).matR_avg);
+corrMap_merged_FP.meanFractionAcrossArea = mean(catMap_fraction_FP, 2);
+corrMap_merged_FP.meanMaxAbs = mean(catMap_matR_max_FP, 2);
+corrMap_merged_FP.grandMeanR = mean(catMap_matR_avg_FP, 2);
+
+
 %% save the file
-save('/procdata/parksh/_macaque/CorrMap_SU_AllCellsArt_corticalFPMerged.mat', 'info*', 'corrMap_Area', 'corrMap_merged')
+save(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), ...
+    'info*', 'corrMap_*')
     
     
     

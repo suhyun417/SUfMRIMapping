@@ -12,7 +12,7 @@
 addpath('/library/matlab_utils/')
 
 % for iSubj = 1:length(setNameSubjNeural)
-nameSubjNeural = 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
+nameSubjNeural = 'Dan'; % 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
 nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
 
 
@@ -82,20 +82,23 @@ global STDPATH DSP DATA GH
 %
 %         vol = single(DSP.proc.fncvol_3d);
 
-for iMask = 1:2
+for iMask = 1:3
     
     % convert the map to the surface
     for iUnit = 1:size(matR_SU,2)
         
         cd /projects/parksh/_toolbox/BlockAna/ %/projects/parksh/NeuralBOLD/analysis/BlockAna/
-        cellID = paramCorr.validChanID(iUnit,:);
-        fprintf(1, 'Unit # %d, Cell ID: %s, %s \n', iUnit, cellID);
+        cellID = cellstr(paramCorr.validChanID(iUnit,:));
+        fprintf(1, 'Unit # %d, Cell ID: %s, %s \n', iUnit, char(cellID));
         
         switch iMask
-            case 1 % unmasked (everything within brain)
+            case 1 % unmasked 
                 fileHead = '';
-                DSP.proc.fncvol_3d =  reshape(matR_SU(:,iUnit), [nx, ny, nz]); %.*brainMask_BlockAna3D; %mapR_Cluster(:,:,:,iK).*brainMask_BlockAna3D;
-            case 2 % masked
+                DSP.proc.fncvol_3d =  reshape(matR_SU(:,iUnit), [nx, ny, nz]);
+            case 2 % brainmask (everything within brain)
+                fileHead = 'brainmask_';
+                DSP.proc.fncvol_3d =  reshape(matR_SU(:,iUnit), [nx, ny, nz]).*brainMask_BlockAna3D; %mapR_Cluster(:,:,:,iK).*brainMask_BlockAna3D;
+            case 3 % masked
                 fileHead = 'new_masked_';
                 DSP.proc.fncvol_3d = reshape(matR_SU(:,iUnit), [nx, ny, nz]).*movieDrivenAmp.mask_amp1; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
         end
@@ -103,7 +106,7 @@ for iMask = 1:2
 %         fname = sprintf('%s%s_%s_Movie123_noFiltering+orig.BRIK', fileHead, nameSubjNeural, cellID);%
 %         vol = single(DSP.proc.fncvol_3d);
         
-        fname = sprintf('%s%s_%s_Movie%s_noFiltering+orig.BRIK', fileHead, nameSubjNeural, cellID, MovieStr);%
+        fname = sprintf('%s%s_%s_Movie%s_noFiltering+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
         vol = single(DSP.proc.fncvol_3d);
         
         % %     % case1: unmasked version

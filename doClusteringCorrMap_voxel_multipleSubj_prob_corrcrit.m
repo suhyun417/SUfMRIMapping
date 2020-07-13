@@ -76,13 +76,13 @@ paramClustering_global.numReplicates = numReplicates;
 paramClustering_global.descriptions = 'Clustering of neurons based on the masked whole-brain correlation maps: multiple repetitions (numRepeat) of an execution of kmeans function, which had its own multiple "replicates" (numReplicates)';
 paramClustering_global.numRepeat = numRepeat;
 
-if flagParallel
-    pool = parpool;                      % Invokes workers
-    stream = RandStream('mlfg6331_64');  % Random number stream
-    opts = statset('UseParallel',1,'UseSubstreams',1, 'Streams',stream,...
-        'MaxIter', 1000, 'Display','final');
-    paramClustering_global.parallel = opts;
-end
+% if flagParallel
+%     pool = parpool;                      % Invokes workers
+%     stream = RandStream('mlfg6331_64');  % Random number stream
+%     opts = statset('UseParallel',1,'UseSubstreams',1, 'Streams',stream,...
+%         'MaxIter', 1000, 'Display','final');
+%     paramClustering_global.parallel = opts;
+% end
 
 
 [nx ny nz] = size(movieDrivenAmp.mask_amp1);
