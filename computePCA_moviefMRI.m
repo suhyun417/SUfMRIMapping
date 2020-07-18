@@ -11,13 +11,13 @@ clear all;
 
 %% PCA on fMRI data
 % load the masks (movie-driven & brain-only mask)
-nameSubjBOLD = 'Ava'; %'Art'; 
-load(sprintf('/procdata/parksh/%s/%s_MaskArrays.mat', nameSubjBOLD, nameSubjBOLD), 'movieDrivenAmp', 'brainMask_BlockAna3D');
+nameSubjBOLD = 'Art'; %'Ava'; %'Art'; 
+load(sprintf('/procdata/parksh/_macaque/%s/%s_MaskArrays.mat', nameSubjBOLD, nameSubjBOLD), 'movieDrivenAmp', 'brainMask_BlockAna3D');
 [nx, ny, nz] = size(movieDrivenAmp.mask_amp1);
 nVox = nx*ny*nz;
 moviemask_vec = reshape(movieDrivenAmp.mask_amp1, nVox, 1); % change the 3D mask to 1D
 
-load(sprintf('/procdata/parksh/%s/%s_movieTS_fMRI_indMov.mat', nameSubjBOLD, nameSubjBOLD))
+load(sprintf('/procdata/parksh/_macaque/%s/%s_movieTS_fMRI_indMov.mat', nameSubjBOLD, nameSubjBOLD))
 
 indMovieBOLD = [1 2 3];
 
@@ -35,10 +35,10 @@ for iM = 1:3;
     nVox = nx*ny*nz;
     
     matTS = reshape(fmritc, nVox, nt);
-    matTS_moviemask = matTS(moviemask_vec,:); %matR_SU(moviemask_vec,:); % 15495 voxels
     
-    [coeff, score, latent, tsquared, explained] = pca(zscore(matTS_moviemask), 'Economy', 'off', 'Centered', 'on');
-    [residuals] = pcares(zscore(matTS_moviemask), 1);
+    %% PCA on the whole brain
+    [coeff, score, latent, tsquared, explained] = pca(zscore(matTS), 'Economy', 'off', 'Centered', 'on');
+    [residuals] = pcares(zscore(matTS), 1);
     %%% x = zscore(matTS);
     %%% ndim = 1;
     %%% reconstructed = repmat(mean(x,1),n,1) + score(:,1:ndim)*coeff(:,1:ndim)';
@@ -53,6 +53,29 @@ for iM = 1:3;
     resultsPCAres(iM).residuals = residuals;
     paramPCAres.ndim = 1;
     paramPCAres.flag_zscore = 1;
+    
+    
+    %% PCA on movie-masked one
+    matTS_moviemask = matTS(moviemask_vec,:); %matR_SU(moviemask_vec,:); % 15495 voxels
+    
+    [coeff, score, latent, tsquared, explained] = pca(zscore(matTS_moviemask), 'Economy', 'off', 'Centered', 'on');
+    [residuals] = pcares(zscore(matTS_moviemask), 1);
+    %%% x = zscore(matTS);
+    %%% ndim = 1;
+    %%% reconstructed = repmat(mean(x,1),n,1) + score(:,1:ndim)*coeff(:,1:ndim)';
+    %%% residuals = x - reconstructed;
+    
+    resultsPCA_moviemask(iM).coeff = coeff(:,1:10);
+    resultsPCA_moviemask(iM).score = score(:,1:10);
+    resultsPCA_moviemask(iM).explained = explained;
+    paramPCA_moviemask.option = {'Economy', 'off', 'Centered', 'on'};
+    paramPCA_moviemask.flag_zscore = 1;
+    
+    resultsPCAres_moviemask(iM).residuals = residuals;
+    paramPCAres_moviemask.ndim = 1;
+    paramPCAres_moviemask.flag_zscore = 1;
+    
+    
 end
 
 % concatenate the first principal component across movies
@@ -61,14 +84,20 @@ pc1_fMRI = [];
 for iM = 1:3
     pc1_fMRI = cat(1, pc1_fMRI, NaN(7,1), catCoeff(118*(iM-1)+1:118*iM, 1));
 end
+
+catCoeff_moviemask = cat(1, resultsPCA_moviemask.coeff);
+pc1_fMRI_moviemask = [];
+for iM = 1:3
+    pc1_fMRI_moviemask = cat(1, pc1_fMRI_moviemask, NaN(7,1), catCoeff_moviemask(118*(iM-1)+1:118*iM, 1));
+end
 % pc1_fMRI = catCoeff(:,1);
 
-save(sprintf('/procdata/parksh/%s/%s_movieTS_fMRI_Movie123_PCA.mat', nameSubjBOLD, nameSubjBOLD), 'paramPCA', 'resultsPCA', 'paramPCAres', 'resultsPCAres', 'pc1_fMRI')
+save(sprintf('/procdata/parksh/_macaque/%s/%s_movieTS_fMRI_Movie123_PCA.mat', nameSubjBOLD, nameSubjBOLD), 'paramPCA*', 'resultsPCA*', 'pc1_fMRI*')
 
 clear fmritc pcvoltc avgvoltc curvoltc voltcIndMov
 
 % some evaluation on PCs
-catVar = cat(2, resultsPCA.explained);
+catVar = cat(2, resultsPCA_moviemask.explained);
 cumsum(catVar(1:10, :))
 
 
@@ -91,7 +120,7 @@ for iMovie = [1 2 3];
 %     tempPC_valid(paramClustering_global.locValidVox) = coeff_e(:, iPC); %Clustering_moviemask_valid.resultKMeans(sortTargetK-1).Vox_indCluster;
 
     PCMap = NaN(size(moviemask_vec));
-    PCMap(moviemask_vec) = resultsPCA(iMovie).score(:,iPC);
+    PCMap(moviemask_vec) = resultsPCA_moviemask(iMovie).score(:,iPC);
     
 %     voxelClusterMap = zeros(size(moviemask_vec));
 %     voxelClusterMap(moviemask_vec) = Clustering_moviemask.resultKMeans(sortTargetK-1).Vox_indCluster;

@@ -1,4 +1,4 @@
-function [] = saveSUMaps_Surface_pcares(nameSubjNeural, setMovie)
+function [] = saveSUMaps_Surface_pcares_masked(nameSubjNeural, setMovie)
 %
 % 2018/10/24
 

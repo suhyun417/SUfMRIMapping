@@ -22,7 +22,8 @@ tempS = num2str(setMovie);
 MovieStr = tempS(~isspace(tempS));
 
 % Area summary correlation maps
-load('/procdata/parksh/_macaque/CorrMap_SU_AllCellsArt_corticalFPMerged.mat', 'info*', 'corrMap_Area');
+load(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD),...
+    'info*', 'corrMap_Area');
 
 % fMRI movie-driven activity mask
 load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp', 'brainMask_BlockAna3D');

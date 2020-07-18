@@ -6,7 +6,7 @@ clear all;
 
 % Load the ROI indices
 nameSubjBOLD = 'Art';
-load(sprintf('/procdata/parksh/_macaque/%s/ROIs/%s_ROIs_set00_RH.mat', nameSubjBOLD));
+load(sprintf('/procdata/parksh/_macaque/%s/ROIs/%s_ROIs_set01_RH.mat', nameSubjBOLD, nameSubjBOLD)) %%s_ROIs_set00_RH.mat', nameSubjBOLD));
 
 % Load correlation matrix of all cortical cells
 load(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), 'info*', 'corrMap_Area'); %, 'info*', 'corrMap_Area', 'corrMap_merged');
@@ -61,16 +61,16 @@ colorbar;
 title('max correlation value for each ROI')
 
 
-figROI = figure;
-set(figROI, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position',  [100 500 785 408])
-for iR = 1:numROI
-    figure(figROI);
-    clf;
-    hist(corrROI(iR).setCorr(:, randperm(389, 10)), 20);
-    xlim([-1 1].*0.6)
-    title(sprintf('ROI %d: %s', iR, paramROI.nameROI{iR}));
-    input('')
-end
+% figROI = figure;
+% set(figROI, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position',  [100 500 785 408])
+% for iR = 1:numROI
+%     figure(figROI);
+%     clf;
+%     hist(corrROI(iR).setCorr(:, randperm(389, 10)), 20);
+%     xlim([-1 1].*0.6)
+%     title(sprintf('ROI %d: %s', iR, paramROI.nameROI{iR}));
+%     input('')
+% end
 
 %% Quick clustering on masked map 
 dirDataBOLD = '/procdata/parksh/_macaque/Art/';
@@ -206,7 +206,7 @@ Clustering_maxabsROI.setArea = {corrMap_Area(setArea).nameArea};
 Clustering_maxabsROI.nameROI = paramROI.nameROI;
     
 if flagSave
-    save(fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_probability.mat'),...
+    save(fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat'),...
         'Clustering*', 'paramClustering*');
 %     fprintf(1, ':: K = %d; Movie-driven mask :: Results saved \n', K);
 end

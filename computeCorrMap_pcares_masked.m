@@ -1,4 +1,4 @@
-function [matR_SU, matP_SU, paramCorr] = computeCorrMap_pcares(nameSubjNeural, nameSubjBOLD, setMovie, flagSaveFile)
+function [matR_SU, matP_SU, paramCorr] = computeCorrMap_pcares_masked(nameSubjNeural, nameSubjBOLD, setMovie, flagSaveFile)
 % computeCorrMap_pcares.m
 %
 % Compute Spearman's rank correlation between each neuron and each voxel
@@ -24,11 +24,11 @@ dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
 
 filenameNeural = [nameSubjNeural, '_movieTS_SU_indMov.mat'];
 load(fullfile(dirDataNeural, filenameNeural))
-load('/procdata/parksh/_macaque/Art/Art_movieTS_fMRI_Movie123_PCA.mat', 'resultsPCAres')
+load('/procdata/parksh/_macaque/Art/Art_movieTS_fMRI_Movie123_PCA.mat', 'resultsPCAres_moviemask')
 
 
 % 1. fMRI tc
-catRes = cat(2, resultsPCAres(setMovie).residuals)';
+catRes = cat(2, resultsPCAres_moviemask(setMovie).residuals)';
 fmritc = [];
 for iM = 1:length(setMovie) %3
     fmritc = cat(1, fmritc, NaN(7, size(catRes, 2)), catRes(118*(iM-1)+1:118*iM, :));
@@ -133,8 +133,8 @@ tempS = num2str(setMovie);
 MovieStr = tempS(~isspace(tempS));
 
 if flagSaveFile
-    save(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_pcares.mat', nameSubjNeural, nameSubjBOLD, MovieStr)), 'matR_SU', 'matP_SU', 'paramCorr');
-    fprintf(1, '\n ...Results are saved in %s as %s \n', dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_pcares.mat', nameSubjNeural, nameSubjBOLD, MovieStr))
+    save(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_pcares_masked.mat', nameSubjNeural, nameSubjBOLD, MovieStr)), 'matR_SU', 'matP_SU', 'paramCorr');
+    fprintf(1, '\n ...Results are saved in %s as %s \n', dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_pcares_masked.mat', nameSubjNeural, nameSubjBOLD, MovieStr))
 
 %     save(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie123_new_kernel%d.mat', nameSubjNeural, nameSubjBOLD, typeMION)), 'matR_SU', 'matP_SU', 'paramCorr');
 %     fprintf(1, '\n ...Results are saved in %s as %s \n', dirDataNeural, sprintf('CorrMap_SU_%s%sMovie123_new_kernel%d.mat', nameSubjNeural, nameSubjBOLD, typeMION))

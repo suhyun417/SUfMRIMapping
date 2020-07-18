@@ -4,7 +4,7 @@ clear all;
 
 dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 
-load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_probability.mat')
+load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat') %Clustering_CorrMap_4FPs_Movie123_ArtRHROI_probability.mat')
 
 
 %%
@@ -29,16 +29,17 @@ D = pdist(Clustering_meanROI.matR, 'euclidean');
 curK = 9; %11; %6; %7;
 locMode = find(propExplained(:,curK-1)==mode(propExplained(:,curK-1)));
 locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
-[sortedClust, indSortChan] = sort(Clustering_maxabsROI.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
+[sortedClust, indSortChan] = sort(Clustering_meanROI.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
 
+numROI = length(Clustering_meanROI.nameROI);
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
 
 sp1 = subplot('Position', [0.15 0.2 0.8 0.7]);
-imagesc(Clustering_maxabsROI.matR(indSortChan, :)')
+imagesc(Clustering_meanROI.matR(indSortChan, :)')
 set(sp1, 'CLim', [-1 1].*0.7)
-set(sp1, 'YTick', 1:numROI, 'YTickLabel', paramROI.nameROI)
+set(sp1, 'YTick', 1:numROI, 'YTickLabel', Clustering_meanROI.nameROI)
 locDiff = cat(1, find(diff(sortedClust)>0), length(sortedClust));
 set(sp1, 'XTick', locDiff)
 title(sprintf('Clustered cells from 4 FPs using max corr for each ROI: K=%d', curK))
@@ -46,7 +47,7 @@ xlabel('Cumulative number of cells')
 colorbar;
 
 sp2 = subplot('Position', [0.15 0.05 0.8 0.05]);
-imagesc(Clustering_maxabsROI.catAreaID(indSortChan)')
+imagesc(Clustering_meanROI.catAreaID(indSortChan)')
 set(sp2, 'YTick', 1, 'YTickLabel', 'Area info for each cell')
 set(sp2, 'XTick', locDiff, 'XTickLabel', cat(1, locDiff(1), diff(locDiff)))
 xlabel('Number of cells in each cluster')

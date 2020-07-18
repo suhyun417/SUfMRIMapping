@@ -12,8 +12,8 @@
 addpath('/library/matlab_utils/')
 
 % for iSubj = 1:length(setNameSubjNeural)
-nameSubjNeural = 'Dan'; % 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
-nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
+nameSubjNeural = 'Dav'; %'Dan'; % 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
+nameSubjBOLD = 'Ava'; %'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
 
 
 cd /projects/parksh/NeuroMRI/analysis
@@ -47,7 +47,7 @@ nx = 40; ny = 64; nz = 32;
 
 
 pname = [dirDataBOLD, '/tempSURF/'];
-dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural]; %, '/_afterExcludingLaterFMRIsessions_20200512/']; %[dirDataBOLD, '/Anatomy/_suma/'];
+dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/_afterExcludingLaterFMRIsessions_20200512/']; %[dirDataBOLD, '/Anatomy/_suma/'];
 % if sum(strcmpi(nameSubjNeural, {'spice', 'spi'}))
 %     dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/_2018Jan/'];
 % end
@@ -82,7 +82,7 @@ global STDPATH DSP DATA GH
 %
 %         vol = single(DSP.proc.fncvol_3d);
 
-for iMask = 1:3
+for iMask = 1:2 %3
     
     % convert the map to the surface
     for iUnit = 1:size(matR_SU,2)
@@ -106,7 +106,7 @@ for iMask = 1:3
 %         fname = sprintf('%s%s_%s_Movie123_noFiltering+orig.BRIK', fileHead, nameSubjNeural, cellID);%
 %         vol = single(DSP.proc.fncvol_3d);
         
-        fname = sprintf('%s%s_%s_Movie%s_noFiltering+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
+        fname = sprintf('%s%s_%s_Movie%s_excLaterfMRI+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
         vol = single(DSP.proc.fncvol_3d);
         
         % %     % case1: unmasked version
