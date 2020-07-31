@@ -1,10 +1,10 @@
-function [] = saveSUMaps_Surface_pcares(nameSubjNeural, setMovie)
+function [] = saveSUMaps_Surface_pcares(nameSubjNeural, nameSubjBOLD, setMovie)
 %
 % 2018/10/24
 
 
 % nameSubjNeural = 'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
-nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
+% nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
 
 %
 addpath('/library/matlab_utils/')
@@ -22,10 +22,10 @@ MovieStr = tempS(~isspace(tempS));
 % if sum(strcmpi(nameSubjNeural, {'spice', 'spi'}))
 %     dirDataNeural = '/procdata/parksh/Spi/2016Nov_movie/';
 % end
-load(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_pcares_masked.mat', nameSubjNeural, nameSubjBOLD, MovieStr)), 'matR_SU', 'paramCorr')
+load(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_pcares.mat', nameSubjNeural, nameSubjBOLD, MovieStr)), 'matR_SU', 'paramCorr')
 
-% 2) fMRI movie-driven activity mask
-load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp');
+% % 2) fMRI movie-driven activity mask
+% load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp');
 
 
 
@@ -33,9 +33,9 @@ load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDr
 nx = 40; ny = 64; nz = 32;
 nVox = nx*ny*nz;
 
-% Apply movie-driven mask to correlation matrix 
-% 2017/01/19 & valid channels 
-moviemask_vec = reshape(movieDrivenAmp.mask_amp1, nVox, 1); % change the 3D mask to 1D
+% % Apply movie-driven mask to correlation matrix 
+% % 2017/01/19 & valid channels 
+% moviemask_vec = reshape(movieDrivenAmp.mask_amp1, nVox, 1); % change the 3D mask to 1D
 
 pname = [dirDataBOLD, '/tempSURF/'];
 dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/']; %[dirDataBOLD, '/Anatomy/_suma/'];
@@ -58,16 +58,16 @@ global STDPATH DSP DATA GH
 for iUnit = 1:size(matR_SU,2)
     
     cd /projects/parksh/_toolbox/BlockAna/ %/projects/parksh/NeuralBOLD/analysis/BlockAna/
-    cellID = paramCorr.validChanID(iUnit,:);
-    fileHead = 'new_masked_';
-    fname = sprintf('%s%s_%s_Movie%s_1PCres_noFiltering+orig.BRIK', fileHead, nameSubjNeural, cellID, MovieStr);%
+    cellID = cellstr(paramCorr.validChanID(iUnit,:)); %cellID = paramCorr.validChanID(iUnit,:);
+    fileHead = ''; %'new_masked_';
+    fname = sprintf('%s%s_%s_Movie%s_1PCres_noFiltering+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
     
-    fprintf(1, 'Unit # %d, Cell ID: %s, %s \n', iUnit, cellID);
+    fprintf(1, 'Unit # %d, Cell ID: %s, %s \n', iUnit, char(cellID));
     
-    pcaresCorrMap = zeros(size(moviemask_vec));
-    pcaresCorrMap(moviemask_vec) = matR_SU(:, iUnit);
+%     pcaresCorrMap = zeros(size(moviemask_vec));
+%     pcaresCorrMap(moviemask_vec) = matR_SU(:, iUnit);
     
-    DSP.proc.fncvol_3d = reshape(pcaresCorrMap, [nx, ny, nz]); %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
+    DSP.proc.fncvol_3d = reshape(matR_SU(:, iUnit), [nx, ny, nz]); %reshape(pcaresCorrMap, [nx, ny, nz]); %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
     vol = single(DSP.proc.fncvol_3d);
     
     
@@ -157,7 +157,7 @@ for iUnit = 1:size(matR_SU,2)
     end
 end
 
-cd /projects/parksh/NeuralBOLD/analysis
+% cd /projects/parksh/NeuroMRI/analysis
 
 
 

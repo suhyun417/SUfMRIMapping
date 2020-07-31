@@ -16,7 +16,8 @@ typeMION = 1;
 % for iSB = 1:length(setNameSubjBOLD)
 nameSubjBOLD = 'Art'; %setNameSubjBOLD{iSB};
 
-for iSN = 1:length(setNameSubjNeural)
+computeCorrMap_pcares_masked('Dav', nameSubjBOLD, setMovie, flagSaveFile);
+for iSN = 7:length(setNameSubjNeural)
     nameSubjNeural = setNameSubjNeural{iSN};
     
     %         % compute correlation between each neuron and all the voxels
@@ -26,10 +27,7 @@ for iSN = 1:length(setNameSubjNeural)
     fprintf(1, '      ::     Computing pca-res corr map for %s (%d/%d) x %s  (%s)     :: \n\n ', nameSubjNeural, iSN, length(setNameSubjNeural), nameSubjBOLD, datestr(now, 'mm/dd/yy HH:MM:SS'))
     computeCorrMap_pcares(nameSubjNeural, nameSubjBOLD, setMovie, flagSaveFile);
     
-    if sum(strcmpi(nameSubjNeural, {'dan', 'dav'}))>0
-        fprintf(1, '      ::     Computing pca-res corr map (movie maksed) for %s x %s  (%s)     :: \n\n ', nameSubjNeural, nameSubjBOLD, datestr(now, 'mm/dd/yy HH:MM:SS'))
-        computeCorrMap_pcares_masked(nameSubjBOLD, nameSubjNeural, setMovie, flagSaveFile);
-    end
+   
     
 end
 % end
@@ -47,7 +45,7 @@ end
 %     computeCorrMap_pcares(nameSubjNeural, nameSubjBOLD, setMovie, flagSaveFile);
 %     
 %     %         if sum(strcmpi(nameSubjNeural, {'dan', 'dav'}))>0
-%     computeCorrMap_pcares_masked(nameSubjBOLD, nameSubjNeural, setMovie, flagSaveFile);
+%     computeCorrMap_pcares_masked(nameSubjNeural, nameSubjBOLD, setMovie, flagSaveFile);
 %     %         end
 %     
 % end

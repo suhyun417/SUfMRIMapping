@@ -9,17 +9,22 @@ nameSubjBOLD = 'Art';
 load(sprintf('/procdata/parksh/_macaque/%s/ROIs/%s_ROIs_set01_RH.mat', nameSubjBOLD, nameSubjBOLD)) %%s_ROIs_set00_RH.mat', nameSubjBOLD));
 
 % Load correlation matrix of all cortical cells
-load(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), 'info*', 'corrMap_Area'); %, 'info*', 'corrMap_Area', 'corrMap_merged');
+% load(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), 'info*', 'corrMap_merged_FP'); %, 'info*', 'corrMap_Area', 'corrMap_merged');
+load(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged_pcares.mat', nameSubjBOLD), 'info*', 'corrMap_merged_FP'); %
 
 dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 
 numROI = size(matROIIndices, 2);
 nVoxPerROI = sum(matROIIndices);
 
-setArea = 1:4 ;%1:5;
-matR_SU_all = cat(2, corrMap_Area(setArea).matR); % except for no face patch neurons
-catSubjID = cat(1, corrMap_Area(setArea).catSubjID);
-catAreaID = floor(cat(1, corrMap_Area(setArea).catSubjID)./10);
+matR_SU_all = corrMap_merged_FP.matR; %cat(2, corrMap_Area(setArea).matR); % except for no face patch neurons
+catSubjID = corrMap_merged_FP.catSubjID; %cat(1, corrMap_Area(setArea).catSubjID);
+catAreaID = corrMap_merged_FP.catAreaID; %floor(cat(1, corrMap_Area(setArea).catSubjID)./10);
+
+% setArea = 1:4 ;%1:5;
+% matR_SU_all = cat(2, corrMap_Area(setArea).matR); % except for no face patch neurons
+% catSubjID = cat(1, corrMap_Area(setArea).catSubjID);
+% catAreaID = floor(cat(1, corrMap_Area(setArea).catSubjID)./10);
 
 sumCorrROI = matR_SU_all'*matROIIndices;
 meanCorrROI = sumCorrROI./repmat(nVoxPerROI, size(sumCorrROI, 1), 1);
@@ -27,7 +32,7 @@ meanCorrROI = sumCorrROI./repmat(nVoxPerROI, size(sumCorrROI, 1), 1);
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 1700 390])
 imagesc(meanCorrROI')
-set(gca, 'XTick', cat(1, find(diff(catAreaID)>0), size(meanCorrROI, 1)), 'XTickLabel', {corrMap_Area(setArea).nameArea})
+set(gca, 'XTick', cat(1, find(diff(catAreaID)>0), size(meanCorrROI, 1)), 'XTickLabel', corrMap_merged_FP.setArea)
 set(gca, 'YTick', 1:numROI, 'YTickLabel', paramROI.nameROI)
 set(gca, 'CLim', [-1 1].*0.5)
 set(gca, 'TickDir', 'out', 'Box', 'off')
@@ -53,7 +58,7 @@ absmaxCorrROI = cat(1, corrROI.absmax)';
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 1700 390])
 imagesc(absmaxCorrROI')
-set(gca, 'XTick', cat(1, find(diff(catAreaID)>0), size(meanCorrROI, 1)), 'XTickLabel', {corrMap_Area(setArea).nameArea})
+set(gca, 'XTick', cat(1, find(diff(catAreaID)>0), size(meanCorrROI, 1)), 'XTickLabel', corrMap_merged_FP.setArea)
 set(gca, 'YTick', 1:numROI, 'YTickLabel', paramROI.nameROI)
 set(gca, 'CLim', [-1 1].*0.8)
 set(gca, 'TickDir', 'out', 'Box', 'off')
@@ -152,7 +157,7 @@ end
 Clustering_meanROI.matR = meanCorrROI;
 Clustering_meanROI.catSubjID = catSubjID;
 Clustering_meanROI.catAreaID = catAreaID;
-Clustering_meanROI.setArea = {corrMap_Area(setArea).nameArea};
+Clustering_meanROI.setArea = corrMap_merged_FP.setArea; %{corrMap_Area(setArea).nameArea};
 Clustering_meanROI.nameROI = paramROI.nameROI;
 
 
@@ -202,11 +207,13 @@ end
 Clustering_maxabsROI.matR = absmaxCorrROI;
 Clustering_maxabsROI.catSubjID = catSubjID;
 Clustering_maxabsROI.catAreaID = catAreaID;
-Clustering_maxabsROI.setArea = {corrMap_Area(setArea).nameArea};
+Clustering_maxabsROI.setArea = corrMap_merged_FP.setArea; %{corrMap_Area(setArea).nameArea};
 Clustering_maxabsROI.nameROI = paramROI.nameROI;
     
 if flagSave
-    save(fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat'),...
+%     save(fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat'),...
+%         'Clustering*', 'paramClustering*');
+    save(fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability_pcares.mat'),...
         'Clustering*', 'paramClustering*');
 %     fprintf(1, ':: K = %d; Movie-driven mask :: Results saved \n', K);
 end

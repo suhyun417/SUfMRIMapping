@@ -49,7 +49,7 @@ setArea = {'AF', 'AM', 'AAM', 'ML', 'NFP'};
 for iSubj = 1:numSubject
     nameSubjNeural = setNameSubjNeural{iSubj}; %'Spi'; %'Tor';
     dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
-    load(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie123_new_pcares.mat', nameSubjNeural, nameSubjBOLD)), 'matR_SU', 'paramCorr');
+    load(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie123_pcares.mat', nameSubjNeural, nameSubjBOLD)), 'matR_SU', 'paramCorr');
     
     % For each cell, save the subject ID: Mochi's AF cells get 15, Mochi's
     % AM cells get 32

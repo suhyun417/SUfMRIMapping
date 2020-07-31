@@ -4,8 +4,23 @@ clear all;
 
 dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 
-load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat') %Clustering_CorrMap_4FPs_Movie123_ArtRHROI_probability.mat')
+% load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability_pcares.mat') 
+load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat')
 
+
+[coeff, score, latent, tsquared, explained] = pca(zscore(Clustering_meanROI.matR));
+figure
+x = 1:37;
+barh(x, coeff(:,1), 0.3, 'FaceColor', 'b', 'EdgeColor', 'none')
+hold on
+barh(x+0.2, coeff(:,2), 0.3, 'FaceColor', [0 0.7 0.7], 'EdgeColor', [0 0.7 0.7])
+hold on
+barh(x+0.4, coeff(:,3), 0.3, 'FaceColor', [0.7 0 0.7], 'EdgeColor', [0.7 0 0.7])
+set(gca, 'YTick', 1:37, 'YTickLabel', Clustering_meanROI.nameROI)
+xlabel('Coefficient from PCA')
+hold off
+legend(sprintf('PC1 (%d%%)', round(explained(1))), sprintf('PC2 (%d%%)', round(explained(2))), sprintf('PC3 (%d%%)', round(explained(3))))
+title('Before remove first PC from fMRI')
 
 %%
 setK = paramClustering_global.setK; %Clustering.setK;
@@ -20,29 +35,45 @@ end
 totalSS = Clustering_meanROI.totalSS_SU;
 propExplained = (totalSS-matWSS)./totalSS; %matExpVar./totalSS;
 
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+plot(setK, propExplained'.*100, 'ko-'); hold on
+xlabel('Number of cluster (K)')
+ylabel('Explained variance (%)')
+title('Clustering using mean r for each ROI')
+set(gca, 'XTick', setK)
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+plot(setK(1:end-1), diff(propExplained').*100)
+hold on
+plot(setK(1:end-1), mean(diff(propExplained').*100, 2), 'ko-', 'LineWidth', 2)
+title('difference of explained variance for each K: using mean ROI')
 
 %% Fig 3D: 2-D MDS plot showing K-means clustering results
-D = pdist(Clustering_meanROI.matR, 'euclidean');
-[Y2,stress,disparities] = mdscale(D,2);
-[Y3,stress,disparities] = mdscale(D,3);
+% D = pdist(Clustering_meanROI.matR, 'euclidean');
+% [Y2,stress,disparities] = mdscale(D,2);
+% [Y3,stress,disparities] = mdscale(D,3);
 
-curK = 9; %11; %6; %7;
+curK = 9; %6; %7;
 locMode = find(propExplained(:,curK-1)==mode(propExplained(:,curK-1)));
 locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
 [sortedClust, indSortChan] = sort(Clustering_meanROI.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
 
 numROI = length(Clustering_meanROI.nameROI);
+orderROI = [1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
 
+%
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
 
 sp1 = subplot('Position', [0.15 0.2 0.8 0.7]);
-imagesc(Clustering_meanROI.matR(indSortChan, :)')
-set(sp1, 'CLim', [-1 1].*0.7)
-set(sp1, 'YTick', 1:numROI, 'YTickLabel', Clustering_meanROI.nameROI)
+imagesc(Clustering_meanROI.matR(indSortChan, orderROI)')
+set(sp1, 'CLim', [-1 1].*0.5)
+set(sp1, 'YTick', 1:numROI, 'YTickLabel', Clustering_meanROI.nameROI(orderROI))
 locDiff = cat(1, find(diff(sortedClust)>0), length(sortedClust));
 set(sp1, 'XTick', locDiff)
-title(sprintf('Clustered cells from 4 FPs using max corr for each ROI: K=%d', curK))
+title(sprintf('Clustered cells from 4 FPs using mean corr for each ROI: K=%d', curK))
 xlabel('Cumulative number of cells')
 colorbar;
 
@@ -53,6 +84,133 @@ set(sp2, 'XTick', locDiff, 'XTickLabel', cat(1, locDiff(1), diff(locDiff)))
 xlabel('Number of cells in each cluster')
 colorbar;
 
+%
+cellCountCluster_Area = NaN(curK, length(Clustering_meanROI.setArea));
+for iArea = 1:length(Clustering_meanROI.setArea)
+    compArea = [];
+    compArea = sortedClust(ismember(indSortChan, find(Clustering_meanROI.catAreaID == iArea)));
+    cellCountCluster_Area(:, iArea) = histc(compArea, 1:curK);
+end
+cellCountCluster_Area_prop = cellCountCluster_Area./repmat(sum(cellCountCluster_Area), curK, 1);
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 1720 360]);
+for iArea = 1:length(Clustering_meanROI.setArea)
+    sp(iArea) = subplot(1, length(Clustering_meanROI.setArea), iArea);
+    pie(sp(iArea), cellCountCluster_Area(:, iArea));
+    title(Clustering_meanROI.setArea{iArea})
+end
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 355 730]);
+for iArea = 1:length(Clustering_meanROI.setArea)
+    sp(iArea) = subplot(length(Clustering_meanROI.setArea), 1, iArea);
+    bar(sp(iArea), cellCountCluster_Area_prop(:, iArea).*100);
+    title(Clustering_meanROI.setArea{iArea})
+end
+xlabel(sp(4), 'Cluster ID')
+ylabel(sp(2), 'Percent of cells in each cluster (%)')
+
+
+%% For max r for each ROI
+setK = paramClustering_global.setK; %Clustering.setK;
+
+matWSS=[];
+matExpVar=[];
+for iK = 1:length(setK)
+    curK = setK(iK);
+    matWSS(:,iK) = sum(Clustering_maxabsROI.resultKMeans(iK).SU_sumD); %sum(Clustering.resultKMeans(iK).SU_sumD);
+end
+
+totalSS = Clustering_maxabsROI.totalSS_SU;
+propExplained = (totalSS-matWSS)./totalSS; %matExpVar./totalSS;
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+plot(setK, propExplained'.*100, 'ko-'); hold on
+xlabel('Number of cluster (K)')
+ylabel('Explained variance (%)')
+title('Clustering using max r for each ROI')
+set(gca, 'XTick', setK)
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+plot(setK(1:end-1), diff(propExplained').*100)
+hold on
+plot(setK(1:end-1), mean(diff(propExplained').*100, 2), 'ko-', 'LineWidth', 2)
+title('difference of explained variance for each K: using max ROI')
+
+%% Fig 3D: 2-D MDS plot showing K-means clustering results
+D = pdist(Clustering_maxabsROI.matR, 'euclidean');
+[Y2,stress,disparities] = mdscale(D,2);
+[Y3,stress,disparities] = mdscale(D,3);
+
+curK = 5; %8; %11; %6; %7;
+locMode = find(propExplained(:,curK-1)==mode(propExplained(:,curK-1)));
+locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
+[sortedClust, indSortChan] = sort(Clustering_maxabsROI.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
+
+numROI = length(Clustering_maxabsROI.nameROI);
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
+
+sp1 = subplot('Position', [0.15 0.2 0.8 0.7]);
+imagesc(Clustering_maxabsROI.matR(indSortChan, :)')
+set(sp1, 'CLim', [-1 1].*0.7)
+set(sp1, 'YTick', 1:numROI, 'YTickLabel', Clustering_maxabsROI.nameROI)
+locDiff = cat(1, find(diff(sortedClust)>0), length(sortedClust));
+set(sp1, 'XTick', locDiff)
+title(sprintf('Clustered cells from 4 FPs using max corr for each ROI: K=%d', curK))
+xlabel('Cumulative number of cells')
+colorbar;
+
+sp2 = subplot('Position', [0.15 0.05 0.8 0.05]);
+imagesc(Clustering_maxabsROI.catAreaID(indSortChan)')
+set(sp2, 'YTick', 1, 'YTickLabel', 'Area info for each cell')
+set(sp2, 'XTick', locDiff, 'XTickLabel', cat(1, locDiff(1), diff(locDiff)))
+xlabel('Number of cells in each cluster')
+colorbar;
+
+
+%
+cellCountCluster_Area = NaN(curK, length(Clustering_maxabsROI.setArea));
+for iArea = 1:length(Clustering_maxabsROI.setArea)
+    compArea = [];
+    compArea = sortedClust(ismember(indSortChan, find(Clustering_maxabsROI.catAreaID == iArea)));
+    cellCountCluster_Area(:, iArea) = histc(compArea, 1:curK);
+end
+cellCountCluster_Area_prop = cellCountCluster_Area./repmat(sum(cellCountCluster_Area), curK, 1);
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 1720 360]);
+for iArea = 1:length(Clustering_maxabsROI.setArea)
+    sp(iArea) = subplot(1, length(Clustering_maxabsROI.setArea), iArea);
+    pie(sp(iArea), cellCountCluster_Area(:, iArea));
+    title(Clustering_maxabsROI.setArea{iArea})
+end
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 355 730]);
+for iArea = 1:length(Clustering_maxabsROI.setArea)
+    sp(iArea) = subplot(length(Clustering_maxabsROI.setArea), 1, iArea);
+    bar(sp(iArea), cellCountCluster_Area_prop(:, iArea).*100);
+    title(Clustering_maxabsROI.setArea{iArea})
+end
+xlabel(sp(4), 'Cluster ID')
+ylabel(sp(2), 'Percent of cells in each cluster (%)')
+
+
+
+
+
+
+
+
+
+
+
+%%
 % matIndClust_SU = cat(2, Clustering_moviemask_valid.resultKMeans.SU_indCluster); %cat(2, Clustering.resultKMeans.SU_indCluster);
 % curK = 7; %
 % [sortedClust, indSortChan]=sort(matIndClust_SU(:,curK-1));
