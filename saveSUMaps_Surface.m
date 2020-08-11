@@ -12,8 +12,8 @@
 addpath('/library/matlab_utils/')
 
 % for iSubj = 1:length(setNameSubjNeural)
-nameSubjNeural = 'Dav'; %'Dan'; % 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
-nameSubjBOLD = 'Ava'; %'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
+nameSubjNeural = 'Spi'; %'Dav'; %'Dan'; % 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
+nameSubjBOLD = 'Art'; %'Ava'; %'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
 
 
 cd /projects/parksh/NeuroMRI/analysis
@@ -47,7 +47,7 @@ nx = 40; ny = 64; nz = 32;
 
 
 pname = [dirDataBOLD, '/tempSURF/'];
-dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/_afterExcludingLaterFMRIsessions_20200512/']; %[dirDataBOLD, '/Anatomy/_suma/'];
+dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural]; %, '/_afterExcludingLaterFMRIsessions_20200512/']; %[dirDataBOLD, '/Anatomy/_suma/'];
 % if sum(strcmpi(nameSubjNeural, {'spice', 'spi'}))
 %     dirSPEC = [dirDataBOLD, '/Anatomy/_suma/', nameSubjNeural, '/_2018Jan/'];
 % end
@@ -103,11 +103,11 @@ for iMask = 1:2 %3
                 DSP.proc.fncvol_3d = reshape(matR_SU(:,iUnit), [nx, ny, nz]).*movieDrivenAmp.mask_amp1; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
         end
         
-%         fname = sprintf('%s%s_%s_Movie123_noFiltering+orig.BRIK', fileHead, nameSubjNeural, cellID);%
-%         vol = single(DSP.proc.fncvol_3d);
-        
-        fname = sprintf('%s%s_%s_Movie%s_excLaterfMRI+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
+        fname = sprintf('%s%s_%s_Movie123_noFiltering+orig.BRIK', fileHead, nameSubjNeural, char(cellID));%
         vol = single(DSP.proc.fncvol_3d);
+        
+%         fname = sprintf('%s%s_%s_Movie%s_excLaterfMRI+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
+%         vol = single(DSP.proc.fncvol_3d);
         
         % %     % case1: unmasked version
         % %     fname = sprintf('%s_%s_Movie123_noFiltering_new+orig.BRIK', cellID, nameSubjNeural);%sprintf('new_masked_%s_%s_Movie123_noFiltering+orig.BRIK', cellID, nameSubjNeural);%

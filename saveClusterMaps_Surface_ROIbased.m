@@ -1,5 +1,8 @@
-% saveClusterMaps_Surface.m
+% saveClusterMaps_Surface_ROIbased.m
 %
+% 2020/08/11 SHP
+% Modified from "saveClusterMaps_Surface.m" to load ROI-based clustering
+% results and save the maps for each cluster
 % 1) load fMRI correlation maps computed based on Toroid's cells and Artemis
 % or Avalanche's fMRI data
 % 2) load clustering results based on various values (e.g. whole brain corr maps, corr between cells and movie
@@ -10,7 +13,7 @@
 clear all;
 
 
-nameSubjNeural = 'Spi'; %'Tor'; %'Spi'; % 'Tor'; % 'Sig'; %'Tor';
+% nameSubjNeural = 'Spi'; %'Tor'; %'Spi'; % 'Tor'; % 'Sig'; %'Tor';
 nameSubjBOLD = 'Art'; %'Ava'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
 
 %
@@ -18,24 +21,29 @@ addpath('/library/matlab_utils/')
 
 % Load files
 dirDataHome = '/procdata/parksh/_macaque/';
-dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
+% dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
 % 1) fMRI correlation maps
-load(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie123_new.mat', nameSubjNeural, nameSubjBOLD)), 'matR_SU', 'paramCorr')
+load(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), 'info*', 'corrMap_merged_FP'); %, 'info*', 'corrMap_Area', 'corrMap_merged');
 
-% 2) Clustering results
-% load(fullfile(dirDataNeural, sprintf('Clustering_%s%sMovie123_new_masked_significant.mat', nameSubjNeural, nameSubjBOLD)))  % cluste
-% % load(fullfile(dirDataNeural, sprintf('Clustering_%s%sMovie123_new.mat', nameSubjNeural, nameSubjBOLD))) %
-load(fullfile(dirDataNeural, sprintf('Clustering_%s%sMovie123_new_masked.mat', nameSubjNeural, nameSubjBOLD)))  % clustering based on the maps with movie-driven mask applied
-% % load(fullfile(dirDataNeural, 'Clustering_TorArtAvaMovie123.mat')) % based on two sets of whole brain maps from two different monkeys
-% % Clustering = ClusteringAll;
+% 2) Clustering results (ROI-based clustering)
+load(sprintf('/procdata/parksh/_macaque/%s/Clustering_CorrMap_4FPs_Movie123_%sRHROI_set01_probability.mat', nameSubjBOLD, nameSubjBOLD))
 
-% 3) fMRI movie-driven activity mask
-load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp', 'brainMask_BlockAna3D');
 
-% 4) Single-unit time courses
-load(fullfile(dirDataNeural, sprintf('%s_movieTS_SU_indMov.mat', nameSubjNeural)))
+% 
+% % 2) Clustering results
+% % load(fullfile(dirDataNeural, sprintf('Clustering_%s%sMovie123_new_masked_significant.mat', nameSubjNeural, nameSubjBOLD)))  % cluste
+% % % load(fullfile(dirDataNeural, sprintf('Clustering_%s%sMovie123_new.mat', nameSubjNeural, nameSubjBOLD))) %
+% load(fullfile(dirDataNeural, sprintf('Clustering_%s%sMovie123_new_masked.mat', nameSubjNeural, nameSubjBOLD)))  % clustering based on the maps with movie-driven mask applied
+% % % load(fullfile(dirDataNeural, 'Clustering_TorArtAvaMovie123.mat')) % based on two sets of whole brain maps from two different monkeys
+% % % Clustering = ClusteringAll;
+% 
+% % 3) fMRI movie-driven activity mask
+% load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp', 'brainMask_BlockAna3D');
+% 
+% % 4) Single-unit time courses
+% load(fullfile(dirDataNeural, sprintf('%s_movieTS_SU_indMov.mat', nameSubjNeural)))
 
 % filenameNeural = [nameSubjNeural, '_movieTS_SU_indMov.mat'];
 % fileNameNeural_BLP = [nameSubjNeural, '_movieTS_BLPLFP_indMov.mat'];
@@ -54,30 +62,47 @@ load(fullfile(dirDataNeural, sprintf('%s_movieTS_SU_indMov.mat', nameSubjNeural)
 %
 % setMovie = [1 2 3];
 
-% 2017/01/20 add Spice's case where valid channels were selected at
-% the clustering stage
-switch lower(nameSubjNeural)
-    case 'spi'
-        matR_SU_org = matR_SU;
-        clear matR_SU
-        matR_SU = matR_SU_org(:, paramClustering.validChanIndex);
-end
+% % 2017/01/20 add Spice's case where valid channels were selected at
+% % the clustering stage
+% switch lower(nameSubjNeural)
+%     case 'spi'
+%         matR_SU_org = matR_SU;
+%         clear matR_SU
+%         matR_SU = matR_SU_org(:, paramClustering.validChanIndex);
+% end
 
 %% 1. Average fMRI maps for each cluster
-matIndClust_SU = cat(2, Clustering_moviemask.resultKMeans.SU_indCluster);
-% matIndClust_SU = cat(2, Clustering.resultKMeans.SU_indCluster);
+setK = paramClustering_global.setK; %Clustering.setK;
 
-for sortTargetK = 3:8 %5; %6:8 %4; %:5 %sortTargetK = 4; %8; %6; %7; %6; %7;
-[sortedClust, indSortChan]=sort(matIndClust_SU(:,sortTargetK-1));
+matWSS=[];
+matExpVar=[];
+for iK = 1:length(setK)
+    curK = setK(iK);
+    matWSS(:,iK) = sum(Clustering_meanROI.resultKMeans(iK).SU_sumD); %sum(Clustering.resultKMeans(iK).SU_sumD);
+end
+
+totalSS = Clustering_meanROI.totalSS_SU;
+propExplained = (totalSS-matWSS)./totalSS; %matExpVar./totalSS;
+
+for sortTargetK = 9:10 %5; %6:8 %4; %:5 %sortTargetK = 4; %8; %6; %7; %6; %7;
+
+
+curK = sortTargetK; %9; %6; %7;
+locMode = find(propExplained(:,curK-1)==mode(propExplained(:,curK-1)));
+locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
+[sortedClust, indSortChan] = sort(Clustering_meanROI.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
+
+% matIndClust_SU = cat(2, Clustering_moviemask.resultKMeans.SU_indCluster); % cat(2, Clustering.resultKMeans.SU_indCluster);
+% matIndClust_SU = 
+% [sortedClust, indSortChan]=sort(matIndClust_SU(:,sortTargetK-1));
 
 % average maps for each cluster
 nx = 40; ny = 64; nz = 32;
-mapR_Cluster=[]; R_avgCluster=[];
-
-
+mapR_Cluster=[]; 
 for iK = 1:sortTargetK
-    R_avgCluster(:,iK) = mean(matR_SU(:,indSortChan(sortedClust==iK)), 2);
-    tempClustMapR = reshape(R_avgCluster(:,iK), [nx, ny, nz]);
+    R_avgCluster = [];
+    R_avgCluster = mean(corrMap_merged_FP.matR(:,indSortChan(sortedClust==iK)), 2);
+    tempClustMapR = reshape(R_avgCluster, [nx, ny, nz]);
     mapR_Cluster = cat(4, mapR_Cluster, tempClustMapR);
 end
 
@@ -98,30 +123,30 @@ end
 pname = [dirDataBOLD, '/tempSURF/'];
 dirSPEC = [dirDataBOLD, '/Anatomy/_suma/'];
 
-cd /projects/parksh/NeuralBOLD/analysis/BlockAna/
+cd /projects/parksh/_toolbox/BlockAna/
 blockana;
-S_neuralRegressor(nameSubjNeural, nameSubjBOLD);
+S_neuralRegressor('Tor', nameSubjBOLD);
 global STDPATH DSP DATA GH
 
 % convert the map to the surface
-for iMask = 1:2
+for iMask = 1 %1:2
 %     iMask = 2;
     
     for iK = 1:sortTargetK
         
-        cd /projects/parksh/NeuralBOLD/analysis/BlockAna/
+        cd /projects/parksh/_toolbox/BlockAna/
         
         switch iMask
-            case 1 % unmasked (everything within brain)
-                fileHead = sprintf('new_%s', nameSubjNeural);
-                DSP.proc.fncvol_3d = mapR_Cluster(:,:,:,iK).*brainMask_BlockAna3D;
-            case 2 % masked
-                fileHead = sprintf('new_masked_%s', nameSubjNeural); %sprintf('new_maskedSignificant_%s', nameSubjNeural);% sprintf('new_masked_%s', nameSubjNeural);
-                DSP.proc.fncvol_3d = mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
+            case 1 % unmasked 
+                fileHead = ''; %sprintf('new_%s', nameSubjNeural);
+                DSP.proc.fncvol_3d = mapR_Cluster(:,:,:,iK); %.*brainMask_BlockAna3D;
+            case 2 % brain-masked
+                fileHead = 'brainmask_'; %sprintf('new_masked_%s', nameSubjNeural); %sprintf('new_maskedSignificant_%s', nameSubjNeural);% sprintf('new_masked_%s', nameSubjNeural);
+                DSP.proc.fncvol_3d = mapR_Cluster(:,:,:,iK).*brainMask_BlockAna3D; %.*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
         end
         
 %         fname = sprintf('%s_Cluster%d_%dMeans_Art_AvgCorrMapMovie123_noFiltering+orig.BRIK', fileHead, iK, sortTargetK);%
-        fname = sprintf('%s_Cluster%d_%dMeansMovieDriven_Art_AvgCorrMapMovie123_noFiltering+orig.BRIK', fileHead, iK, sortTargetK);%
+        fname = sprintf('%s%dMeansClusteringArtRHROIset01Movie123_Cluster%d_AvgCorrMap+orig.BRIK', fileHead, sortTargetK, iK);%
 
         vol = single(DSP.proc.fncvol_3d);
         

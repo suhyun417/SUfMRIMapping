@@ -1,4 +1,4 @@
-nameSubjNeural = 'Dan'; %'Dav'; %'Was'; %'Ava'; %'Mat'; %'Sig'; %'Rho'; %'Spi';
+nameSubjNeural = 'Tor'; % 'Moc'; %'Spi'; %'Was'; % 'Dan'; %'Dav'; %'Was'; %'Ava'; %'Mat'; %'Sig'; %'Rho'; %'Spi';
 setMovie = [1 2 3]; % [4 5 6]; %
 dirDataHome = '/procdata/parksh/_macaque';
 [indDataMat, CellID, movieID] = genDataMatrix_SU(nameSubjNeural, 0); % data matrix

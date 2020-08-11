@@ -29,7 +29,7 @@ addpath(fullfile(dirLibrary, 'matlab_utils')) % for convolution
 
 % Set directories 
 setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was', 'Dav'};
-nameSubjBOLD = 'Art'; %'Ava'; %'Art';  %'Ava'; % 'Art'; 
+nameSubjBOLD = 'Ava'; % 'Art'; %'Ava'; %'Art';  %'Ava'; % 'Art'; 
 dirDataHome = fullfile(dirProcdata, 'parksh/_macaque');
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 

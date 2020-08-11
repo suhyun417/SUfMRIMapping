@@ -37,11 +37,12 @@ propExplained = (totalSS-matWSS)./totalSS; %matExpVar./totalSS;
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
-plot(setK, propExplained'.*100, 'ko-'); hold on
+plot(setK, propExplained'.*100, 'ko-', 'MarkerFaceColor', 'w'); hold on
 xlabel('Number of cluster (K)')
 ylabel('Explained variance (%)')
 title('Clustering using mean r for each ROI')
 set(gca, 'XTick', setK)
+set(gca, 'TickDir', 'out', 'Box', 'off')
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
@@ -49,6 +50,13 @@ plot(setK(1:end-1), diff(propExplained').*100)
 hold on
 plot(setK(1:end-1), mean(diff(propExplained').*100, 2), 'ko-', 'LineWidth', 2)
 title('difference of explained variance for each K: using mean ROI')
+
+%% Colormap
+fname = '/procdata/parksh/_macaque/Art/Anatomy/_suma/BCWYRColorMap.txt';
+ttt = dlmread(fname);
+cMap_corrSUMA = ttt(:, 1:3);
+clear ttt
+
 
 %% Fig 3D: 2-D MDS plot showing K-means clustering results
 % D = pdist(Clustering_meanROI.matR, 'euclidean');
@@ -62,10 +70,27 @@ locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
 
 numROI = length(Clustering_meanROI.nameROI);
 orderROI = [1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
+cMap_Area = [91 148 203; 237 28 35; 248 148 29; 6 177 102]./255; % from Kenji's schematic
 
 %
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
+
+% make blue-white-red colorbar
+cval = 0.5;
+cmin = -cval; cmax = cval;
+colornum = 256;
+colorInput = [1 0 0; 1 1 1; 0 0 1];
+oldSteps = linspace(-1, 1, length(colorInput));
+newSteps = linspace(-1, 1, colornum);
+for j=1:3 % RGB
+    newmap_all(:,j) = min(max(transpose(interp1(oldSteps, colorInput(:,j), newSteps)), 0), 1); 
+end
+endPoint = round((cmax-cmin)/2/abs(cmin)*colornum);
+newmap = squeeze(newmap_all(1:endPoint, :));
+% figure(gcf)
+% set(gca, 'CLim', [cmin cmax])
+% colormap(flipud(newmap))
 
 sp1 = subplot('Position', [0.15 0.2 0.8 0.7]);
 imagesc(Clustering_meanROI.matR(indSortChan, orderROI)')
@@ -77,12 +102,17 @@ title(sprintf('Clustered cells from 4 FPs using mean corr for each ROI: K=%d', c
 xlabel('Cumulative number of cells')
 colorbar;
 
+% figure;
+% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
 sp2 = subplot('Position', [0.15 0.05 0.8 0.05]);
 imagesc(Clustering_meanROI.catAreaID(indSortChan)')
 set(sp2, 'YTick', 1, 'YTickLabel', 'Area info for each cell')
 set(sp2, 'XTick', locDiff, 'XTickLabel', cat(1, locDiff(1), diff(locDiff)))
 xlabel('Number of cells in each cluster')
+% colormap(sp2, cMap_Area)
 colorbar;
+
+
 
 %
 cellCountCluster_Area = NaN(curK, length(Clustering_meanROI.setArea));
@@ -111,6 +141,23 @@ end
 xlabel(sp(4), 'Cluster ID')
 ylabel(sp(2), 'Percent of cells in each cluster (%)')
 
+%% each ROI color code from AFNI i64 colormap
+fid = fopen('/procdata/parksh/_macaque/Art/ROIs/i64_colorscale.pal');
+A = fscanf(fid, '%s');
+fclose(fid);
+matRGB = sscanf(A(8:end), '#%2x%2x%2x', [3 inf])';
+matRGB = flipud(unique(matRGB, 'rows', 'stable'));
+
+orderROI = [1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
+
+fig_colorROI = figure;
+set(fig_colorROI, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 300 20 740]);
+ax = subplot('Position', [0 0 1 1]);
+image(orderROI');
+colormap(matRGB./255);
+axis off
+print(fig_colorROI, fullfile(dirFig, 'colormap_ROIset01_reorder'), '-depsc')
+print(fig_colorROI, fullfile(dirFig, 'colormap_ROIset01_reorder'), '-r200', '-dtiff')
 
 %% For max r for each ROI
 setK = paramClustering_global.setK; %Clustering.setK;

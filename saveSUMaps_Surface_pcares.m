@@ -1,5 +1,6 @@
 function [] = saveSUMaps_Surface_pcares(nameSubjNeural, nameSubjBOLD, setMovie)
 %
+% 2020/07/31 Changed it to save pca-res using PC on concatenated TS of movie [1 2 3]
 % 2018/10/24
 
 
@@ -25,7 +26,7 @@ MovieStr = tempS(~isspace(tempS));
 load(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_pcares.mat', nameSubjNeural, nameSubjBOLD, MovieStr)), 'matR_SU', 'paramCorr')
 
 % % 2) fMRI movie-driven activity mask
-% load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp');
+load(fullfile(dirDataBOLD, sprintf('%s_MaskArrays.mat', nameSubjBOLD)), 'movieDrivenAmp');
 
 
 
@@ -53,21 +54,21 @@ S_neuralRegressor(nameSubjNeural, nameSubjBOLD); %S_neuralRegressor
 global STDPATH DSP DATA GH
 
 
-    
+brainmask_vec = reshape(movieDrivenAmp.map_sm_brain>0, nVox, 1); % change the 3D mask to 1D    
 % convert the map to the surface
 for iUnit = 1:size(matR_SU,2)
     
     cd /projects/parksh/_toolbox/BlockAna/ %/projects/parksh/NeuralBOLD/analysis/BlockAna/
     cellID = cellstr(paramCorr.validChanID(iUnit,:)); %cellID = paramCorr.validChanID(iUnit,:);
-    fileHead = ''; %'new_masked_';
-    fname = sprintf('%s%s_%s_Movie%s_1PCres_noFiltering+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
+    fileHead = 'brainmask_'; %'new_masked_';
+    fname = sprintf('%s%s_%s_Movie%s_concat1PCres_noFiltering+orig.BRIK', fileHead, nameSubjNeural, char(cellID), MovieStr);%
     
-    fprintf(1, 'Unit # %d, Cell ID: %s, %s \n', iUnit, char(cellID));
+    fprintf(1, 'Unit # %d, Cell ID: %s, %s \n', iUnit, char(cellID));    
     
-%     pcaresCorrMap = zeros(size(moviemask_vec));
-%     pcaresCorrMap(moviemask_vec) = matR_SU(:, iUnit);
-    
-    DSP.proc.fncvol_3d = reshape(matR_SU(:, iUnit), [nx, ny, nz]); %reshape(pcaresCorrMap, [nx, ny, nz]); %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
+    pcaresCorrMap = zeros(size(brainmask_vec));
+    pcaresCorrMap(brainmask_vec) = matR_SU(:, iUnit);
+        
+    DSP.proc.fncvol_3d = reshape(pcaresCorrMap, [nx, ny, nz]); %reshape(matR_SU(:, iUnit), [nx, ny, nz]); %%mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
     vol = single(DSP.proc.fncvol_3d);
     
     

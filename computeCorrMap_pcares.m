@@ -3,6 +3,8 @@ function [matR_SU, matP_SU, paramCorr] = computeCorrMap_pcares(nameSubjNeural, n
 %
 % Compute Spearman's rank correlation between each neuron and each voxel
 % using residual of fMRI data (1st Principal Component is regressed out)
+% 2020/07/31 SHP: changed it to PC computed from the concatenated time
+% series for movie [1 2 3], only to within-brain voxels
 % 2018/10/27 SHP: for now, setMovie should be within [1 2 3]
 
 %% Compute correlation for movie 123
@@ -24,11 +26,11 @@ dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
 
 filenameNeural = [nameSubjNeural, '_movieTS_SU_indMov.mat'];
 load(fullfile(dirDataNeural, filenameNeural))
-load('/procdata/parksh/_macaque/Art/Art_movieTS_fMRI_Movie123_PCA.mat', 'resultsPCAres')
+load('/procdata/parksh/_macaque/Art/Art_movieTS_fMRI_Movie123_PCA.mat', 'resultsPCAres_concat_brainmask'); %'resultsPCAres')
 
 
 % 1. fMRI tc
-catRes = cat(2, resultsPCAres(setMovie).residuals)';
+catRes = resultsPCAres_concat_brainmask.residuals'; %cat(2, resultsPCAres(setMovie).residuals)';
 fmritc = [];
 for iM = 1:length(setMovie) %3
     fmritc = cat(1, fmritc, NaN(7, size(catRes, 2)), catRes(118*(iM-1)+1:118*iM, :));
