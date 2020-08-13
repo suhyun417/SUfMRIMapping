@@ -4,8 +4,8 @@ clear all;
 
 dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 
-% load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability_pcares.mat') 
-load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat')
+load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability_pcares.mat') 
+% load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat')
 
 
 [coeff, score, latent, tsquared, explained] = pca(zscore(Clustering_meanROI.matR));
@@ -63,7 +63,7 @@ clear ttt
 % [Y2,stress,disparities] = mdscale(D,2);
 % [Y3,stress,disparities] = mdscale(D,3);
 
-curK = 9; %6; %7;
+curK = 13; % 9; %6; %7;
 locMode = find(propExplained(:,curK-1)==mode(propExplained(:,curK-1)));
 locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
 [sortedClust, indSortChan] = sort(Clustering_meanROI.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));

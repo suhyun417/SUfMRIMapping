@@ -4,7 +4,7 @@
 
 clear all;
 
-nameSubjNeural = 'Spi';
+nameSubjNeural = 'Moc';
 nameSubjBOLD = 'Art';
 dirPics = sprintf('/projects/parksh/NeuroMRI/_labNote/_figs/_CorrMap/SUmap_unmasked/%s/%s/', nameSubjBOLD, nameSubjNeural);
 
@@ -13,7 +13,7 @@ dirPics = sprintf('/projects/parksh/NeuroMRI/_labNote/_figs/_CorrMap/SUmap_unmas
 T = readtable(sprintf('/projects/parksh/NeuroMRI/analysis/%sCells.txt', nameSubjNeural), 'Delimiter', '\t', 'ReadVariableNames', false, 'HeaderLines', 1, 'Format', '%d%s');
 
 % get the list of graphic files to rename
-filestr = '*0p5f.0*.png'; % this is manually coded for each case
+filestr = '*0p4f.0*.png'; % this is manually coded for each case
 d = dir(fullfile(dirPics, filestr));
 
 for iFile = 1:length(d)
