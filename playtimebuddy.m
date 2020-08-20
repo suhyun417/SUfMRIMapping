@@ -428,7 +428,41 @@ curCellID = setExampleCellIDs{iCell};
 bar(Clustering_meanROI.matR(ismember(Clustering_meanROI.catChanID, curCellID), orderROI))
 end
 
+% 2018a bar color
+figure;
+for iCell = 1:length(setExampleCellIDs)
+sp(iCell) = subplot(4, 4, iCell);
+curCellID = setExampleCellIDs{iCell};
+b = bar(Clustering_meanROI.matR(ismember(Clustering_meanROI.catChanID, curCellID), orderROI));
+b.FaceColor = 'flat';
+b.CData = matRGB(orderROI, :);
+b.EdgeColor = 'none';
+end
+set(sp(1:4), 'YLim', [-0.05 0.4])
+set(sp(5:8), 'YLim', [-0.5 0.1])
+set(sp(9:12), 'YLim', [-0.1 0.4])
+set(sp(13:16), 'YLim', [-0.2 0.4])
+set(sp(:), 'TickDir', 'out', 'Box', 'off', 'XTick', [])
+set(gcf, 'COlor', 'w')
+set(sp(:), 'XColor', [1 1 1], 'YColor', [0 0 0])
 
+% 2018a bar color
+figBar = figure;
+set(figBar, 'Color', 'w', 'PaperPositionMode', 'auto')
+for iCell = 1:length(setExampleCellIDs)
+sp(iCell) = subplot(4, 4, iCell);
+curCellID = setExampleCellIDs{iCell};
+b = bar(Clustering_meanROI.matR(ismember(Clustering_meanROI.catChanID, curCellID), orderROI), 'hist');
+b.EdgeColor = 'none';
+b.FaceAlpha = 0.6;
+end
+set(sp(1:4), 'YLim', [-0.05 0.4])
+set(sp(5:8), 'YLim', [-0.5 0.1])
+set(sp(9:12), 'YLim', [-0.1 0.4])
+set(sp(13:16), 'YLim', [-0.2 0.4])
+set(sp(:), 'TickDir', 'out', 'Box', 'off', 'XTick', [])
+set(gcf, 'COlor', 'w')
+set(sp(:), 'XColor', [1 1 1], 'YColor', [0 0 0])
 
 
 % %%
