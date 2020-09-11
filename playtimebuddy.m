@@ -63,7 +63,7 @@ clear ttt
 % [Y2,stress,disparities] = mdscale(D,2);
 % [Y3,stress,disparities] = mdscale(D,3);
 
-curK = 13; % 9; %6; %7;
+curK = 9; %13; % 9; %6; %7;
 locMode = find(propExplained(:,curK-1)==mode(propExplained(:,curK-1)));
 locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
 [sortedClust, indSortChan] = sort(Clustering_meanROI.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
@@ -121,27 +121,27 @@ axis off
 
 %
 cellCountCluster_Area = NaN(curK, length(Clustering_meanROI.setArea));
-for iArea = 1:length(Clustering_meanROI.setArea)
+for iSubj = 1:length(Clustering_meanROI.setArea)
     compArea = [];
-    compArea = sortedClust(ismember(indSortChan, find(Clustering_meanROI.catAreaID == iArea)));
-    cellCountCluster_Area(:, iArea) = histc(compArea, 1:curK);
+    compArea = sortedClust(ismember(indSortChan, find(Clustering_meanROI.catAreaID == iSubj)));
+    cellCountCluster_Area(:, iSubj) = histc(compArea, 1:curK);
 end
 cellCountCluster_Area_prop = cellCountCluster_Area./repmat(sum(cellCountCluster_Area), curK, 1);
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 1720 360]);
-for iArea = 1:length(Clustering_meanROI.setArea)
-    sp(iArea) = subplot(1, length(Clustering_meanROI.setArea), iArea);
-    pie(sp(iArea), cellCountCluster_Area(:, iArea));
-    title(Clustering_meanROI.setArea{iArea})
+for iSubj = 1:length(Clustering_meanROI.setArea)
+    sp(iSubj) = subplot(1, length(Clustering_meanROI.setArea), iSubj);
+    pie(sp(iSubj), cellCountCluster_Area(:, iSubj));
+    title(Clustering_meanROI.setArea{iSubj})
 end
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 355 730]);
-for iArea = 1:length(Clustering_meanROI.setArea)
-    sp(iArea) = subplot(length(Clustering_meanROI.setArea), 1, iArea);
-    bar(sp(iArea), cellCountCluster_Area_prop(:, iArea).*100);
-    title(Clustering_meanROI.setArea{iArea})
+for iSubj = 1:length(Clustering_meanROI.setArea)
+    sp(iSubj) = subplot(length(Clustering_meanROI.setArea), 1, iSubj);
+    bar(sp(iSubj), cellCountCluster_Area_prop(:, iSubj).*100);
+    title(Clustering_meanROI.setArea{iSubj})
 end
 xlabel(sp(4), 'Cluster ID')
 ylabel(sp(2), 'Percent of cells in each cluster (%)')
@@ -227,27 +227,27 @@ colorbar;
 
 %
 cellCountCluster_Area = NaN(curK, length(Clustering_maxabsROI.setArea));
-for iArea = 1:length(Clustering_maxabsROI.setArea)
+for iSubj = 1:length(Clustering_maxabsROI.setArea)
     compArea = [];
-    compArea = sortedClust(ismember(indSortChan, find(Clustering_maxabsROI.catAreaID == iArea)));
-    cellCountCluster_Area(:, iArea) = histc(compArea, 1:curK);
+    compArea = sortedClust(ismember(indSortChan, find(Clustering_maxabsROI.catAreaID == iSubj)));
+    cellCountCluster_Area(:, iSubj) = histc(compArea, 1:curK);
 end
 cellCountCluster_Area_prop = cellCountCluster_Area./repmat(sum(cellCountCluster_Area), curK, 1);
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 1720 360]);
-for iArea = 1:length(Clustering_maxabsROI.setArea)
-    sp(iArea) = subplot(1, length(Clustering_maxabsROI.setArea), iArea);
-    pie(sp(iArea), cellCountCluster_Area(:, iArea));
-    title(Clustering_maxabsROI.setArea{iArea})
+for iSubj = 1:length(Clustering_maxabsROI.setArea)
+    sp(iSubj) = subplot(1, length(Clustering_maxabsROI.setArea), iSubj);
+    pie(sp(iSubj), cellCountCluster_Area(:, iSubj));
+    title(Clustering_maxabsROI.setArea{iSubj})
 end
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 355 730]);
-for iArea = 1:length(Clustering_maxabsROI.setArea)
-    sp(iArea) = subplot(length(Clustering_maxabsROI.setArea), 1, iArea);
-    bar(sp(iArea), cellCountCluster_Area_prop(:, iArea).*100);
-    title(Clustering_maxabsROI.setArea{iArea})
+for iSubj = 1:length(Clustering_maxabsROI.setArea)
+    sp(iSubj) = subplot(length(Clustering_maxabsROI.setArea), 1, iSubj);
+    bar(sp(iSubj), cellCountCluster_Area_prop(:, iSubj).*100);
+    title(Clustering_maxabsROI.setArea{iSubj})
 end
 xlabel(sp(4), 'Cluster ID')
 ylabel(sp(2), 'Percent of cells in each cluster (%)')
@@ -259,6 +259,7 @@ clear all;
 
 dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 
+load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat', 'Clustering_meanROI')
 load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_probability.mat', 'Clustering_brainmask', 'param*') 
 
 % [coeff, score, latent, tsquared, explained] = pca(zscore(Clustering_brainmask.matR));
@@ -288,97 +289,125 @@ end
 totalSS = Clustering_brainmask.totalSS_SU;
 propExplained = (totalSS-matWSS)./totalSS; %matExpVar./totalSS;
 
-figure;
-set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
-plot(setK, propExplained'.*100, 'ko-', 'MarkerFaceColor', 'w'); hold on
-xlabel('Number of cluster (K)')
-ylabel('Explained variance (%)')
-title('Clustering using all the voxels within brain')
-set(gca, 'XTick', setK)
-set(gca, 'TickDir', 'out', 'Box', 'off')
-
-fig3b=figure;
-set(fig3b, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 340 340])
-curK=10;
-plot(setK, propExplained.*100, 'ko-', 'LineWidth', 2, 'MarkerFaceColor', 'w', 'MarkerSize', 8); hold on
-plot(curK, propExplained(:, curK-1).*100, 'ko', 'LineWidth', 2, 'MarkerFaceColor', 'k', 'MarkerSize', 8)
-xlim([2 20])
-ylim([35 75])
-set(gca, 'TickDir', 'out', 'LineWidth', 2, 'Box', 'off', 'TickLength', [.025 .05])
-set(gca, 'YTick', 35:10:75)
-
-% save
-print(fig3b, fullfile(dirFig, 'expVar_KMeansClustering_brainmaskVoxels_square'), '-depsc')
-
-
-figure;
-set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
-plot(setK(1:end-1), diff(propExplained').*100)
-hold on
-plot(setK(1:end-1), mean(diff(propExplained').*100, 2), 'ko-', 'LineWidth', 2)
-title('difference of explained variance for each K: using all the voxels within brain')
-
-%% Colormap
-fname = '/procdata/parksh/_macaque/Art/Anatomy/_suma/BCWYRColorMap.txt';
-ttt = dlmread(fname);
-cMap_corrSUMA = ttt(:, 1:3);
-clear ttt
+% figure;
+% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+% plot(setK, propExplained'.*100, 'ko-', 'MarkerFaceColor', 'w'); hold on
+% xlabel('Number of cluster (K)')
+% ylabel('Explained variance (%)')
+% title('Clustering using all the voxels within brain')
+% set(gca, 'XTick', setK)
+% set(gca, 'TickDir', 'out', 'Box', 'off')
+% 
+% fig3b=figure;
+% set(fig3b, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 340 340])
+% curK=10;
+% plot(setK, propExplained.*100, 'ko-', 'LineWidth', 2, 'MarkerFaceColor', 'w', 'MarkerSize', 8); hold on
+% plot(curK, propExplained(:, curK-1).*100, 'ko', 'LineWidth', 2, 'MarkerFaceColor', 'k', 'MarkerSize', 8)
+% xlim([2 20])
+% ylim([35 75])
+% set(gca, 'TickDir', 'out', 'LineWidth', 2, 'Box', 'off', 'TickLength', [.025 .05])
+% set(gca, 'YTick', 35:10:75)
+% 
+% % save
+% print(fig3b, fullfile(dirFig, 'expVar_KMeansClustering_brainmaskVoxels_square'), '-depsc')
+% 
+% 
+% figure;
+% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+% plot(setK(1:end-1), diff(propExplained').*100)
+% hold on
+% plot(setK(1:end-1), mean(diff(propExplained').*100, 2), 'ko-', 'LineWidth', 2)
+% title('difference of explained variance for each K: using all the voxels within brain')
 
 
-%% Fig 3D: 2-D MDS plot showing K-means clustering results
-% D = pdist(Clustering_meanROI.matR, 'euclidean');
-% [Y2,stress,disparities] = mdscale(D,2);
-% [Y3,stress,disparities] = mdscale(D,3);
+%% Correlation matrix
 
 curK = 10; %13; % 9; %6; %7;
 locMode = find(propExplained(:,curK-1)==mode(propExplained(:,curK-1)));
 locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
 [sortedClust, indSortChan] = sort(Clustering_brainmask.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
 
-% numROI = length(Clustering_brainmask.nameROI);
-% orderROI = [1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
+% Colormap
 cMap_Area = [91 148 203; 237 28 35; 248 148 29; 6 177 102]./255; % from Kenji's schematic
+cMap_Area(4, :) = cMap_Area(4, :).*0.7;
+orderArea = [4 1 2 3]; %ML-AF-AM-AAM
+cMap_Area_MLfirst = cMap_Area(orderArea, :);
 
+fname = '/procdata/parksh/_macaque/Art/Anatomy/_suma/BCWYRColorMap.txt';
+ttt = dlmread(fname);
+cMap_corrSUMA = ttt(:, 1:3);
+clear ttt
+
+numROI = length(Clustering_meanROI.nameROI);
+orderROI = [1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
+
+% ordering of cells: ML-AF-AM-AAM, while maintaining the grouping
+for iK = 1:curK
+    tempS(iK).indSortChan_org = indSortChan(sortedClust==iK);
+    locML = find(Clustering_brainmask.infoCells.catAreaID(tempS(iK).indSortChan_org)==4);
+    if isempty(locML)
+        tempS(iK).indSortChan_reorder = tempS(iK).indSortChan_org;
+    else
+        tempS(iK).indSortChan_reorder = cat(1, tempS(iK).indSortChan_org(locML), tempS(iK).indSortChan_org(1:locML(1)-1));
+    end
+end
+indSortChan_reorder = cat(1, tempS.indSortChan_reorder);
 %
 figure;
-set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [1200 200 910 675])
 
-% % make blue-white-red colorbar
-% cval = 0.5;
-% cmin = -cval; cmax = cval;
-% colornum = 256;
-% colorInput = [1 0 0; 1 1 1; 0 0 1];
-% oldSteps = linspace(-1, 1, length(colorInput));
-% newSteps = linspace(-1, 1, colornum);
-% for j=1:3 % RGB
-%     newmap_all(:,j) = min(max(transpose(interp1(oldSteps, colorInput(:,j), newSteps)), 0), 1); 
-% end
-% endPoint = round((cmax-cmin)/2/abs(cmin)*colornum);
-% newmap = squeeze(newmap_all(1:endPoint, :));
-% % figure(gcf)
-% % set(gca, 'CLim', [cmin cmax])
-% % colormap(flipud(newmap))
-
-sp1 = subplot('Position', [0.15 0.2 0.8 0.7]);
-imagesc(Clustering_brainmask.matR(:, indSortChan))
+sp1 = subplot('Position', [0.2 0.2 0.7 0.7]);
+imagesc(Clustering_meanROI.matR(indSortChan_reorder, orderROI)') %(indSortChan, orderROI)')
 set(sp1, 'CLim', [-1 1].*0.5)
-% set(sp1, 'YTick', 1:numROI, 'YTickLabel', Clustering_brainmask.nameROI(orderROI))
-locDiff = cat(1, find(diff(sortedClust)>0), length(sortedClust));
-set(sp1, 'XTick', locDiff)
-title(sprintf('Clustered cells from 4 FPs using voxels within brain: K=%d', curK))
-xlabel('Cumulative number of cells')
-colorbar;
+set(sp1, 'YTick', 1:numROI, 'YTickLabel', Clustering_meanROI.nameROI(orderROI))
+locDiff = cat(1, 0, find(diff(sortedClust)>0), length(sortedClust));
+set(sp1, 'XTick', locDiff+0.5, 'XTickLabel', locDiff)
+% title(sprintf('Clustered cells from 4 FPs using mean corr for each ROI: K=%d', curK))
+% xlabel('Cumulative number of cells')
+colormap(sp1, cMap_corrSUMA)
+set(gca, 'TickDir', 'out', 'Box', 'off')
+line([locDiff+0.5 locDiff+0.5]', repmat(get(gca, 'YLim')', 1, length(locDiff)), 'Color', 'k', 'LineWidth', 0.5)
 
-% figure;
-% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
-sp2 = subplot('Position', [0.15 0.05 0.8 0.05]);
-imagesc(Clustering_brainmask.infoCells.catAreaID(indSortChan)')
-set(sp2, 'YTick', 1, 'YTickLabel', 'Area info for each cell')
-set(sp2, 'XTick', locDiff, 'XTickLabel', cat(1, locDiff(1), diff(locDiff)))
-xlabel('Number of cells in each cluster')
-% colormap(sp2, cMap_Area)
-colorbar;
+% colorbar;
+set(sp1, 'XTickLabel', [])
+spp1 = axes('Position', sp1.Position, 'Color', 'none', 'XAxisLocation', 'top');
+spp1.XLim = sp1.XLim;
+set(spp1, 'XTick', locDiff+0.5, 'XTickLabel', locDiff, 'TickDir', 'out', 'XTickLabel', [], 'Box', 'off', 'YColor', 'none')
 
+sp2 = subplot('Position', [0.2 0.08 0.7 0.05]);
+imagesc(Clustering_brainmask.infoCells.catAreaID(indSortChan_reorder)') %(indSortChan)')
+set(sp2, 'YTick', []) %1, 'YTickLabel', 'Area info for each cell')
+set(sp2, 'XTick', locDiff+0.5, 'XTickLabel', [], 'TickDir', 'out'); %cat(1, locDiff(1), diff(locDiff)))
+line([locDiff+0.5 locDiff+0.5]', repmat(get(gca, 'YLim')', 1, length(locDiff)), 'Color', 'k')
+% xlabel('Number of cells in each cluster')
+colormap(sp2, cMap_Area)
+spp2 = axes('Position', sp2.Position, 'Color', 'none', 'XColor', 'none', 'YColor', 'none');
+spp2.Clipping = 'off';
+spp2.XLim = sp2.XLim;
+spp2.YLim = sp2.YLim;
+line([locDiff+0.5 locDiff+0.5]', repmat([0.5;3], 1, length(locDiff)), 'Color', 'k')
+% colorbar;
+
+
+% sp1 = subplot('Position', [0.15 0.2 0.8 0.7]);
+% imagesc(Clustering_brainmask.matR(:, indSortChan))
+% set(sp1, 'CLim', [-1 1].*0.5)
+% % set(sp1, 'YTick', 1:numROI, 'YTickLabel', Clustering_brainmask.nameROI(orderROI))
+% locDiff = cat(1, find(diff(sortedClust)>0), length(sortedClust));
+% set(sp1, 'XTick', locDiff)
+% title(sprintf('Clustered cells from 4 FPs using voxels within brain: K=%d', curK))
+% xlabel('Cumulative number of cells')
+% colorbar;
+% 
+% % figure;
+% % set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 200 910 675])
+% sp2 = subplot('Position', [0.15 0.05 0.8 0.05]);
+% imagesc(Clustering_brainmask.infoCells.catAreaID(indSortChan)')
+% set(sp2, 'YTick', 1, 'YTickLabel', 'Area info for each cell')
+% set(sp2, 'XTick', locDiff, 'XTickLabel', cat(1, locDiff(1), diff(locDiff)))
+% xlabel('Number of cells in each cluster')
+% % colormap(sp2, cMap_Area)
+% colorbar;
 
 
 %
@@ -390,29 +419,83 @@ for iArea = 1:length(Clustering_brainmask.infoCells.setArea)
 end
 cellCountCluster_Area_prop = cellCountCluster_Area./repmat(sum(cellCountCluster_Area), curK, 1);
 
-figure
-set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto');
-bar(cellCountCluster_Area_prop', 'stacked')
-set(gca, 'TickDir', 'out', 'Box', 'off')
-set(gca, 'XTickLabel', Clustering_brainmask.infoCells.setArea)
+
+orderArea = [4 1 2 3]; %ML-AF-AM-AAM
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [1318 468 910 120])
+for iC = 1:10
+ss(iC) = subplot('Position', [0.2+0.073*(iC-1) 0.05 0.05 0.8]);
+B(iC) = bar(cellCountCluster_Area_prop(iC, orderArea));
+end
+set(ss(:), 'TickDir', 'out', 'TickLength', [0.05 0.025], 'Box', 'off', 'XTick', [], 'XColor', 'k', 'YColor', 'k')
+set(B(:), 'FaceColor', 'flat', 'CData', cMap_Area_MLfirst, 'EdgeColor', 'none')
+for iS = 1:10
+    yT = ss(iS).YTick;
+    ss(iS).YTick = [yT(1) yT(end)];
+%     set(ss(iS), 'YTick', get(ss(iS), 'YLim'))
+end
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [1200 200 1000 290]);
+bb = barh(cellCountCluster_Area_prop(:, orderArea)', 'stacked');
+set(gca, 'TickDir', 'out', 'Box', 'off');
+set(gca, 'YDir', 'reverse')
+set(gca, 'YTickLabel', Clustering_brainmask.infoCells.setArea(orderArea))
 set(gca, 'LineWidth', 2, 'FontSize', 15)
-set(gca, 'YTick', [])
+set(gca, 'XColor', 'none')
+cMap_cluster = pink(size(cellCountCluster_Area_prop, 1));
+lumFactor = linspace(0.3, 1.8, 10);
+for iB = 1:10
+bb(iB).FaceColor = 'flat';
+bb(iB).CData = cMap_cluster(iB,:); 
+% bb(iB).CData = cMap_Area_MLfirst*lumFactor(iB);
+end
+
+% add lines across bars
+cumYData = cumsum(cat(1, bb.YData));
+for iB = 1:10
+    xC = [bb(iB).XData(1)+bb(iB).BarWidth/2, bb(iB).XData(2)-bb(iB).BarWidth/2, bb(iB).XData(2)+bb(iB).BarWidth/2, ...
+        bb(iB).XData(3)-bb(iB).BarWidth/2, bb(iB).XData(3)+bb(iB).BarWidth/2, bb(iB).XData(4)-bb(iB).BarWidth/2];
+    yC = cumYData(iB, [1 2 2 3 3 4]);
+    hold on
+    line(reshape(yC, 2, 3), reshape(xC, 2, 3), 'Color', 'k', 'LineWidth', 0.5)
+end
+
+line([0.9 1], [5 5], 'Color', 'k', 'LineWidth', 3)
+set(gca, 'YColor', 'none')
+print(gcf, fullfile(dirFig, 'cellGroupEachArea_barh_connected_nolabel'), '-r200', '-dtiff')
+print(gcf, fullfile(dirFig, 'cellGroupEachArea_barh_connected_nolabel'), '-depsc')
 % print(gcf, fullfile(dirFig, 'ClusterComposition_KMeansClustering_brainmaskVoxels_K10_forEachArea'), '-depsc')
+
+% color legend
+fig_colorCluster = figure;
+set(fig_colorCluster, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 300 20 200]);
+ax = subplot('Position', [0 0 1 1]);
+image([1:10]');
+colormap(pink(10));
+axis off
+line(repmat(get(gca, 'XLim')', 1, 11), repmat(0.5:1:10.5, 2, 1), 'Color', 'k')
+set(gca, 'XTick', [], 'YTick', [])
+box on
+print(fig_colorCluster, fullfile(dirFig, 'colormap_pink10_cluster'), '-depsc')
+print(fig_colorCluster, fullfile(dirFig, 'colormap_pink10_cluster'), '-r200', '-dtiff')
+
+
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 1720 360]);
-for iArea = 1:length(Clustering_brainmask.infoCells.setArea)
-    sp(iArea) = subplot(1, length(Clustering_brainmask.infoCells.setArea), iArea);
-    pie(sp(iArea), cellCountCluster_Area(:, iArea));
-    title(Clustering_brainmask.infoCells.setArea{iArea})
+for iSubj = 1:length(Clustering_brainmask.infoCells.setArea)
+    sp(iSubj) = subplot(1, length(Clustering_brainmask.infoCells.setArea), iSubj);
+    pie(sp(iSubj), cellCountCluster_Area(:, iSubj));
+    title(Clustering_brainmask.infoCells.setArea{iSubj})
 end
 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 700 355 730]);
-for iArea = 1:length(Clustering_brainmask.infoCells.setArea)
-    sp(iArea) = subplot(length(Clustering_brainmask.infoCells.setArea), 1, iArea);
-    bar(sp(iArea), cellCountCluster_Area_prop(:, iArea).*100);
-    title(Clustering_brainmask.infoCells.setArea{iArea})
+for iSubj = 1:length(Clustering_brainmask.infoCells.setArea)
+    sp(iSubj) = subplot(length(Clustering_brainmask.infoCells.setArea), 1, iSubj);
+    bar(sp(iSubj), cellCountCluster_Area_prop(:, iSubj).*100);
+    title(Clustering_brainmask.infoCells.setArea{iSubj})
 end
 xlabel(sp(4), 'Cluster ID')
 ylabel(sp(2), 'Percent of cells in each cluster (%)')
@@ -463,6 +546,106 @@ set(sp(13:16), 'YLim', [-0.2 0.4])
 set(sp(:), 'TickDir', 'out', 'Box', 'off', 'XTick', [])
 set(gcf, 'COlor', 'w')
 set(sp(:), 'XColor', [1 1 1], 'YColor', [0 0 0])
+
+
+%%
+load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_probability.mat', 'Clustering_brainmask', 'param*')
+D_corr_voxel = pdist(Clustering_brainmask.matR', 'spearman');
+matD_corr_voxel = squareform(D_corr_voxel);
+figure
+imagesc(matD_corr_voxel)
+matPairWiseCorr_corrmapspace = 1-matD_corr_voxel;
+
+% within- & between-area comparison
+for iArea = 1:length(Clustering_brainmask.infoCells.setArea)
+    indCellArea{iArea} = Clustering_brainmask.infoCells.catAreaID==iArea;
+end
+
+for iArea1 = 1:length(Clustering_brainmask.infoCells.setArea)
+    for iArea2 = 1:length(Clustering_brainmask.infoCells.setArea)
+        
+        resultsR_SUmap_area(iArea1, iArea2).nameArea = {Clustering_brainmask.infoCells.setArea{iArea1}, Clustering_brainmask.infoCells.setArea{iArea2}};
+        resultsR_SUmap_area(iArea1, iArea2).matR = matPairWiseCorr_corrmapspace(indCellArea{iArea1}, indCellArea{iArea2});
+        if iArea1==iArea2
+            tempL = tril(resultsR_SUmap_area(iArea1, iArea2).matR, -1);
+            resultsR_SUmap_area(iArea1, iArea2).vectR = tempL(abs(tempL)>0);
+        else
+            resultsR_SUmap_area(iArea1, iArea2).vectR = resultsR_SUmap_area(iArea1, iArea2).matR(:);
+        end
+        
+        resultsR_SUmap_area(iArea1, iArea2).meanR = mean(resultsR_SUmap_area(iArea1, iArea2).vectR);
+        resultsR_SUmap_area(iArea1, iArea2).medianR = median(resultsR_SUmap_area(iArea1, iArea2).vectR);
+        resultsR_SUmap_area(iArea1, iArea2).steR = std(resultsR_SUmap_area(iArea1, iArea2).vectR)/length(resultsR_SUmap_area(iArea1, iArea2).vectR);
+    end
+end
+         
+aa = struct2cell(resultsR_SUmap_area);
+mat_meanR = squeeze(cell2mat(aa(4, :, :)));
+
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [200 200 850 600])
+edges = -1:0.2:1;
+for iArea1 = 1:4
+    for iArea2 = 1:4
+        spp(iArea1, iArea2) = subplot(4,4,4*(iArea1-1)+iArea2);
+        h = histogram(resultsR_SUmap_area(iArea1, iArea2).vectR, edges);        
+        h.Normalization = 'probability';
+        h.EdgeColor = 'none';
+        hold on
+        line(zeros(1, 2), get(gca, 'YLim'), 'Color', 'k');
+        line(ones(1, 2).*resultsR_SUmap_area(iArea1, iArea2).medianR, get(gca, 'YLim'), 'Color', 'r', 'LineWidth', 2);
+    end
+end
+set(spp(:), 'TickDir', 'out', 'Box', 'off')
+set(spp(:), 'XColor', [0 0 0], 'YColor', [0 0 0])
+
+
+
+
+% within- & between-animal comparison
+setSubj = unique(Clustering_brainmask.infoCells.catSubjID);
+for iSubj = 1:length(setSubj)
+    indCellSubj{iSubj} = Clustering_brainmask.infoCells.catSubjID==setSubj(iSubj);
+end
+
+for iSubj1 = 1:length(setSubj)
+    for iSubj2 = 1:length(setSubj)
+        
+        resultsR_SUmap_subj(iSubj1, iSubj2).subjID = [setSubj(iSubj1), setSubj(iSubj2)];
+        resultsR_SUmap_subj(iSubj1, iSubj2).matR = matPairWiseCorr_corrmapspace(indCellSubj{iSubj1}, indCellSubj{iSubj2});
+        if iSubj1==iSubj2
+            tempL = tril(resultsR_SUmap_subj(iSubj1, iSubj2).matR, -1);
+            resultsR_SUmap_subj(iSubj1, iSubj2).vectR = tempL(abs(tempL)>0);
+        else
+            resultsR_SUmap_subj(iSubj1, iSubj2).vectR = resultsR_SUmap_subj(iSubj1, iSubj2).matR(:);
+        end
+        
+        resultsR_SUmap_subj(iSubj1, iSubj2).meanR = mean(resultsR_SUmap_subj(iSubj1, iSubj2).vectR);
+        resultsR_SUmap_subj(iSubj1, iSubj2).medianR = median(resultsR_SUmap_subj(iSubj1, iSubj2).vectR);
+        resultsR_SUmap_subj(iSubj1, iSubj2).steR = std(resultsR_SUmap_subj(iSubj1, iSubj2).vectR)/length(resultsR_SUmap_subj(iSubj1, iSubj2).vectR);
+    end
+end
+         
+tempCellSubj = struct2cell(resultsR_SUmap_subj);
+mat_meanR_sub = squeeze(cell2mat(tempCellSubj(4, :, :)));
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [200 200 850 600])
+edges = -1:0.2:1;
+for iSubj1 = 1:10
+    for iSubj2 = 1:10
+        spp(iSubj1, iSubj2) = subplot(10,10,10*(iSubj1-1)+iSubj2);
+        h = histogram(resultsR_SUmap_subj(iSubj1, iSubj2).vectR, edges);        
+        h.Normalization = 'probability';
+        h.EdgeColor = 'none';
+        hold on
+        line(zeros(1, 2), get(gca, 'YLim'), 'Color', 'k');
+        line(ones(1, 2).*resultsR_SUmap_subj(iSubj1, iSubj2).medianR, get(gca, 'YLim'), 'Color', 'r', 'LineWidth', 2);
+    end
+end
+set(spp(:), 'TickDir', 'out', 'Box', 'off')
+set(spp(:), 'XColor', [0 0 0], 'YColor', [0 0 0])
 
 
 % %%

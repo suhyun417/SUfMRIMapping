@@ -129,7 +129,7 @@ for iK = 1:length(setK)
         
         % Cluster single units based on whole brain correlation
         [IDX_SU, C_SU, SUMD_SU] = kmeans(meanCorrROI, K,...
-            'Replicates', numReplicates, 'Options', opts);
+            'Replicates', numReplicates, 'Options', opts, 'Distance', );
         
         SU_indCluster(:, iRep) = IDX_SU;
         SU_sumD(:, iRep) = SUMD_SU;

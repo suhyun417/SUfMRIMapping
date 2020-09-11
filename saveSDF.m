@@ -3,9 +3,9 @@
 
 dirFig = '/projects/parksh/NeuralBOLD/_labNote/_figs/';
 
-nameSubjNeural = 'Dex';% 'Mat';
+nameSubjNeural = 'Mat'; % 'Dex';% 'Mat';
 % Load data files
-dirDataHome = '/procdata/parksh/';
+dirDataHome = '/procdata/parksh/_macaque';
 dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
 
 filenameNeural = [nameSubjNeural, '_movieTS_SU_indMov.mat'];
