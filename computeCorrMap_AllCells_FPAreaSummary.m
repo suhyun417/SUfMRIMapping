@@ -29,7 +29,7 @@ addpath(fullfile(dirLibrary, 'matlab_utils')) % for convolution
 
 % Set directories 
 setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was', 'Dav'};
-nameSubjBOLD = 'Ava'; %'Art';  %'Ava'; % 'Art'; 
+nameSubjBOLD = 'Ava'; % 'Ava'; %'Art';  %'Ava'; % 'Art'; 
 dirDataHome = fullfile(dirProcdata, 'parksh/_macaque');
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
@@ -115,6 +115,7 @@ for iArea = 1:length(setAreaID)
     critCorr = 0.3;
     matValidVox = abs(setR)>critCorr;
     fractionHighCorrCell = sum(matValidVox, 2)./size(matValidVox,2);
+    fractionHighCorrCell = fractionHighCorrCell+0.00001; % for AFNI visualization 
     
     corrMap_Area(iArea).nameArea = setArea{iArea};
     corrMap_Area(iArea).setSubjID = unique(catSubjID(catAreaID == idArea));

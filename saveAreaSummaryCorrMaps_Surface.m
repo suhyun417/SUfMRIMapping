@@ -10,7 +10,7 @@ clear all;
 %%
 addpath('/library/matlab_utils/')
 
-nameSubjBOLD = 'Ava'; %'Art';
+nameSubjBOLD = 'Art'; % 'Ava'; %'Art';
 
 % Load files
 dirDataHome = '/procdata/parksh/_macaque';
@@ -51,7 +51,7 @@ for iArea = 1:length(corrMap_Area)
         nameArea = corrMap_Area(iArea).nameArea;
 %     end
     
-    for iMap = 1:3
+    for iMap = 3 %1:3
         
         clear matR
         switch iMap

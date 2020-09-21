@@ -511,6 +511,13 @@ curCellID = setExampleCellIDs{iCell};
 bar(Clustering_meanROI.matR(ismember(Clustering_meanROI.catChanID, curCellID), orderROI))
 end
 
+fid = fopen('/procdata/parksh/_macaque/Art/ROIs/i64_colorscale.pal');
+A = fscanf(fid, '%s');
+fclose(fid);
+matRGB = sscanf(A(8:end), '#%2x%2x%2x', [3 inf])';
+matRGB = flipud(unique(matRGB, 'rows', 'stable'));
+matRGB = matRGB./255;
+
 % 2018a bar color
 figure;
 for iCell = 1:length(setExampleCellIDs)
