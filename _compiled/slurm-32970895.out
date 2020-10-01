@@ -1,0 +1,31 @@
+------------------------------------------
+Setting up environment variables
+---
+LD_LIBRARY_PATH is .:/usr/local/matlab-compiler/v91/runtime/glnxa64:/usr/local/matlab-compiler/v91/bin/glnxa64:/usr/local/matlab-compiler/v91/sys/os/glnxa64:/usr/local/matlab-compiler/v91/sys/opengl/lib/glnxa64
+Starting parallel pool (parpool) using the 'local' profile ... Warning: The system time zone setting, 'US/Eastern', does not specify a single time zone unambiguously. It will be treated as 'America/New_York'. See the <a href="matlab:doc('datetime.TimeZone')">datetime.TimeZone property</a> for details about specifying time zones.
+> In verifyTimeZone (line 23)
+  In datetime (line 503)
+  In parallel.internal.cluster.DefaultProperties.getNewJobPropStruct (line 16)
+  In parallel.internal.cluster.CJSSupport/buildJob (line 151)
+  In parallel.cluster.CJSCluster/buildCommunicatingJob (line 452)
+  In parallel.Cluster/createCommunicatingJob (line 89)
+  In parallel.internal.pool.InteractiveClient>iCreateCommunicatingJob (line 714)
+  In parallel.internal.pool.InteractiveClient/start (line 325)
+  In parallel.Pool>iStartClient (line 567)
+  In parallel.Pool.hBuildPool (line 446)
+  In parallel.internal.pool.doParpool (line 15)
+  In parpool (line 89)
+  In doClusteringCorrMap_multipleSubj_prob_1000_corrcrit (line 80)
+connected to 16 workers.
+:: K = 2; Movie-driven mask ::
+Replicate 2, 4 iterations, total sum of distances = 13540.4.
+Replicate 4, 4 iterations, total sum of distances = 13540.4.
+Replicate 3, 6 iterations, total sum of distances = 13565.2.
+Replicate 1, 6 iterations, total sum of distances = 13565.2.
+Replicate 5, 7 iterations, total sum of distances = 13565.2.
+Best total sum of distances = 13540.4
+Subscripted assignment dimension mismatch.
+
+Error in doClusteringCorrMap_multipleSubj_prob_1000_corrcrit (line 138)
+
+MATLAB:subsassigndimmismatch

@@ -1,12 +1,12 @@
 function [] = genSwarm_clusteringMultiplePatches %(nameSubjNeural, nameSubjBOLD)
 
-% doClusteringCorrMap_multipleSubjects_multiplePatches_parallel(stK, edK, flagSave)
+% doClusteringCorrMap_multipleSubjects_multiplePatches_parallel(K, flagSave)
 
 flagRecompile = 1;
 
 % Prep the main dimension of paramters to run parallel 
-setStK = 2:2:40;
-setEdK = setStK+1;
+setK = 2:40;
+% setEdK = setStK+1;
 
 script_path = '/data/parks20/analysis/NeuroMRI/_compiled/_clusteringMultiplePatches'; % where the compiled script is
 compiled_script = 'run_doClusteringCorrMap_multipleSubjects_multiplePatches_parallel.sh';
@@ -25,17 +25,17 @@ end
 
 % make a command on a new line for each parameter
 command_list = [];
-for ii = 1:length(setStK)    
+for ii = 1:length(setK)    
     
-    stK = num2str(setStK(ii));
-    edK = num2str(setEdK(ii));
+    K = num2str(setK(ii));
+%     edK = num2str(setEdK(ii));
     
     command_list = [command_list ...
-        sprintf('%s %s %s %s %s %s\n',...
+        sprintf('%s %s %s %s %s\n',...
         mcrcachestring,...
         fullfile(script_path, compiled_script),...
         matlab_path,...
-        stK, edK, flagSave)]; % this command will ask for a different save directory for every channel
+        K, flagSave)]; % this command will ask for a different save directory for every channel
 end
 
 % write the commands into a swarm file
