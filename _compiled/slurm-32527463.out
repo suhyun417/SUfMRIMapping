@@ -1,0 +1,17 @@
+------------------------------------------
+Setting up environment variables
+---
+LD_LIBRARY_PATH is .:/usr/local/matlab-compiler/v91/runtime/glnxa64:/usr/local/matlab-compiler/v91/bin/glnxa64:/usr/local/matlab-compiler/v91/sys/os/glnxa64:/usr/local/matlab-compiler/v91/sys/opengl/lib/glnxa64
+Starting parallel pool (parpool) using the 'local' profile ... connected to 16 workers.
+:: K = 2; Movie-driven mask ::
+Replicate 1, 6 iterations, total sum of distances = 13565.2.
+Replicate 2, 4 iterations, total sum of distances = 13540.4.
+Replicate 4, 4 iterations, total sum of distances = 13540.4.
+Replicate 3, 6 iterations, total sum of distances = 13565.2.
+Replicate 5, 7 iterations, total sum of distances = 13565.2.
+Best total sum of distances = 13540.4
+Subscripted assignment dimension mismatch.
+
+Error in doClusteringCorrMap_multipleSubj_prob_corrcrit (line 138)
+
+MATLAB:subsassigndimmismatch

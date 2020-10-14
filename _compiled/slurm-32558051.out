@@ -1,0 +1,10 @@
+------------------------------------------
+Setting up environment variables
+---
+LD_LIBRARY_PATH is .:/usr/local/matlab-compiler/v91/runtime/glnxa64:/usr/local/matlab-compiler/v91/bin/glnxa64:/usr/local/matlab-compiler/v91/sys/os/glnxa64:/usr/local/matlab-compiler/v91/sys/opengl/lib/glnxa64
+Error using load
+Unable to read file '/data/parks20/procdata/NeuroMRI/Spi/matSDF_TorRhoSigSpiMovie123.mat'. No such file or directory.
+
+Error in doClusteringSDF_multipleSubj_prob (line 102)
+
+MATLAB:load:couldNotReadFile
