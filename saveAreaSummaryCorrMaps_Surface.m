@@ -82,7 +82,8 @@ for iArea = 1:length(corrMap_Area)
 %                     DSP.proc.fncvol_3d = reshape(matR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
             end
             
-            fname = sprintf('AreaSummary_%s_%s_AllCellsMovie123%s_noFiltering+orig.BRIK', nameArea, fileHead, fileTail);%
+            fname = sprintf('FPSummary_%s_AllCellsMovie123%s_noFiltering+orig.BRIK', fileHead, fileTail);%
+%             fname = sprintf('AreaSummary_%s_%s_AllCellsMovie123%s_noFiltering+orig.BRIK', nameArea, fileHead, fileTail);%
 %             fname = sprintf('AreaSummary_MeanAcAreas_FractHighCorrCell_AllCellsMovie123%s_noFiltering+orig.BRIK', fileTail);
             vol = single(DSP.proc.fncvol_3d);
             

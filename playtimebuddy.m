@@ -655,6 +655,65 @@ set(spp(:), 'TickDir', 'out', 'Box', 'off')
 set(spp(:), 'XColor', [0 0 0], 'YColor', [0 0 0])
 
 
+%% making a map of areas showing high correlation with at least 10% of cells from all face patches
+load('/procdata/parksh/_macaque/CorrMap_SU_AllCellsArt_corticalFPMerged.mat', 'corrMap_Area')
+ 
+critCorr = 0.5; %0.5; %0.4; %35;
+ 
+for iArea = 1:4
+setR = corrMap_Area(iArea).matR;
+matValidVox = abs(setR)>critCorr;
+tMatVox{iArea} = sum(matValidVox, 2)./size(matValidVox,2);
+end
+
+
+nx = 40; ny = 64; nz = 32; %LR-AP-DV
+critRatio = 0.01; %0.01; %0.03; %0.01; %0.1;
+matVoxHighCorrCell = sum(cat(2, tMatVox{:})>critRatio, 2);
+matVoxHighCorrCell_3D = reshape(matVoxHighCorrCell, [nx, ny, nz]);
+
+ttt_s = permute(matVoxHighCorrCell_3D, [3 1 2]); %[3 2 1]); % %[3 1 2]: coronal sections %[2 1 3]: axial sections %[3 2 1]: sagittal sections
+% fig_sections = figure;
+for iS = 11:50
+subplot(5, 8, iS-10);
+imagesc(ttt_s(:,:,iS))
+set(gca, 'CLim', [0 4])
+colormap(parula(5))
+title(sprintf('section %d', iS))
+axis off
+end
+
+ttt_s = permute(matVoxHighCorrCell_3D, [2 1 3]); %[3 2 1]); % %[3 1 2]: coronal sections %[2 1 3]: axial sections %[3 2 1]: sagittal sections
+fig_sections = figure;
+for iS = 1:size(ttt_s, 3)
+figure(fig_sections); clf
+imagesc(ttt_s(:,:,iS))
+set(gca, 'CLim', [0 4])
+colormap(parula(5))
+title(sprintf('section %d', iS))
+colorbar;
+input('')
+end
+
+
+ttt_s = permute(matVoxHighCorrCell_3D, [3 2 1]); % %[3 1 2]: coronal sections %[2 1 3]: axial sections %[3 2 1]: sagittal sections
+fig_sections = figure;
+for iS = 1:size(ttt_s, 3)
+subplot(8, 5, iS);
+imagesc(ttt_s(:,:,iS))
+set(gca, 'CLim', [0 4])
+colormap(parula(5))
+title(sprintf('section %d', iS))
+axis off
+end
+
+numCol = 8;
+numRow = 5;
+marginCol = 0.01;
+marginRow = 0.01;
+widthSP = (1-marginCol*2)/numCol;
+heightSP = (1-marginRow*2)/numRow;
+
 % %%
 % % matIndClust_SU = cat(2, Clustering_moviemask_valid.resultKMeans.SU_indCluster); %cat(2, Clustering.resultKMeans.SU_indCluster);
 % % curK = 7; %

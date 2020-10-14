@@ -12,8 +12,8 @@ else % on virtual machine
     dirLibrary = '/library';
 end
 
-nameSubject = 'Spi';
-dirDataNeural = fullfile(dirProcdata, '/parksh', nameSubject);
+nameSubject = 'Dan'; %'Spi';
+dirDataNeural = fullfile(dirProcdata, '/parksh/_macaque', nameSubject);
 
 setMovIDs = [1 2 3];
 
@@ -45,7 +45,7 @@ for iChan = 1:length(listSUchannelID)
   
   for iMov = 1:length(setMovIDs)
       cur_movID = setMovIDs(iMov);
-      if ~indDataMov(indCurChan, iMov), 
+      if ~indDataMov(indCurChan, iMov) 
           fprintf(1, 'cell: %s, movie: %d, data: %d \n', cur_cellID, cur_movID, indDataMov(indCurChan, iMov))
           fprintf(1, 'Skip to the next movie/cell \n')
           continue; 
