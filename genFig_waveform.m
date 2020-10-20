@@ -18,7 +18,7 @@ else % on virtual machine
 end
 
 nameSubject = 'Tor'; %'Rho'; % 'Tor'; %'Rho'; %'Tor';
-dirNeuralData = fullfile(dirProcdata, '/parksh', nameSubject);
+dirNeuralData = fullfile(dirProcdata, '/parksh/_macaque', nameSubject);
 dirData_waveform = fullfile(dirNeuralData, '/_sortedSpikes/_waveformCompare');
 dirData_spike = fullfile(dirNeuralData, '_sortedSpikes');
  
