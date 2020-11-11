@@ -51,12 +51,12 @@ matNeuralRGR = cat(2, matTS_FP.matNeuralRGR);
 matFR_SU_10hz = cat(2, matTS_FP.matFR_SU_10hz);
 matFR_SU_1hz = cat(2, matTS_FP.matFR_SU_1hz);
 
-% % take care of the NaNs from matNeuralRGR
-% indValid = ~isnan(matNeuralRGR);
-% matNeuralRGR_noNaN = reshape(matNeuralRGR(indValid), 375-21, size(matNeuralRGR, 2));
-% clear matNeuralRGR
-% matNeuralRGR = matNeuralRGR_noNaN;
-% clear matNeuralRGR_noNaN
+% take care of the NaNs from matNeuralRGR
+indValid = ~isnan(matNeuralRGR);
+matNeuralRGR_noNaN = reshape(matNeuralRGR(indValid), 375-21, size(matNeuralRGR, 2));
+clear matNeuralRGR
+matNeuralRGR = matNeuralRGR_noNaN;
+clear matNeuralRGR_noNaN
 
 
 % % Channel IDs for each subject
