@@ -25,11 +25,12 @@ title('Before remove first PC from fMRI')
 %%
 setK = paramClustering_global.setK; %Clustering.setK;
 
-matWSS=[];
+matWSS=[];matWSS_roi=[];
 matExpVar=[];
 for iK = 1:length(setK)
     curK = setK(iK);
     matWSS(:,iK) = sum(Clustering_meanROI.resultKMeans(iK).SU_sumD); %sum(Clustering.resultKMeans(iK).SU_sumD);
+    matWSS_roi(:,iK) = sum(Clustering_meanROI.resultKMeans(iK).roi_sumD); %
 end
 
 totalSS = Clustering_meanROI.totalSS_SU;
