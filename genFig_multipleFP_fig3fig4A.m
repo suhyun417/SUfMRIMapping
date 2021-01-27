@@ -168,7 +168,42 @@ spp2.XLim = sp2.XLim;
 spp2.YLim = sp2.YLim;
 spp2.YDir = sp2.YDir;
 line(repmat([-0.7;1.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k')
+%
 
+%% Fig 3B_3: average correlation map of each cell cluster: generate colormap with color-code of correlation in each fROI
+% For each cell cluster, average correlation for each fROI across cells
+% make it to "reordered" cluster ID
+matAvgRforROI_Cluster = NaN(numROI, curK); % for easier ROI-color mapping in AFNI/SUMA, keep the original ROI order
+for iK = 1:curK
+    idK = reorderCluster(iK);
+    matAvgRforROI_Cluster(:, iK) = mean(Clustering_meanROI.matR(tempS(idK).indSortChan_org, :))'; 
+end
+
+% Set the caxis limit
+cmin = -0.4;
+cmax = 0.4;
+
+% Convert correlation value to a scaled index given the current color axis
+matColorIndex = fix(((matAvgRforROI_Cluster - cmin)./(cmax-cmin)*256)+1);
+
+% Each cluster, save the color lookup table for 37 fROI using BCWYR colormap
+fname = '/procdata/parksh/_macaque/Art/Anatomy/_suma/BCWYRColorMap.txt';
+ttt = dlmread(fname);
+cMap_corrSUMA = ttt(:, 1:3); % blue-cyan-white-yellow-red map for correlation
+clear ttt
+
+for iK = 1:curK
+    clut = [];
+    clut = cat(1, [1 1 1], cMap_corrSUMA(matColorIndex(:, iK), :));
+    ind = (0:1:length(clut)-1)';
+    clut = cat(2, clut, ind);
+    
+    % write a text file
+    climstr = strrep(sprintf('%0.1f', abs(cmax)), '.', 'p');
+    dlmwrite(sprintf('colorLUT_multipleFPSUMapping_fROI%d_cLim%s_ReorderedCellGroup%02d.txt', length(clut)-1, climstr, iK), clut);
+end
+
+[s, m, mid] = copyfile('./colorLUT*.txt', '/procdata/parksh/_macaque/Art/Anatomy/_suma');
 
 
 %% Fig 4A: cluster decomposition for each recording site (With reordered cell groups)
