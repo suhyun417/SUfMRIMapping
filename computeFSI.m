@@ -1,13 +1,30 @@
 % computeFSI.m
 % 
-% 2019/03 SHP
+% 2021/02 SHP
 %       - Compute face-selective index using responses to fingerprinting stimulus set
 %       for neurons that Kenji Koyano and Elena Waidmann
 %       - Modified mainly from "/projects/parksh/_toolbox/plot_heatmap_FPrint.m" written originally by Kenji Koyano
+%%%%%%% NEED TO DECIDE HOW TO RETRIEVE THE CELL LIST
+%       - get the list of cells from corrmap
 %       - Cell selection part is copied from "./renameFiles_Spice.m"
 
 
 %%%%%% Still need to put the pieces together %%%%%%%%%%%%
+
+%% 2021/02/06 NOTES
+% Start from the spreadsheet to go back to the original cell ID of channel
+% number + alphabet coding
+% Once you get the original cell ID, load the FPrint results (.mat file) of 
+% that cell from FPrint directory
+% Compute firing rate for each stimulus, normalize them, then compute face selectivity index
+%       -- refer to "response_calc_SHP" for basic concatenation of multiday
+%       data
+%       -- refer to "plot_heatmap_FPrint" for normalization & FSI
+%       computation
+% Put the results back in the matrix of neurons x stimulus, ideally
+% neurons in the order of correlation map order of 389 cells (refer to 
+% "computeCorrMap_AllCells_FPAreaSummary") to make it easier to link them
+% to the correlation map results
 
 %% Cell Selection (read the xls file, choose the cells that have positive "evaluation" values)
 clear all;
@@ -31,9 +48,46 @@ T = readtable(filename_xls, 'ReadRowNames', true);
  if T{indCell,5} > 0 % if the evaluation is okay
  end
  
+ %%%% below is direct copy & paste from renameFiles_Spice
+ % Copy files with new names
+for iFile = 1:length(listMatSUFile)
+    
+    % find the movie id
+    movID = char(regexp(listMatSUFile{iFile}, '\d*(?=sig)', 'match'));
+    
+    % find the matched cell index from the excel sheet
+    if ismember(str2double(movID), [4 5 6])
+        iCol = 1; % look at the first column of the excel sheet
+    elseif ismember(str2double(movID), [1 2 3])
+        iCol = 3; % look at the third column of the excel sheet
+    end
+    
+    curSU = regexp(listMatSUFile{iFile}, '(?<=sig)\w*', 'match');
+    tempC = strsplit(curSU{1}, '_');
+    if length(tempC) < 3 % in case of the unit was clustered only from one day of recording session
+        indCell = find(strcmp(T.(iCol), strjoin(tempC(1:2), '_'))>0);
+        if isempty(indCell) 
+            indCell = find(strcmp(T.(iCol+1), strjoin(tempC(1:2), '_'))>0); % check next column
+        end
+    else
+        indCell = find(strcmp(T.(iCol), strjoin(tempC(1:2), '_'))>0); %find(cellfun(@isempty, strfind(T.(iCol), strjoin(tempC(1:2), '_')))<1); 
+    end
+    
+    if T{indCell,5} > 0 % if the evaluation is okay
+        newFileName = strcat(lower(nameSubjNeural), 'mov', movID, 'sig', sprintf('%02d', indCell), '.mat');
+        source = fullfile(directory.source, listMatSUFile{iFile});
+        destination = fullfile(directory.destination, newFileName);
+        copyfile(source, destination)
+        
+        fprintf(1, '\n    %s is copied as %s', listMatSUFile{iFile}, destination);
+    else % if the cell is not good, don't copy the file
+        continue;
+    end    
+end
+ 
  %% From "genFigs_multiplePatchDataMining.m"
  %% Fingerprinting results
- dirDataHome = '/procdata/parksh';
+ dirDataHome = '/procdata/parksh/_macaque';
 setNameSubjNeural = {'Ava', 'Dav', 'Spi', 'Mat', 'Dan'}; % {'Tor', 'Rho', 'Sig', 'Spi'};
 setMovie = [1 2 3]; %[4 5 6]; %[1 2 3];
 tempS = num2str(setMovie);
@@ -49,7 +103,7 @@ switch lower(nameSubjNeural)
     case 'dav'
         nameSession_FPrint = 'Davida180515_other';
     case 'dan'
-        nameSession_FPrint = 'Dango180123_other';
+        nameSession_FPrint = 'Dango180123_26_movie_other';
 end
 dirFPrint = fullfile(dirDataNeural, '_orgData', nameSession_FPrint, 'FPrint');
 
