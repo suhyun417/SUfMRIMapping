@@ -34,7 +34,7 @@ for iCell = 1:numel(setExampleCellIDs)
     % get the index from the spreadsheet 
     indCell = find(strcmp(C(:,1), curCellID)>0);
     
-    if ~cellfun(@ischar, C(indCell,2)) % has zero (not character) if there's no fingerprinting results        
+    if ~cellfun(@ischar, C(indCell,2)) | strcmpi(nameSubjNeural, 'mat') % has zero (not character) if there's no fingerprinting results        
         matFaceSelective(iCell) = 0.5; % NaN for gray in the furture plot
         continue;
     end
@@ -130,14 +130,54 @@ baseline_fr = nanmean(multiday.fr.base(:));
 max_fr = nanmax(abs(fr-baseline_fr));
 norm_fr = (fr - baseline_fr)/(max_fr);
 
-figure
-plot(ones(1,20), norm_fr(1:20), 'ko', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'w');
-hold on;
-plot(ones(1,10).*2, norm_fr(31:40), 'ko', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'w')
-xlim([0.5 2.5])
+fr_face = reshape(fr(1:20), [], 1);
+fr_obj = reshape(fr(31:40), [], 1);
+
+
+
+xC_face = 1;
+xC_obj = 2;
+disp_wd = 0.1; % dispersion width of scattered markers
+boxGroup = cat(1, ones(size(fr_face)), ones(size(fr_obj)).*2);
+fr_cat = cat(1, fr_face, fr_obj);
+
+color_face = [0 0 0]; %
+color_obj = [1 1 1].*0.6;
+
+fig2a_inset = figure;
+set(fig2a_inset, 'Color', 'w', 'PaperPositionMode', 'auto','Position', [600 600 330 425])
+
+boxplot(fr_cat, boxGroup,'Whisker', 5, 'ColorGroup', boxGroup, 'Colors', [0 0 0; 0.6 0.6 0.6]);
+set(findobj(gca, 'type', 'line'), 'LineWidth', 3, 'LineStyle', '-')
 hold on
-line([0.7 1.3], [mean(norm_fr(1:20)) mean(norm_fr(1:20))], 'LineWidth', 3, 'Color', 'k')
-line([1.7 2.3], [mean(norm_fr(31:40)) mean(norm_fr(31:40))], 'LineWidth', 3, 'Color', 'k')
+plot((xC_face-0.5)+disp_wd.*randn(size(fr_face)), fr_face, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_face, 'LineWidth', 2);
+plot((xC_obj-0.5)+disp_wd.*randn(size(fr_obj)), fr_obj, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_obj, 'LineWidth', 2);
+
+% % first, boxplot
+% b1 = boxchart(ones(size(fr_face)).*xC_face, fr_face);
+% hold on;
+% b2 = boxchart(ones(size(fr_obj)).*xC_obj, fr_obj);
+% 
+% color_face = b1.BoxFaceColor;
+% color_obj = b2.BoxFaceColor;
+% 
+% set(b1, 'WhiskerLineColor', b1.BoxFaceColor, 'LineWidth', 2)
+% set(b2, 'WhiskerLineColor', b2.BoxFaceColor, 'LineWidth', 2)
+% 
+% % scatter plot of individual data points
+% hold on;
+% plot((xC_face-0.5)+disp_wd.*randn(size(fr_face)), fr_face, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_face);
+% plot((xC_obj-0.5)+disp_wd.*randn(size(fr_obj)), fr_obj, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_obj);
+% 
+% 
+% figure
+% plot(ones(1,20), norm_fr(1:20), 'ko', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'w');
+% hold on;
+% plot(ones(1,10).*2, norm_fr(31:40), 'ko', 'MarkerSize', 10, 'LineWidth', 2, 'MarkerFaceColor', 'w')
+% xlim([0.5 2.5])
+% hold on
+% line([0.7 1.3], [mean(norm_fr(1:20)) mean(norm_fr(1:20))], 'LineWidth', 3, 'Color', 'k')
+% line([1.7 2.3], [mean(norm_fr(31:40)) mean(norm_fr(31:40))], 'LineWidth', 3, 'Color', 'k')
 
 %% entire population from Matcha
 for iCC = 1:30

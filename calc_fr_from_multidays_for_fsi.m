@@ -35,7 +35,7 @@ baseline_fr = nanmean(multiday.fr.base(:));
 %% face-selective index (fsi)
 fsi_fun = @(x,y) (x-y)/(abs(x)+abs(y))*sign(double(sign(x)>0|sign(y)>0)-0.5);
 response_face    = nanmean(fr(1:20)) -baseline_fr;  % human face, monkey face and whole monkey
-response_nonface = nanmean(fr(30:40))-baseline_fr;  % object 
+response_nonface = nanmean(fr(31:40))-baseline_fr;  % object 
 fsi = fsi_fun(response_face,response_nonface);
 
 disp(['FSI: ' num2str(fsi)]);

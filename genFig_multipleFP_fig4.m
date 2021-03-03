@@ -59,9 +59,11 @@ for iArea = 1:length(Clustering_brainmask.infoCells.setArea)
 end
 cellCountCluster_Area_prop = cellCountCluster_Area./repmat(sum(cellCountCluster_Area), curK, 1);
 
+reorderCluster = [8 1 9 5 3 7 4 10 6 2]; % ORder cell groups based on the number of neurons in each group (from largest to smallest)
+
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [1200 200 1000 290]);
-bb = barh(cellCountCluster_Area_prop(:, orderArea)', 'stacked');
+bb = barh(cellCountCluster_Area_prop(reorderCluster, orderArea)', 'stacked'); %barh(cellCountCluster_Area_prop(:, orderArea)', 'stacked');
 set(gca, 'TickDir', 'out', 'Box', 'off');
 set(gca, 'YDir', 'reverse')
 set(gca, 'YTickLabel', Clustering_brainmask.infoCells.setArea(orderArea))
@@ -87,8 +89,8 @@ end
 
 line([0.9 1], [5 5], 'Color', 'k', 'LineWidth', 3)
 set(gca, 'YColor', 'none')
-% print(gcf, fullfile(dirFig, 'cellGroupEachArea_barh_connected_nolabel'), '-r200', '-dtiff')
-% print(gcf, fullfile(dirFig, 'cellGroupEachArea_barh_connected_nolabel'), '-depsc')
+% print(gcf, fullfile(dirFig, 'cellGroupEachArea_barh_connected_nolabel_GroupReordered'), '-r200', '-dtiff')
+% print(gcf, fullfile(dirFig, 'cellGroupEachArea_barh_connected_nolabel_GroupReordered'), '-depsc')
 
 % color legend
 fig_colorCluster = figure;
