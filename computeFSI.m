@@ -31,7 +31,8 @@ for iCell = 1:size(C, 1) %numel(setExampleCellIDs)
     indCell = find(strcmp(C(:,1), curCellID)>0);
     
     if ~cellfun(@ischar, C(indCell, 2)) % has zero (not character) if there's no fingerprinting results        
-        matFaceSelective(iCell, :) = 0; %0.5; % NaN for gray in the furture plot
+        matFaceSelective(iCell, 1) = NaN; %
+        matFaceSelective(iCell, 2) = 0; %0.5; % NaN for gray in the furture plot
         continue;
     end
     

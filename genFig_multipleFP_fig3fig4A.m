@@ -301,7 +301,7 @@ L3 = line(repmat([0.5; 1], 1, length(locDiff_area)), [locDiff_area+0.5 locDiff_a
     'LineWidth', 2, 'LineStyle', ':');
 set(sp3, 'YLim', [0.5 389.5]);
 
-print(fig3b_1, fullfile(dirFig, 'Fig3B1_matR_meanROIbyCells_sortedArea_purplegreen'), '-r200', '-dtiff');
+% print(fig3b_1, fullfile(dirFig, 'Fig3B1_matR_meanROIbyCells_sortedArea_purplegreen'), '-r200', '-dtiff');
  
 
 % Fig 3B_2: Correlation matrix after clustering
@@ -346,8 +346,7 @@ L3 = line(repmat([0.5; 1], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Col
     'LineWidth', 2, 'LineStyle', ':');
 set(sp3, 'YLim', [0.5 389.5]);
 
-
-print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_purplegreen'), '-r200', '-dtiff');
+% print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_purplegreen'), '-r200', '-dtiff');
 
 % Mark fig 2 example neurons?
 setExampleCellIDs = {'33Dav', '130AFMoc', '097aMat', '10Dan'; ...
