@@ -5,6 +5,7 @@
 % cells with similar time courses from different recording sites
 
 load('/procdata/parksh/_macaque/matSDF_Movie123_allCells.mat', 'infoTS_subj', 'matTS_FP')
+dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 
 % % get the Spice cells with everything 
 % locCell = find(cellfun(@numel, infoTS_subj(4).validChanID)<3);
@@ -13,6 +14,7 @@ load('/procdata/parksh/_macaque/multipleFP_fsi.mat')
 locFaceCell = find(abs(fsi.matFSI(:,1))>0.33);
 
 matFR_TR = matTS_FP.matFR_TR(:, locFaceCell);
+matTS_norm = zscore(matFR_TR); 
 catAreaID = matTS_FP.catAreaID(locFaceCell);
 catChanID = matTS_FP.catChanID(locFaceCell);
 
@@ -20,12 +22,14 @@ catChanID = matTS_FP.catChanID(locFaceCell);
 % cMap_Area(4, :) = cMap_Area(4, :).*0.7; % make the green a bit darker
 
 cMap_Area = [194 165 207; 166 219 160; 0 136 55; 123 50 148]./255; %from colorbrewer2.org, diverging 4 classes
-cMap_Area_temp = cat(1,cMap_Area, zeros(6, 3));
+% cMap_Area_temp = cat(1,cMap_Area, zeros(6, 3));
 
+%% PCA
 % matTS_norm = zscore(matTS_FP.matFR_TR);
-matTS_norm = zscore(matFR_TR); % only face-selective neurons
 [coeff, score, latent, tsq, explained] = pca(matTS_norm');
 [sortedScore, indSortChan] = sort(score(:,1));
+
+%% plot
 fig_matTS = figure;
 set(fig_matTS, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [500 30 550 1030]);
 imagesc(matTS_norm(:, indSortChan)')
@@ -83,6 +87,60 @@ print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_%d_%s_%s', ...
     iPP, catChanID{setPairHighRDiffArea_indChan(iPP,1)}, catChanID{setPairHighRDiffArea_indChan(iPP,2)})), '-depsc')
 end
 
+%% example 3 cells with similar time course 
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
+P = plot(2.4:2.4:900, matTS_norm(:, [153 74 141]), 'LineWidth', 2);
+P(1).Color = cMap_Area(catAreaID(153), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,1)), :);
+P(2).Color = cMap_Area(catAreaID(74), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,2)), :);
+P(3).Color = cMap_Area(catAreaID(141), :); 
+set(gca, 'TickDir', 'out', 'box', 'off')
+% legend(catChanID(setPairHighRDiffArea_indChan(iPP,:))) %legend(matTS_FP.catChanID(setPairHighRDiffArea_indChan(iPP,:)))
+print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_%s_%s_%s', ...
+    catChanID{153}, catChanID{74}, catChanID{141})), '-depsc')
+
+
+%% Raster
+setIndCell = [153 74 141 200 26];
+for iCell = 1:length(setIndCell)
+    curCellID = catChanID{setIndCell(iCell)};
+    nameSubjNeural = char(curCellID(end-2:end));
+    chanID = char(curCellID(1:end-3));
+    iMov = 1;
+    
+    load(sprintf('/procdata/parksh/_macaque/%s/%smov%dsig%s.mat', ...
+        nameSubjNeural, lower(nameSubjNeural), iMov, chanID))
+    % danmov1sig10.mat
+    % mocmov1sig232AF.mat
+    % wasmov1sig47AM.mat
+    
+    % Plotting raster
+    fig_raster = figure;
+    set(fig_raster, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
+    ax_raster = subplot('Position', [0 0 1 1]);
+    hold on;
+    
+    locValidTrial = find(cellfun(@isempty, dat.s)<1);
+    for i=1:length(locValidTrial)
+        indTrial = locValidTrial(i);
+        if length(dat.s{indTrial})>1000
+            indx = 1:round(length(dat.s{indTrial})/1000):length(dat.s{indTrial});
+            plotdat_x = repmat(dat.s{indTrial}(indx)',[3 1]);
+        else
+            plotdat_x = repmat(dat.s{indTrial}',[3 1]);
+        end
+        plotdat_y = repmat([i-1; i; NaN],[1 size(plotdat_x,2)]);
+        plot(ax_raster, plotdat_x(:),plotdat_y(:),'-','LineWidth',0.01, 'Color', cMap_Area(catAreaID(setIndCell(iCell)), :));
+    end
+    xlim([0 300000]);
+    ylim([0 length(locValidTrial)]);
+    axis off
+    box off
+    print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d', curCellID, iMov)), '-depsc');
+end
+
+
+%%
 plot(zscore(matTS_FP.matFR_SU_1hz(:, setPairHighRDiffArea_indChan(1,:))))
 
 
