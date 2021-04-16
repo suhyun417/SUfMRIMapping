@@ -14,7 +14,7 @@ clear all;
 
 %% PCA on fMRI data
 % load the masks (movie-driven & brain-only mask)
-nameSubjBOLD = 'Art'; %'Ava'; %'Art';
+nameSubjBOLD = 'Ava'; % 'Art'; %'Ava'; %'Art';
 load(sprintf('/procdata/parksh/_macaque/%s/%s_MaskArrays.mat', nameSubjBOLD, nameSubjBOLD), 'movieDrivenAmp', 'brainMask_BlockAna3D');
 [nx, ny, nz] = size(movieDrivenAmp.mask_amp1);
 nVox = nx*ny*nz;
@@ -40,7 +40,7 @@ for iM = 1:3;
     matTS = reshape(fmritc, nVox, nt);
     
     catTS = cat(2, catTS, matTS);
-    catTS_nan = cat(2, catTS, NaN(size(matTS, 1), 7), matTS);
+    catTS_nan = cat(2, catTS_nan, NaN(size(matTS, 1), 7), matTS);
     
 %     %% PCA on the whole slice package (including voxels outside of the brain)
 %     [coeff, score, latent, tsquared, explained] = pca(zscore(matTS), 'Economy', 'off', 'Centered', 'on');
@@ -169,7 +169,7 @@ end
 %% Compute R2 for each voxel with the 1st PC
 clear all;
 
-nameSubjBOLD = 'Art'; %'Art'; %'Ava'; %'Art';
+nameSubjBOLD = 'Ava'; %'Art'; %'Art'; %'Ava'; %'Art';
 load(sprintf('/procdata/parksh/_macaque/%s/%s_movieTS_fMRI_indMov.mat', nameSubjBOLD, nameSubjBOLD))
 load(sprintf('/procdata/parksh/_macaque/%s/%s_movieTS_fMRI_Movie123_PCA.mat', nameSubjBOLD, nameSubjBOLD), 'resultsPCA*')
 
@@ -229,11 +229,12 @@ resultsCorrPC_moviemask.matR_catTS = catR;
 resultsCorrPC_moviemask.matRsq_catTS = catR.^2; % r squared
 
 
+
 save(sprintf('/procdata/parksh/_macaque/%s/%s_movieTS_fMRI_Movie123_PCA.mat', nameSubjBOLD, nameSubjBOLD), 'resultsCorr*', '-append')
 
 %% save the surface map for some results of PCA analysis
 % to visualize scores for each voxels related to each principal component
-nameSubjBOLD = 'Art';
+nameSubjBOLD = 'Ava'; % 'Art';
 load(sprintf('/procdata/parksh/_macaque/%s/%s_movieTS_fMRI_Movie123_PCA.mat', nameSubjBOLD, nameSubjBOLD), 'paramPCA_brainmask', 'resultsPCA*', 'resultsCorr*')
 % load(sprintf('/procdata/parksh/%s/%s_MaskArrays.mat', nameSubjBOLD, nameSubjBOLD), 'movieDrivenAmp', 'brainMask_BlockAna3D');
 
@@ -248,24 +249,38 @@ global STDPATH DSP DATA GH
 
 % save the score maps
 for iPC = 1:3 %1;
-    for iMovie = [1 2 3];
+    for iMovie =  4 %[1 2 3]
         
         cd /projects/parksh/_toolbox/BlockAna/ %/projects/parksh/NeuralBOLD/analysis/BlockAna/
                      
         nx = 40; ny = 64; nz = 32;
         nVox = nx*ny*nz;
         
-        PCMap = NaN(size(paramPCA_brainmask.brainmask_1d));
-        PCMap(paramPCA_brainmask.brainmask_1d) = resultsPCA_brainmask(iMovie).score(:,iPC);
-        PCMap_vol = reshape(PCMap, [nx, ny, nz]);
-        
-%         PCMap_vol = reshape(resultsPCA(iMovie).score(:,iPC), [nx, ny, nz]);
-        
-        % convert the map to the surface
-        %     fileHead = sprintf('%s', nameSubjBOLD); %sprintf('new_maskedSignificant_%s', nameSubjNeural);% sprintf('new_masked_%s', nameSubjNeural);
-        DSP.proc.fncvol_3d = PCMap_vol; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
-        fname = sprintf('%s_fMRI_PC%dScore_Movie%d_brainmask+orig.BRIK', nameSubjBOLD, iPC, iMovie);%
-        
+        if iMovie<4
+            PCMap = NaN(size(paramPCA_brainmask.brainmask_1d));
+            PCMap(paramPCA_brainmask.brainmask_1d) = resultsPCA_brainmask(iMovie).score(:,iPC);
+            PCMap_vol = reshape(PCMap, [nx, ny, nz]);
+            
+            %         PCMap_vol = reshape(resultsPCA(iMovie).score(:,iPC), [nx, ny, nz]);
+            
+            % convert the map to the surface
+            %     fileHead = sprintf('%s', nameSubjBOLD); %sprintf('new_maskedSignificant_%s', nameSubjNeural);% sprintf('new_masked_%s', nameSubjNeural);
+            DSP.proc.fncvol_3d = PCMap_vol; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
+            fname = sprintf('%s_fMRI_PC%dScore_Movie%d_brainmask+orig.BRIK', nameSubjBOLD, iPC, iMovie);%
+            
+        else
+            PCMap = NaN(size(paramPCA_brainmask.brainmask_1d));
+            PCMap(paramPCA_brainmask.brainmask_1d) = resultsPCA_concat_brainmask.score(:,iPC);
+            PCMap_vol = reshape(PCMap, [nx, ny, nz]);
+            
+            %         PCMap_vol = reshape(resultsPCA(iMovie).score(:,iPC), [nx, ny, nz]);
+            
+            % convert the map to the surface
+            %     fileHead = sprintf('%s', nameSubjBOLD); %sprintf('new_maskedSignificant_%s', nameSubjNeural);% sprintf('new_masked_%s', nameSubjNeural);
+            DSP.proc.fncvol_3d = PCMap_vol; %mapR_Cluster(:,:,:,iK).*movieDrivenAmp.mask_amp1; %reshape(mapR, [nx, ny, nz]).*movieDrivenAmp.mask_amp1;
+            fname = sprintf('%s_fMRI_PC%dScore_catTSMovie123_brainmask+orig.BRIK', nameSubjBOLD, iPC);%
+
+        end
         vol = single(DSP.proc.fncvol_3d);
 
         
@@ -355,7 +370,7 @@ end
 
 %% Save the r squared map
 clear all;
-nameSubjBOLD = 'Art';
+nameSubjBOLD = 'Ava'; %'Art';
 load(sprintf('/procdata/parksh/_macaque/%s/%s_movieTS_fMRI_Movie123_PCA.mat', nameSubjBOLD, nameSubjBOLD), 'paramPCA_brainmask', 'resultsPCA*', 'resultsCorr*')
 % load(sprintf('/procdata/parksh/%s/%s_MaskArrays.mat', nameSubjBOLD, nameSubjBOLD), 'movieDrivenAmp', 'brainMask_BlockAna3D');
 

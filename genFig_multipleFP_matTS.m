@@ -1,5 +1,12 @@
 % genFig_multipleFP_matTS.m
 %
+% 2021/04/13 SHP
+% Added parts to show time series of neurons from same electrode
+%
+% 2021/03/03 SHP
+% Added parts to apply face-selectivity-index to draw plot using only
+% face-selective cells
+%
 % 2020/10/20 SHP
 % Create a plot to show neuronal time series to movie and show example
 % cells with similar time courses from different recording sites
@@ -106,7 +113,7 @@ for iCell = 1:length(setIndCell)
     curCellID = catChanID{setIndCell(iCell)};
     nameSubjNeural = char(curCellID(end-2:end));
     chanID = char(curCellID(1:end-3));
-    iMov = 1;
+    iMov = 2; %1;
     
     load(sprintf('/procdata/parksh/_macaque/%s/%smov%dsig%s.mat', ...
         nameSubjNeural, lower(nameSubjNeural), iMov, chanID))
@@ -140,113 +147,176 @@ for iCell = 1:length(setIndCell)
 end
 
 
-%%
-plot(zscore(matTS_FP.matFR_SU_1hz(:, setPairHighRDiffArea_indChan(1,:))))
+%% Cells from the same electrode
+% Which units?
+setExampleCellIDs = {'29Dav', '30Dav'; '130AFMoc', '131AFMoc'; '28AMWas', '29AMWas'; '108AMMoc', '109AMMoc'};
+matTS_norm = zscore(matTS_FP.matFR_TR); 
 
-
-ttt=load('/procdata/parksh/MovieRegressors/dbtmMriReg.mat'); % Face scale regressor (in TR unit)
-scaleRGR = ttt.reg.xx(7,:)';
-
-scaleRGR_norm = (scaleRGR-nanmean(scaleRGR))./nanstd(scaleRGR);
-
-figure;
-plot(1:2.4:900, zscore(coeff(:,1)), 'b')
-hold on
-plot(1:2.4:900, scaleRGR_norm, 'm')
-xlabel('Time (s)')
-ylabel('Normalized amplitude')
-legend('1st PC', 'Face Area')
-set(gca, 'TickDir', 'out', 'Box', 'off')
-set(gcf, 'Color', 'w')
-
-
-% Example cells with similar ts
-[matR] = corr(matTS_FP.matFR_TR);
-matR_uni = tril(matR, -1);
-vectR_uni = matR_uni(:);
-[sortedR, indPair] = sort(vectR_uni, 'descend');
-[i, j] = ind2sub(size(matR_uni), indPair(1:10));
-matTS_FP.catChanID([i j])
-
-
-
-flagSM = 1; % flag for compression and smoothing
-setMovie = [1 2 3];
-fullRGR4fps = createMovieRGR_4fps_indMov(setMovie, flagSM); %createFullMovieRegressors_4fps_indMov(setMovID); %
-
-% full regressors
-catRGRfull=[];matRGRfull=[];
-for iMov=1:length(setMovie)
-    m = setMovie(iMov);
-    matCurRGR = fullRGR4fps(m).smoRegressors; %fullRGR4fps(iMov).regressors(:,indValidRGR); %fullRGR4fps(iMov).regressors;
-    catRGRfull = cat(1, catRGRfull, matCurRGR); % concatenation across movies
-end
-catRGRfull_TRresolution = resample(catRGRfull, 0.25*100, 2.4*100);
-
-
-% scaleRGR_resampled = resample(scaleRGR, 2.4*100, 0.25*100); %matRGR = resample(catRGR, 0.25*100, 2.4*100);
-matRGRfull = catRGRfull; %cat(2, catRGRfull, scaleRGR_resampled); %cat(2, matRGR, scaleRGR);
-varnamesfull = fullRGR4fps(1).features; % cat(1, fullRGR4fps(1).features, {'Face size'});
-
-% subset of regressors
-indValidRGR = [1 2 6 7 3 21 20 32 22 31 25]; %[1, 3, 9, 20, 21, 22, 25]; 
-% 1: 'Luminance', 2: 'Contrast', 6: Low spatial Frequency 7: High spatial frequencty 3: 'Motion (Speed)', 
-% 21: 'One face', 20: 'Number of faces', 32: 'Face size', 22: 'Body parts', 31: 'Hands', 25: 'Any animal'
-% matRGRvalid = matRGRfull(:,indValidRGR);
-varnamesvalid = varnamesfull(indValidRGR);
-
-% Compute correlation between neural TS and feature TS
-R_ClusterMovieRGRfull=NaN(size(matRGRfull,2), size(meanFRCluster4fps,2));
-R_SUmovieRGRfull=NaN(size(matRGRfull,2), size(matFR4fps,2));
-for iRGR = 1:size(matRGRfull,2)
-    r_c=[]; r_su=[];
+for iPair = 1:size(setExampleCellIDs, 1)
     
-%     % averaged TS in each cluster
-%     r_c = corr(matRGRfull(:,iRGR), meanFRCluster4fps, 'rows', 'complete', 'type', 'Spearman');
-    % single unit TS
-    r_su = corr(matRGRfull(:,iRGR), matFR4fps, 'rows', 'complete', 'type', 'Spearman');
+    curCellID = setExampleCellIDs(iPair, :); % two cells from one electrode
+    tLoc = contains(matTS_FP.catChanID, curCellID); 
     
-%     R_ClusterMovieRGRfull(iRGR, :) = r_c;
-    R_SUmovieRGRfull(iRGR, :) = r_su;    
+    figure;
+    set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
+    P = plot(2.4:2.4:900, matTS_norm(:, tLoc), 'LineWidth', 2);
+    P(1).Color = ones(1, 3).*0; %cMap_Area(catAreaID(153), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,1)), :);
+    P(2).Color = ones(1, 3).*0.6; %cMap_Area(catAreaID(74), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,2)), :);
+    set(gca, 'TickDir', 'out', 'box', 'off')
+    % legend(catChanID(setPairHighRDiffArea_indChan(iPP,:))) %legend(matTS_FP.catChanID(setPairHighRDiffArea_indChan(iPP,:)))
+    print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_%s_%s', ...
+        curCellID{1}, curCellID{2})), '-depsc')
     
-end
-
-R_SUmovieRGRvalid = R_SUmovieRGRfull(indValidRGR,:);
-R_ClusterMovieRGRvalid = R_ClusterMovieRGRfull(indValidRGR,:);
-
-%%%%
-% tempDMRGR = resample(matSizeRGR, 4, 30);  % down sample in 4 hz
-
-% Version 1. upsampling from the original 71 features in 4fps (high-level) and 10fps (low-level)
-[fullRGR30fps] = createFullMovieRegressors_30fps_indMov(setMovie);
-catFullRGR = cat(1, fullRGR30fps.regressors);
-
-% Version 2. upsampling from the 11 features selected features in 4fps
-flagSM = 1; % flag for compression and smoothing
-fullRGR4fps = createMovieRGR_4fps_indMov(setMovie, flagSM); %createFullMovieRegressors_4fps_indMov(setMovID); %
-
-catRGRfull_30fps=[];matRGRfull_30fps=[];
-for iMov=1:length(setMovie)
-    m = setMovie(iMov);
-    matCurRGR = fullRGR4fps(m).smoRegressors; %fullRGR4fps(iMov).regressors(:,indValidRGR); %fullRGR4fps(iMov).regressors;
-    for iRGR = 1:size(matCurRGR, 2)
-        tRGR = resample(matCurRGR(:,iRGR), 30, 4); 
-        matCurRGR_30fps(:,iRGR) = tRGR;
+    %% Raster
+    setIndCell = [153 74 141 200 26];
+    for iCell = 1:length(setIndCell)
+        curCellID = catChanID{setIndCell(iCell)};
+        nameSubjNeural = char(curCellID(end-2:end));
+        chanID = char(curCellID(1:end-3));
+        iMov = 1;
+        
+        load(sprintf('/procdata/parksh/_macaque/%s/%smov%dsig%s.mat', ...
+            nameSubjNeural, lower(nameSubjNeural), iMov, chanID))
+        % danmov1sig10.mat
+        % mocmov1sig232AF.mat
+        % wasmov1sig47AM.mat
+        
+        % Plotting raster
+        fig_raster = figure;
+        set(fig_raster, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
+        ax_raster = subplot('Position', [0 0 1 1]);
+        hold on;
+        
+        locValidTrial = find(cellfun(@isempty, dat.s)<1);
+        for i=1:length(locValidTrial)
+            indTrial = locValidTrial(i);
+            if length(dat.s{indTrial})>1000
+                indx = 1:round(length(dat.s{indTrial})/1000):length(dat.s{indTrial});
+                plotdat_x = repmat(dat.s{indTrial}(indx)',[3 1]);
+            else
+                plotdat_x = repmat(dat.s{indTrial}',[3 1]);
+            end
+            plotdat_y = repmat([i-1; i; NaN],[1 size(plotdat_x,2)]);
+            plot(ax_raster, plotdat_x(:),plotdat_y(:),'-','LineWidth',0.01, 'Color', cMap_Area(catAreaID(setIndCell(iCell)), :));
+        end
+        xlim([0 300000]);
+        ylim([0 length(locValidTrial)]);
+        axis off
+        box off
+        print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d', curCellID, iMov)), '-depsc');
     end
-    catRGRfull_30fps = cat(1, catRGRfull_30fps, matCurRGR_30fps); %matCurRGR); % concatenation across movies
+    
 end
-% scaleRGR_resampled = resample(scaleRGR, 2.4*100, 0.25*100); %matRGR = resample(catRGR, 0.25*100, 2.4*100);
-matRGRfull_30fps = catRGRfull_30fps; %cat(2, catRGRfull, scaleRGR_resampled); %cat(2, matRGR, scaleRGR);
-varnamesfull = fullRGR4fps(1).features; % cat(1, fullRGR4fps(1).features, {'Face size'});
 
-% subset of regressors
-indValidRGR = [1 2 6 7 3 21 20 32 22 31 25]; %[1, 3, 9, 20, 21, 22, 25]; 
-% 1: 'Luminance', 2: 'Contrast', 6: Low spatial Frequency 7: High spatial frequencty 3: 'Motion (Speed)', 
-% 21: 'One face', 20: 'Number of faces', 32: 'Face size', 22: 'Body parts', 31: 'Hands', 25: 'Any animal'
-matRGRvalid_30fps = matRGRfull_30fps(:,indValidRGR);
-varnamesvalid = varnamesfull(indValidRGR);
 
-BRfeatureParams.version1.featureNames = fullRGR30fps(1).features;
-BRfeatureParams.version1.notes = 'upsampled 71 regressors (including DM''s 5 size regressors) in 30fps from 4fps (high-level) and 10fps (low-level) using "createFullMovieRegressors_30fps_indMov.m"';
-BRfeatureParams.version2.featureNames = varnamesvalid;
-BRfeatureParams.version2.notes = 'upsampled 11 regressors in 30fps from 4fps';
+
+%%
+% plot(zscore(matTS_FP.matFR_SU_1hz(:, setPairHighRDiffArea_indChan(1,:))))
+% 
+% 
+% ttt=load('/procdata/parksh/MovieRegressors/dbtmMriReg.mat'); % Face scale regressor (in TR unit)
+% scaleRGR = ttt.reg.xx(7,:)';
+% 
+% scaleRGR_norm = (scaleRGR-nanmean(scaleRGR))./nanstd(scaleRGR);
+% 
+% figure;
+% plot(1:2.4:900, zscore(coeff(:,1)), 'b')
+% hold on
+% plot(1:2.4:900, scaleRGR_norm, 'm')
+% xlabel('Time (s)')
+% ylabel('Normalized amplitude')
+% legend('1st PC', 'Face Area')
+% set(gca, 'TickDir', 'out', 'Box', 'off')
+% set(gcf, 'Color', 'w')
+% 
+% 
+% % Example cells with similar ts
+% [matR] = corr(matTS_FP.matFR_TR);
+% matR_uni = tril(matR, -1);
+% vectR_uni = matR_uni(:);
+% [sortedR, indPair] = sort(vectR_uni, 'descend');
+% [i, j] = ind2sub(size(matR_uni), indPair(1:10));
+% matTS_FP.catChanID([i j])
+% 
+% 
+% 
+% flagSM = 1; % flag for compression and smoothing
+% setMovie = [1 2 3];
+% fullRGR4fps = createMovieRGR_4fps_indMov(setMovie, flagSM); %createFullMovieRegressors_4fps_indMov(setMovID); %
+% 
+% % full regressors
+% catRGRfull=[];matRGRfull=[];
+% for iMov=1:length(setMovie)
+%     m = setMovie(iMov);
+%     matCurRGR = fullRGR4fps(m).smoRegressors; %fullRGR4fps(iMov).regressors(:,indValidRGR); %fullRGR4fps(iMov).regressors;
+%     catRGRfull = cat(1, catRGRfull, matCurRGR); % concatenation across movies
+% end
+% catRGRfull_TRresolution = resample(catRGRfull, 0.25*100, 2.4*100);
+% 
+% 
+% % scaleRGR_resampled = resample(scaleRGR, 2.4*100, 0.25*100); %matRGR = resample(catRGR, 0.25*100, 2.4*100);
+% matRGRfull = catRGRfull; %cat(2, catRGRfull, scaleRGR_resampled); %cat(2, matRGR, scaleRGR);
+% varnamesfull = fullRGR4fps(1).features; % cat(1, fullRGR4fps(1).features, {'Face size'});
+% 
+% % subset of regressors
+% indValidRGR = [1 2 6 7 3 21 20 32 22 31 25]; %[1, 3, 9, 20, 21, 22, 25]; 
+% % 1: 'Luminance', 2: 'Contrast', 6: Low spatial Frequency 7: High spatial frequencty 3: 'Motion (Speed)', 
+% % 21: 'One face', 20: 'Number of faces', 32: 'Face size', 22: 'Body parts', 31: 'Hands', 25: 'Any animal'
+% % matRGRvalid = matRGRfull(:,indValidRGR);
+% varnamesvalid = varnamesfull(indValidRGR);
+% 
+% % Compute correlation between neural TS and feature TS
+% R_ClusterMovieRGRfull=NaN(size(matRGRfull,2), size(meanFRCluster4fps,2));
+% R_SUmovieRGRfull=NaN(size(matRGRfull,2), size(matFR4fps,2));
+% for iRGR = 1:size(matRGRfull,2)
+%     r_c=[]; r_su=[];
+%     
+% %     % averaged TS in each cluster
+% %     r_c = corr(matRGRfull(:,iRGR), meanFRCluster4fps, 'rows', 'complete', 'type', 'Spearman');
+%     % single unit TS
+%     r_su = corr(matRGRfull(:,iRGR), matFR4fps, 'rows', 'complete', 'type', 'Spearman');
+%     
+% %     R_ClusterMovieRGRfull(iRGR, :) = r_c;
+%     R_SUmovieRGRfull(iRGR, :) = r_su;    
+%     
+% end
+% 
+% R_SUmovieRGRvalid = R_SUmovieRGRfull(indValidRGR,:);
+% R_ClusterMovieRGRvalid = R_ClusterMovieRGRfull(indValidRGR,:);
+% 
+% %%%%
+% % tempDMRGR = resample(matSizeRGR, 4, 30);  % down sample in 4 hz
+% 
+% % Version 1. upsampling from the original 71 features in 4fps (high-level) and 10fps (low-level)
+% [fullRGR30fps] = createFullMovieRegressors_30fps_indMov(setMovie);
+% catFullRGR = cat(1, fullRGR30fps.regressors);
+% 
+% % Version 2. upsampling from the 11 features selected features in 4fps
+% flagSM = 1; % flag for compression and smoothing
+% fullRGR4fps = createMovieRGR_4fps_indMov(setMovie, flagSM); %createFullMovieRegressors_4fps_indMov(setMovID); %
+% 
+% catRGRfull_30fps=[];matRGRfull_30fps=[];
+% for iMov=1:length(setMovie)
+%     m = setMovie(iMov);
+%     matCurRGR = fullRGR4fps(m).smoRegressors; %fullRGR4fps(iMov).regressors(:,indValidRGR); %fullRGR4fps(iMov).regressors;
+%     for iRGR = 1:size(matCurRGR, 2)
+%         tRGR = resample(matCurRGR(:,iRGR), 30, 4); 
+%         matCurRGR_30fps(:,iRGR) = tRGR;
+%     end
+%     catRGRfull_30fps = cat(1, catRGRfull_30fps, matCurRGR_30fps); %matCurRGR); % concatenation across movies
+% end
+% % scaleRGR_resampled = resample(scaleRGR, 2.4*100, 0.25*100); %matRGR = resample(catRGR, 0.25*100, 2.4*100);
+% matRGRfull_30fps = catRGRfull_30fps; %cat(2, catRGRfull, scaleRGR_resampled); %cat(2, matRGR, scaleRGR);
+% varnamesfull = fullRGR4fps(1).features; % cat(1, fullRGR4fps(1).features, {'Face size'});
+% 
+% % subset of regressors
+% indValidRGR = [1 2 6 7 3 21 20 32 22 31 25]; %[1, 3, 9, 20, 21, 22, 25]; 
+% % 1: 'Luminance', 2: 'Contrast', 6: Low spatial Frequency 7: High spatial frequencty 3: 'Motion (Speed)', 
+% % 21: 'One face', 20: 'Number of faces', 32: 'Face size', 22: 'Body parts', 31: 'Hands', 25: 'Any animal'
+% matRGRvalid_30fps = matRGRfull_30fps(:,indValidRGR);
+% varnamesvalid = varnamesfull(indValidRGR);
+% 
+% BRfeatureParams.version1.featureNames = fullRGR30fps(1).features;
+% BRfeatureParams.version1.notes = 'upsampled 71 regressors (including DM''s 5 size regressors) in 30fps from 4fps (high-level) and 10fps (low-level) using "createFullMovieRegressors_30fps_indMov.m"';
+% BRfeatureParams.version2.featureNames = varnamesvalid;
+% BRfeatureParams.version2.notes = 'upsampled 11 regressors in 30fps from 4fps';
