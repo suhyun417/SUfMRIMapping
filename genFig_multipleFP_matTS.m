@@ -18,18 +18,21 @@ dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 % locCell = find(cellfun(@numel, infoTS_subj(4).validChanID)<3);
 % get only face selective cells
 load('/procdata/parksh/_macaque/multipleFP_fsi.mat')
-locFaceCell = find(abs(fsi.matFSI(:,1))>0.33);
+locFaceCell = 1:389; % find(abs(fsi.matFSI(:,1))>0.33);
 
 matFR_TR = matTS_FP.matFR_TR(:, locFaceCell);
 matTS_norm = zscore(matFR_TR); 
 catAreaID = matTS_FP.catAreaID(locFaceCell);
 catChanID = matTS_FP.catChanID(locFaceCell);
 
+% Colormap for recording sites (in the order of "AF-pAM-aAM-ML")
 % cMap_Area = [91 148 203; 237 28 35; 248 148 29; 6 177 102]./255; % from Kenji's schematic
 % cMap_Area(4, :) = cMap_Area(4, :).*0.7; % make the green a bit darker
 
-cMap_Area = [194 165 207; 166 219 160; 0 136 55; 123 50 148]./255; %from colorbrewer2.org, diverging 4 classes
-% cMap_Area_temp = cat(1,cMap_Area, zeros(6, 3));
+% cMap_Area = [194 165 207; 166 219 160; 0 136 55; 123 50 148]./255; %from colorbrewer2.org, diverging 4 classes
+% cMap_Area =  [194 165 207; 123 50 148; 166 219 160; 0 136 55]./255; % swap pAM(2nd) and ML(4th)
+% cMap_Area = [179 226 205; 252 141 98; 141 160 203; 231 41 138]./255; % from colorbrewer2.org: mixture of qualitive 3
+cMap_Area = [179 226 205; 141 160 203; 252 141 98; 231 41 138]./255; % 
 
 %% PCA
 % matTS_norm = zscore(matTS_FP.matFR_TR);
@@ -97,15 +100,22 @@ end
 %% example 3 cells with similar time course 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
-P = plot(2.4:2.4:900, matTS_norm(:, [153 74 141]), 'LineWidth', 2);
+P = plot(2.4:2.4:900, matTS_norm(:, [153 74 141]), 'LineWidth', 1); %2);
 P(1).Color = cMap_Area(catAreaID(153), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,1)), :);
 P(2).Color = cMap_Area(catAreaID(74), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,2)), :);
 P(3).Color = cMap_Area(catAreaID(141), :); 
 set(gca, 'TickDir', 'out', 'box', 'off')
-% legend(catChanID(setPairHighRDiffArea_indChan(iPP,:))) %legend(matTS_FP.catChanID(setPairHighRDiffArea_indChan(iPP,:)))
-print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_%s_%s_%s', ...
-    catChanID{153}, catChanID{74}, catChanID{141})), '-depsc')
+% % legend(catChanID(setPairHighRDiffArea_indChan(iPP,:))) %legend(matTS_FP.catChanID(setPairHighRDiffArea_indChan(iPP,:)))
+% print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_width1_%s_%s_%s', ...
+%     catChanID{153}, catChanID{74}, catChanID{141})), '-depsc')
 
+
+set(gca, 'XColor', 'none')
+ylim([-4 4])
+L = line([5 65], [-1.8 -1.8], 'Color', 'k', 'LineWidth', 3);
+xlim([-5 900])
+print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_width1_1minScaleBar_newColor_%s_%s_%s', ...
+    catChanID{153}, catChanID{74}, catChanID{141})), '-depsc')
 
 %% Raster
 setIndCell = [153 74 141 200 26];
@@ -143,13 +153,27 @@ for iCell = 1:length(setIndCell)
     ylim([0 length(locValidTrial)]);
     axis off
     box off
-    print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d', curCellID, iMov)), '-depsc');
+    print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d_newColor', curCellID, iMov)), '-depsc');
 end
 
 
 %% Cells from the same electrode
 % Which units?
-setExampleCellIDs = {'29Dav', '30Dav'; '130AFMoc', '131AFMoc'; '28AMWas', '29AMWas'; '108AMMoc', '109AMMoc'};
+setExampleCellIDs = { '613aSig', '613cSig'; '030aSpi','030cSpi'; '037aSpi', '037cSpi'};
+% setExampleCellIDs = {'013aSig', '013bSig'; '613aSig', '613bSig'; '003aSpi', '003bSpi'; '008aSpi', '008bSpi'; ...
+%     '011aSpi', '011bSpi'; '015aSpi', '015bSpi'; '020aSpi', '020bSpi'; '022aSpi', '022bSpi'; '025aSpi', '025bSpi'; ...
+%     '030aSpi', '030bSpi'; '031aSpi', '031bSpi'; '033aSpi', '033bSpi'; '034aSpi', '034bSpi'; '036aSpi', '036bSpi'; ...
+%     '037aSpi', '037bSpi'; '042aSpi', '042bSpi'; '044aSpi', '044bSpi'; '054aSpi', '054bSpi'};
+% setExampleCellIDs = { '613aSig', '613bSig', '613cSig'; '030aSpi', '030bSpi', '030cSpi'; '037aSpi', '037bSpi', '037cSpi'};
+% setExampleCellIDs = {'082aTor', '082bTor'; '085aTor','085bTor'; '086aTor', '086bTor'; '088aTor', '088bTor'; '089aTor', '089bTor';...
+%       '091aTor', '091bTor'; '096aTor', '096bTor'; '122aTor', '122bTor'};
+% setExampleCellIDs = {'17AMWas', '18AMWas'; '19AMWas', '20AMWas'; '22AMWas', '23AMWas'; '28AMWas', '29AMWas'; ...
+%     '31AMWas', '32AMWas'; '33AMWas', '34AMWas'; '38AMWas', '39AMWas'; '41AMWas', '42AMWas'; '48AMWas', '49AMWas'};
+% setExampleCellIDs = {'108AMMoc', '109AMMoc'; '130AFMoc', '131AFMoc'; '217AFMoc', '218AFMoc';...
+%     '242AMMoc', '243AMMoc'; '244AMMoc', '245AMMoc'; '249AMMoc', '250AMMoc'; '257AMMoc', '258AMMoc'; ...
+%     '264AMMoc', '265AMMoc'};
+% setExampleCellIDs = {'14Spi', '15Spi'; '23Spi', '24Spi'; '42Spi', '43Spi'; '46Spi', '47Spi'}; %
+% setExampleCellIDs = {'29Dav', '30Dav'; '130AFMoc', '131AFMoc'; '28AMWas', '29AMWas'; '108AMMoc', '109AMMoc'};
 matTS_norm = zscore(matTS_FP.matFR_TR); 
 
 for iPair = 1:size(setExampleCellIDs, 1)
@@ -159,52 +183,53 @@ for iPair = 1:size(setExampleCellIDs, 1)
     
     figure;
     set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
-    P = plot(2.4:2.4:900, matTS_norm(:, tLoc), 'LineWidth', 2);
+%     P = plot(2.4:2.4:900, matTS_FP.matFR_TR(:, tLoc), 'LineWidth', 1);
+    P = plot(2.4:2.4:900, matTS_norm(:, tLoc), 'LineWidth', 1);
     P(1).Color = ones(1, 3).*0; %cMap_Area(catAreaID(153), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,1)), :);
     P(2).Color = ones(1, 3).*0.6; %cMap_Area(catAreaID(74), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,2)), :);
     set(gca, 'TickDir', 'out', 'box', 'off')
     % legend(catChanID(setPairHighRDiffArea_indChan(iPP,:))) %legend(matTS_FP.catChanID(setPairHighRDiffArea_indChan(iPP,:)))
-    print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_%s_%s', ...
+    print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_width1_%s_%s', ...
         curCellID{1}, curCellID{2})), '-depsc')
     
-    %% Raster
-    setIndCell = [153 74 141 200 26];
-    for iCell = 1:length(setIndCell)
-        curCellID = catChanID{setIndCell(iCell)};
-        nameSubjNeural = char(curCellID(end-2:end));
-        chanID = char(curCellID(1:end-3));
-        iMov = 1;
-        
-        load(sprintf('/procdata/parksh/_macaque/%s/%smov%dsig%s.mat', ...
-            nameSubjNeural, lower(nameSubjNeural), iMov, chanID))
+%     %% Raster
+%     setIndCell = [153 74 141 200 26];
+%     for iCell = 1:length(setIndCell)
+%         curCellID = catChanID{setIndCell(iCell)};
+%         nameSubjNeural = char(curCellID(end-2:end));
+%         chanID = char(curCellID(1:end-3));
+%         iMov = 1;
+%         
+%         load(sprintf('/procdata/parksh/_macaque/%s/%smov%dsig%s.mat', ...
+%             nameSubjNeural, lower(nameSubjNeural), iMov, chanID))
         % danmov1sig10.mat
         % mocmov1sig232AF.mat
         % wasmov1sig47AM.mat
         
-        % Plotting raster
-        fig_raster = figure;
-        set(fig_raster, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
-        ax_raster = subplot('Position', [0 0 1 1]);
-        hold on;
-        
-        locValidTrial = find(cellfun(@isempty, dat.s)<1);
-        for i=1:length(locValidTrial)
-            indTrial = locValidTrial(i);
-            if length(dat.s{indTrial})>1000
-                indx = 1:round(length(dat.s{indTrial})/1000):length(dat.s{indTrial});
-                plotdat_x = repmat(dat.s{indTrial}(indx)',[3 1]);
-            else
-                plotdat_x = repmat(dat.s{indTrial}',[3 1]);
-            end
-            plotdat_y = repmat([i-1; i; NaN],[1 size(plotdat_x,2)]);
-            plot(ax_raster, plotdat_x(:),plotdat_y(:),'-','LineWidth',0.01, 'Color', cMap_Area(catAreaID(setIndCell(iCell)), :));
-        end
-        xlim([0 300000]);
-        ylim([0 length(locValidTrial)]);
-        axis off
-        box off
-        print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d', curCellID, iMov)), '-depsc');
-    end
+%         % Plotting raster
+%         fig_raster = figure;
+%         set(fig_raster, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
+%         ax_raster = subplot('Position', [0 0 1 1]);
+%         hold on;
+%         
+%         locValidTrial = find(cellfun(@isempty, dat.s)<1);
+%         for i=1:length(locValidTrial)
+%             indTrial = locValidTrial(i);
+%             if length(dat.s{indTrial})>1000
+%                 indx = 1:round(length(dat.s{indTrial})/1000):length(dat.s{indTrial});
+%                 plotdat_x = repmat(dat.s{indTrial}(indx)',[3 1]);
+%             else
+%                 plotdat_x = repmat(dat.s{indTrial}',[3 1]);
+%             end
+%             plotdat_y = repmat([i-1; i; NaN],[1 size(plotdat_x,2)]);
+%             plot(ax_raster, plotdat_x(:),plotdat_y(:),'-','LineWidth',0.01, 'Color', cMap_Area(catAreaID(setIndCell(iCell)), :));
+%         end
+%         xlim([0 300000]);
+%         ylim([0 length(locValidTrial)]);
+%         axis off
+%         box off
+%         print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d', curCellID, iMov)), '-depsc');
+%     end
     
 end
 
