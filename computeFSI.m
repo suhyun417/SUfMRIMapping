@@ -1,5 +1,9 @@
 % computeFSI.m
 % 
+% 2021/05/03 SHP
+%       - modify to incorporate indices for face & object conditions 
+%       - fixed the final "face selectivity" criterion to cur_fsi > 0.33 
+%           (before: abs(cur_fsi) > 0.33)
 % 2021/03/01 SHP
 %       - Compute face-selective index using responses to fingerprinting
 %       stimulus set for all multiple face patch neurons 
@@ -42,7 +46,7 @@ for iCell = 1:size(C, 1) %numel(setExampleCellIDs)
         
         % compute fsi & other things
         fprintf(1, ':::::%s:::::\n', curCellID)
-        curFSI = calc_fr_from_multidays_for_fsi(multiday);
+        curFSI = calc_fr_from_multidays_for_fsi(multiday, cond_face, cond_obj);
     else % in case of Matcha's data
         iCell_Ma = C{indCell, 3};
         
@@ -58,7 +62,7 @@ for iCell = 1:size(C, 1) %numel(setExampleCellIDs)
         
     matFaceSelective(iCell, 1) = curFSI;
     
-    if abs(curFSI) > 0.33
+    if curFSI > 0.33
         matFaceSelective(iCell, 2) = 1; %face-selective
     else
         matFaceSelective(iCell, 2) = -1; % not face-selective

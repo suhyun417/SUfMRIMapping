@@ -26,6 +26,9 @@ C = readcell(filename_xls); % 1st col: cell ID in movie data, 2st col: fingerpri
 load('/procdata/parksh/_macaque/Mat/_orgData/MatMov1to6_CatData.mat');
 
 %% Cell-by-cell computation of FSI etc.
+cond_face = 1:2; % human face & monkey face
+cond_obj = 4; % object
+
 matFaceSelective = NaN(size(setExampleCellIDs));
 for iCell = 1:numel(setExampleCellIDs)
     curCellID = setExampleCellIDs{iCell};
@@ -44,9 +47,9 @@ for iCell = 1:numel(setExampleCellIDs)
     
     % compute fsi & other things
     fprintf(1, ':::::%s:::::\n', curCellID)
-    curFSI = calc_fr_from_multidays_for_fsi(multiday);
+    curFSI = calc_fr_from_multidays_for_fsi(multiday, cond_face, cond_obj);
     
-    if abs(curFSI) > 0.33
+    if curFSI > 0.33 %abs(curFSI) > 0.33
         matFaceSelective(iCell) = 1; %face-selective
     else
         matFaceSelective(iCell) = 0; % not face-selective
@@ -67,14 +70,15 @@ fr_base= mean(cellfun(@mean, MatMov1to6_CatData(iCell_Ma).cat_base));
 
 %% face-selective index (fsi)
 fsi_fun = @(x,y) (x-y)/(abs(x)+abs(y))*sign(double(sign(x)>0|sign(y)>0)-0.5);
-response_face    = nanmean(fr_resp(1:2)) -fr_base;  % human face, monkey face and whole monkey
-response_nonface = nanmean(fr_resp(4))-fr_base;  % object 
+response_face    = nanmean(fr_resp(cond_face)) -fr_base;  % human face, monkey face and whole monkey
+response_nonface = nanmean(fr_resp(cond_obj))-fr_base;  % object 
 fsi_ma = fsi_fun(response_face,response_nonface);
 
+abc = 'a':'z';
 fprintf(1, 'Cell #%d: %03d%s: faces:%2.2f  / objects:%2.2f :: FSI: %s\n', iCell_Ma, MatMov1to6_CatData(iCell_Ma).chan(1), ...
     abc(MatMov1to6_CatData(iCell_Ma).chan(2)),response_face, response_nonface, num2str(fsi_ma))
 
-if abs(fsi_ma) > 0.33
+if fsi_ma > 0.33 %abs(fsi_ma) > 0.33
     matFaceSelective(11) = 1;
 else
     matFaceSelective(11) = 0;

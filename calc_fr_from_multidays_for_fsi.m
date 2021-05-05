@@ -1,4 +1,10 @@
-function [fsi] = calc_fr_from_multidays_for_fsi(multiday)
+function [fsi] = calc_fr_from_multidays_for_fsi(multiday, cond_face, cond_obj)
+
+% 2021/05/03 SHP
+%       - modify to incorporate indices for face & object conditions 
+%       - fixed the final check property: face selectivity criterion 
+%           (before: cur_fsi < -0.33 : face selective neuron (negative))
+
 
 % %% load data
 % clear all
@@ -6,7 +12,7 @@ function [fsi] = calc_fr_from_multidays_for_fsi(multiday)
 % load /procdata/parksh/_macaque/Dav/_orgData/Davida180723/FPrint/22_109_1.mat
 
 %% parameters
-response_time_win = [0 200]; %[50 250];    % calculation window, ms
+response_time_win = [50 250];    % [0 200]; %[50 250];    % calculation window, ms
 baseline_time_win = [-50 0]; %[-100 50];    % calculation window, ms
 
 min_mean_fr = 1;  % minimum mean firing rate required
@@ -33,9 +39,19 @@ baseline_fr = nanmean(multiday.fr.base(:));
 
 
 %% face-selective index (fsi)
+% stimulus index for face & object category
+ind_face = [];
+for icond_face = 1:length(cond_face)
+     ind_face = cat(2, ind_face, (cond_face(icond_face)-1)*10+1:cond_face(icond_face)*10);
+end
+ind_nonface = [];
+for icond_obj = 1:length(cond_obj)
+     ind_nonface = cat(2, ind_nonface, (cond_obj(icond_obj)-1)*10+1:cond_obj(icond_obj)*10);
+end
+
 fsi_fun = @(x,y) (x-y)/(abs(x)+abs(y))*sign(double(sign(x)>0|sign(y)>0)-0.5);
-response_face    = nanmean(fr(1:20)) -baseline_fr;  % human face, monkey face and whole monkey
-response_nonface = nanmean(fr(31:40))-baseline_fr;  % object 
+response_face    = nanmean(fr(ind_face)) -baseline_fr;  % face category
+response_nonface = nanmean(fr(ind_nonface))-baseline_fr;  % non-face category 
 fsi = fsi_fun(response_face,response_nonface);
 
 disp(['FSI: ' num2str(fsi)]);
@@ -95,7 +111,7 @@ disp(' ')
 if fsi>0.33
     disp('face-selective response');
 elseif fsi<-0.33
-    disp('face-selective response (negative)');
+    disp('object-selective response'); %disp('face-selective response (negative)');
 end
 
 if min_p_ttest<0.05

@@ -38,83 +38,83 @@ locMode_roi = find(propExplained_roi(:,curK_roi-1)==mode(propExplained_roi(:,cur
 locMin_roi = find(propExplained_roi(:,curK_roi-1)==min(propExplained_roi(:,curK_roi-1)));
 [sortedClust_roi, indSortROI] = sort(Clustering_meanROI.resultKMeans(curK_roi-1).roi_indCluster(:, locMode_roi(1)));
 
-%% % Hierarchical clustering of ROIs % %%
-Y = pdist(Clustering_meanROI.matR');
-Z = linkage(Y, 'average');
-figure;
-[H, T] = dendrogram(Z, 0, 'Orientation', 'right');
-indY = str2num(get(gca, 'YTickLabel'));
-set(gca, 'YTickLabel', Clustering_meanROI.nameROI(indY))
-
-indY = [7
-     9
-    35
-     4
-    13
-    12
-    34
-     1
-     2
-     3
-    17
-    33
-     5
-     8
-     6
-    16
-    21
-    23
-    36
-    37
-    26
-    22
-    10
-    11
-    18
-    19
-    20
-    29
-    32
-    14
-    15
-    24
-    25
-    27
-    28
-    31
-    30];
-
-
-
+% %% % Hierarchical clustering of ROIs % %%
+% Y = pdist(Clustering_meanROI.matR');
+% Z = linkage(Y, 'average');
 % figure;
-% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
-% plot(setK, propExplained'.*100, 'ko-', 'MarkerFaceColor', 'w'); hold on
-% xlabel('Number of cluster (K)')
-% ylabel('Explained variance (%)')
-% title('Clustering using all the voxels within brain')
-% set(gca, 'XTick', setK)
-% set(gca, 'TickDir', 'out', 'Box', 'off')
+% [H, T] = dendrogram(Z, 0, 'Orientation', 'right');
+% indY = str2num(get(gca, 'YTickLabel'));
+% set(gca, 'YTickLabel', Clustering_meanROI.nameROI(indY))
 % 
-% fig3b=figure;
-% set(fig3b, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 340 340])
-% curK=10;
-% plot(setK, propExplained.*100, 'ko-', 'LineWidth', 2, 'MarkerFaceColor', 'w', 'MarkerSize', 8); hold on
-% plot(curK, propExplained(:, curK-1).*100, 'ko', 'LineWidth', 2, 'MarkerFaceColor', 'k', 'MarkerSize', 8)
-% xlim([2 20])
-% ylim([35 75])
-% set(gca, 'TickDir', 'out', 'LineWidth', 2, 'Box', 'off', 'TickLength', [.025 .05])
-% set(gca, 'YTick', 35:10:75)
+% indY = [7
+%      9
+%     35
+%      4
+%     13
+%     12
+%     34
+%      1
+%      2
+%      3
+%     17
+%     33
+%      5
+%      8
+%      6
+%     16
+%     21
+%     23
+%     36
+%     37
+%     26
+%     22
+%     10
+%     11
+%     18
+%     19
+%     20
+%     29
+%     32
+%     14
+%     15
+%     24
+%     25
+%     27
+%     28
+%     31
+%     30];
 % 
-% % save
-% print(fig3b, fullfile(dirFig, 'expVar_KMeansClustering_brainmaskVoxels_square'), '-depsc')
 % 
 % 
-% figure;
-% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
-% plot(setK(1:end-1), diff(propExplained').*100)
-% hold on
-% plot(setK(1:end-1), mean(diff(propExplained').*100, 2), 'ko-', 'LineWidth', 2)
-% title('difference of explained variance for each K: using all the voxels within brain')
+% % figure;
+% % set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+% % plot(setK, propExplained'.*100, 'ko-', 'MarkerFaceColor', 'w'); hold on
+% % xlabel('Number of cluster (K)')
+% % ylabel('Explained variance (%)')
+% % title('Clustering using all the voxels within brain')
+% % set(gca, 'XTick', setK)
+% % set(gca, 'TickDir', 'out', 'Box', 'off')
+% % 
+% % fig3b=figure;
+% % set(fig3b, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 340 340])
+% % curK=10;
+% % plot(setK, propExplained.*100, 'ko-', 'LineWidth', 2, 'MarkerFaceColor', 'w', 'MarkerSize', 8); hold on
+% % plot(curK, propExplained(:, curK-1).*100, 'ko', 'LineWidth', 2, 'MarkerFaceColor', 'k', 'MarkerSize', 8)
+% % xlim([2 20])
+% % ylim([35 75])
+% % set(gca, 'TickDir', 'out', 'LineWidth', 2, 'Box', 'off', 'TickLength', [.025 .05])
+% % set(gca, 'YTick', 35:10:75)
+% % 
+% % % save
+% % print(fig3b, fullfile(dirFig, 'expVar_KMeansClustering_brainmaskVoxels_square'), '-depsc')
+% % 
+% % 
+% % figure;
+% % set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto')
+% % plot(setK(1:end-1), diff(propExplained').*100)
+% % hold on
+% % plot(setK(1:end-1), mean(diff(propExplained').*100, 2), 'ko-', 'LineWidth', 2)
+% % title('difference of explained variance for each K: using all the voxels within brain')
 
 %% Fig 3B: correlation matrix before & after cell clustering
 
@@ -125,10 +125,11 @@ locMin = find(propExplained(:,curK-1)==min(propExplained(:,curK-1)));
 [sortedClust, indSortChan] = sort(Clustering_brainmask.resultKMeans(curK-1).SU_indCluster(:, locMode(1)));
 
 % Colormap
-cMap_Area = [91 148 203; 237 28 35; 248 148 29; 6 177 102]./255; % from Kenji's schematic
-cMap_Area(4, :) = cMap_Area(4, :).*0.7; % make the green a bit darker
-% orderArea = [4 1 2 3]; %ML-AF-AM-AAM
-% cMap_Area_MLfirst = cMap_Area(orderArea, :);
+cMap_Area = [179 226 205; 141 160 203; 252 141 98; 231 41 138]./255; % 
+% cMap_Area = [91 148 203; 237 28 35; 248 148 29; 6 177 102]./255; % from Kenji's schematic
+% cMap_Area(4, :) = cMap_Area(4, :).*0.7; % make the green a bit darker
+% % orderArea = [4 1 2 3]; %ML-AF-AM-AAM
+% % cMap_Area_MLfirst = cMap_Area(orderArea, :);
 
 fname = '/procdata/parksh/_macaque/Art/Anatomy/_suma/BCWYRColorMap.txt';
 ttt = dlmread(fname);
@@ -163,104 +164,6 @@ end
 indChanArea_rand = cat(1,  ttt.indChanArea_rand);
 areaID_rand = Clustering_meanROI.catAreaID(indChanArea_rand);
 
-figure;
-set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 390 1160]);
-
-sp1 = subplot('Position', [0.1 0.05 0.6 0.9]);
-imagesc(Clustering_meanROI.matR(indChanArea_rand, indY)) %indSortROI))
-set(gca, 'CLim', [-1 1].*0.5)
-locDiff_area = cat(1, 0, find(abs(diff(areaID_rand))>0), length(areaID_rand));
-set(sp1, 'YTick', [], 'YTickLabel', []) %locDiff+0.5, 'YTickLabel', [])
-set(sp1, 'XTick', []) 
-colormap(sp1, cMap_corrSUMA)
-set(gca, 'TickDir', 'out', 'Box', 'on')
-line(repmat(get(gca, 'XLim')', 1, length(locDiff_area)), [locDiff_area+0.5 locDiff_area+0.5]', 'Color', 'k', 'LineWidth', 0.5)
-
-sp2 = subplot('Position', [0.75 0.05 0.1 0.9]);
-imagesc(areaID_rand) %(indSortChan)')
-set(sp2, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
-set(sp2, 'YTick', locDiff_area+0.5, 'YTickLabel', [])% line([locDiff+0.5 locDiff+0.5]', repmat(get(gca, 'YLim')', 1, length(locDiff)), 'Color', 'k')
-% xlabel('Number of cells in each cluster')
-colormap(sp2, cMap_Area)
-spp2 = axes('Position', sp2.Position, 'Color', 'none', 'XColor', 'none', 'YColor', 'none');
-spp2.Clipping = 'off';
-spp2.XLim = sp2.XLim;
-spp2.YLim = sp2.YLim;
-spp2.YDir = sp2.YDir;
-line(repmat([-0.7;1.5], 1, length(locDiff_area)), [locDiff_area+0.5 locDiff_area+0.5]', 'Color', 'k')
- 
-
-%% Fig 3B_2: Correlation matrix after clustering
-figure;
-set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 390 1160]);
-
-sp1 = subplot('Position', [0.1 0.05 0.6 0.9]);
-imagesc(Clustering_meanROI.matR(indSortChan_reorder, indSortROI))
-set(gca, 'CLim', [-1 1].*0.5)
-locDiff = cat(1, 0, find(abs(diff(sortedClust_reorder))>0), length(sortedClust_reorder));
-set(sp1, 'YTick', [], 'YTickLabel', []) %locDiff+0.5, 'YTickLabel', [])
-set(sp1, 'XTick', []) 
-colormap(sp1, cMap_corrSUMA)
-set(gca, 'TickDir', 'out', 'Box', 'on')
-line(repmat(get(gca, 'XLim')', 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k', 'LineWidth', 0.5)
-
-sp2 = subplot('Position', [0.75 0.05 0.1 0.9]);
-imagesc(Clustering_brainmask.infoCells.catAreaID(indSortChan_reorder)) %(indSortChan)')
-set(sp2, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
-set(sp2, 'YTick', locDiff+0.5, 'YTickLabel', [])% line([locDiff+0.5 locDiff+0.5]', repmat(get(gca, 'YLim')', 1, length(locDiff)), 'Color', 'k')
-% xlabel('Number of cells in each cluster')
-colormap(sp2, cMap_Area)
-spp2 = axes('Position', sp2.Position, 'Color', 'none', 'XColor', 'none', 'YColor', 'none');
-spp2.Clipping = 'off';
-spp2.XLim = sp2.XLim;
-spp2.YLim = sp2.YLim;
-spp2.YDir = sp2.YDir;
-line(repmat([-0.7;1.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k')
-%
-
-%% Fig 3C: average correlation map of each cell cluster: generate colormap with color-code of correlation in each fROI
-% For each cell cluster, average correlation for each fROI across cells
-% make it to "reordered" cluster ID
-matAvgRforROI_Cluster = NaN(numROI, curK); % for easier ROI-color mapping in AFNI/SUMA, keep the original ROI order
-for iK = 1:curK
-    idK = reorderCluster(iK);
-    matAvgRforROI_Cluster(:, iK) = mean(Clustering_meanROI.matR(tempS(idK).indSortChan_org, :))'; 
-%     matAvgRforROI_Cluster_median(:, iK) = median(Clustering_meanROI.matR(tempS(idK).indSortChan_org, :))'; 
-end
-
-% Set the caxis limit
-cmin = -0.4;
-cmax = 0.4;
-
-% Convert correlation value to a scaled index given the current color axis
-matColorIndex = fix(((matAvgRforROI_Cluster - cmin)./(cmax-cmin)*256)+1);
-
-% Each cluster, save the color lookup table for 37 fROI using BCWYR colormap
-fname = '/procdata/parksh/_macaque/Art/Anatomy/_suma/BCWYRColorMap.txt';
-ttt = dlmread(fname);
-cMap_corrSUMA = ttt(:, 1:3); % blue-cyan-white-yellow-red map for correlation
-clear ttt
-
-for iK = 1:curK
-    clut = [];
-    clut = cat(1, [1 1 1], cMap_corrSUMA(matColorIndex(:, iK), :));
-    ind = (0:1:length(clut)-1)';
-    clut = cat(2, clut, ind);
-    
-    % write a text file
-    climstr = strrep(sprintf('%0.1f', abs(cmax)), '.', 'p');
-    dlmwrite(sprintf('colorLUT_multipleFPSUMapping_fROI%d_cLim%s_ReorderedCellGroup%02d.txt', length(clut)-1, climstr, iK), clut);
-end
-
-[s, m, mid] = copyfile('./colorLUT*.txt', '/procdata/parksh/_macaque/Art/Anatomy/_suma');
-
-
-%%%%%%
-%% Figure 3 Alternative
-%%%%%%
-cMap_Area = [194 165 207; 166 219 160; 0 136 55; 123 50 148]./255; %from colorbrewer2.org, diverging 4 classes
-
-% Fig 3B_1: Correlation matrix before clustering
 fig3b_1 = figure;
 set(fig3b_1, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 350 1000]);
 
@@ -301,10 +204,10 @@ L3 = line(repmat([0.5; 1], 1, length(locDiff_area)), [locDiff_area+0.5 locDiff_a
     'LineWidth', 2, 'LineStyle', ':');
 set(sp3, 'YLim', [0.5 389.5]);
 
-% print(fig3b_1, fullfile(dirFig, 'Fig3B1_matR_meanROIbyCells_sortedArea_purplegreen'), '-r200', '-dtiff');
+% print(fig3b_1, fullfile(dirFig, 'Fig3B1_matR_meanROIbyCells_sortedArea_newColor'), '-r200', '-dtiff');
  
 
-% Fig 3B_2: Correlation matrix after clustering
+%% Fig 3B_2: Correlation matrix after clustering
 fig3b2 = figure;
 set(fig3b2, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 350 1000]);
 
@@ -346,7 +249,7 @@ L3 = line(repmat([0.5; 1], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Col
     'LineWidth', 2, 'LineStyle', ':');
 set(sp3, 'YLim', [0.5 389.5]);
 
-% print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_purplegreen'), '-r200', '-dtiff');
+% print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_newColor'), '-r200', '-dtiff');
 
 % Mark fig 2 example neurons?
 setExampleCellIDs = {'33Dav', '130AFMoc', '097aMat', '10Dan'; ...
@@ -392,6 +295,42 @@ set(sp1, 'XColor', 'none')
 % set(sp3, 'XLim', [0.5 2.5]);
 % 
 % % print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_purplegreen_fsi'), '-r200', '-dtiff');
+
+%% Fig 3C: average correlation map of each cell cluster: generate colormap with color-code of correlation in each fROI
+% For each cell cluster, average correlation for each fROI across cells
+% make it to "reordered" cluster ID
+matAvgRforROI_Cluster = NaN(numROI, curK); % for easier ROI-color mapping in AFNI/SUMA, keep the original ROI order
+for iK = 1:curK
+    idK = reorderCluster(iK);
+    matAvgRforROI_Cluster(:, iK) = mean(Clustering_meanROI.matR(tempS(idK).indSortChan_org, :))'; 
+%     matAvgRforROI_Cluster_median(:, iK) = median(Clustering_meanROI.matR(tempS(idK).indSortChan_org, :))'; 
+end
+
+% Set the caxis limit
+cmin = -0.4;
+cmax = 0.4;
+
+% Convert correlation value to a scaled index given the current color axis
+matColorIndex = fix(((matAvgRforROI_Cluster - cmin)./(cmax-cmin)*256)+1);
+
+% Each cluster, save the color lookup table for 37 fROI using BCWYR colormap
+fname = '/procdata/parksh/_macaque/Art/Anatomy/_suma/BCWYRColorMap.txt';
+ttt = dlmread(fname);
+cMap_corrSUMA = ttt(:, 1:3); % blue-cyan-white-yellow-red map for correlation
+clear ttt
+
+for iK = 1:curK
+    clut = [];
+    clut = cat(1, [1 1 1], cMap_corrSUMA(matColorIndex(:, iK), :));
+    ind = (0:1:length(clut)-1)';
+    clut = cat(2, clut, ind);
+    
+    % write a text file
+    climstr = strrep(sprintf('%0.1f', abs(cmax)), '.', 'p');
+    dlmwrite(sprintf('colorLUT_multipleFPSUMapping_fROI%d_cLim%s_ReorderedCellGroup%02d.txt', length(clut)-1, climstr, iK), clut);
+end
+
+[s, m, mid] = copyfile('./colorLUT*.txt', '/procdata/parksh/_macaque/Art/Anatomy/_suma');
 
 
 %% Fig 4A (or Fig 3D): composition of cell groups in each recording site
@@ -506,6 +445,65 @@ box on
 
 
 %%
+% Fig3: previous format
+% % Fig 3A
+% figure;
+% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 390 1160]);
+% 
+% sp1 = subplot('Position', [0.1 0.05 0.6 0.9]);
+% imagesc(Clustering_meanROI.matR(indChanArea_rand, indY)) %indSortROI))
+% set(gca, 'CLim', [-1 1].*0.5)
+% locDiff_area = cat(1, 0, find(abs(diff(areaID_rand))>0), length(areaID_rand));
+% set(sp1, 'YTick', [], 'YTickLabel', []) %locDiff+0.5, 'YTickLabel', [])
+% set(sp1, 'XTick', []) 
+% colormap(sp1, cMap_corrSUMA)
+% set(gca, 'TickDir', 'out', 'Box', 'on')
+% line(repmat(get(gca, 'XLim')', 1, length(locDiff_area)), [locDiff_area+0.5 locDiff_area+0.5]', 'Color', 'k', 'LineWidth', 0.5)
+% 
+% sp2 = subplot('Position', [0.75 0.05 0.1 0.9]);
+% imagesc(areaID_rand) %(indSortChan)')
+% set(sp2, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
+% set(sp2, 'YTick', locDiff_area+0.5, 'YTickLabel', [])% line([locDiff+0.5 locDiff+0.5]', repmat(get(gca, 'YLim')', 1, length(locDiff)), 'Color', 'k')
+% % xlabel('Number of cells in each cluster')
+% colormap(sp2, cMap_Area)
+% spp2 = axes('Position', sp2.Position, 'Color', 'none', 'XColor', 'none', 'YColor', 'none');
+% spp2.Clipping = 'off';
+% spp2.XLim = sp2.XLim;
+% spp2.YLim = sp2.YLim;
+% spp2.YDir = sp2.YDir;
+% line(repmat([-0.7;1.5], 1, length(locDiff_area)), [locDiff_area+0.5 locDiff_area+0.5]', 'Color', 'k')
+%  
+% 
+% % Fig 3B_2: Correlation matrix after clustering
+% figure;
+% set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 390 1160]);
+% 
+% sp1 = subplot('Position', [0.1 0.05 0.6 0.9]);
+% imagesc(Clustering_meanROI.matR(indSortChan_reorder, indSortROI))
+% set(gca, 'CLim', [-1 1].*0.5)
+% locDiff = cat(1, 0, find(abs(diff(sortedClust_reorder))>0), length(sortedClust_reorder));
+% set(sp1, 'YTick', [], 'YTickLabel', []) %locDiff+0.5, 'YTickLabel', [])
+% set(sp1, 'XTick', []) 
+% colormap(sp1, cMap_corrSUMA)
+% set(gca, 'TickDir', 'out', 'Box', 'on')
+% line(repmat(get(gca, 'XLim')', 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k', 'LineWidth', 0.5)
+% 
+% sp2 = subplot('Position', [0.75 0.05 0.1 0.9]);
+% imagesc(Clustering_brainmask.infoCells.catAreaID(indSortChan_reorder)) %(indSortChan)')
+% set(sp2, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
+% set(sp2, 'YTick', locDiff+0.5, 'YTickLabel', [])% line([locDiff+0.5 locDiff+0.5]', repmat(get(gca, 'YLim')', 1, length(locDiff)), 'Color', 'k')
+% % xlabel('Number of cells in each cluster')
+% colormap(sp2, cMap_Area)
+% spp2 = axes('Position', sp2.Position, 'Color', 'none', 'XColor', 'none', 'YColor', 'none');
+% spp2.Clipping = 'off';
+% spp2.XLim = sp2.XLim;
+% spp2.YLim = sp2.YLim;
+% spp2.YDir = sp2.YDir;
+% line(repmat([-0.7;1.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k')
+% %
+
+
+
 %%%%%%%%%%%%%%%%%
 %%%% Below: Older version %%%%%
 %%%%%%%%%%%%%%%%%%
@@ -577,23 +575,23 @@ box on
 % 
 % print(gcf, fullfile(dirFig, 'matR_meanROIbyCells_KMeansClustering_brainmaskVoxels_K10_connected_nolabel', '-r200', '-dtiff'));
 % 
-% %% each ROI color code from AFNI i64 colormap
-% fid = fopen('/procdata/parksh/_macaque/Art/ROIs/i64_colorscale.pal');
-% A = fscanf(fid, '%s');
-% fclose(fid);
-% matRGB = sscanf(A(8:end), '#%2x%2x%2x', [3 inf])';
-% matRGB = flipud(unique(matRGB, 'rows', 'stable'));
+%% each ROI color code from AFNI i64 colormap
+fid = fopen('/procdata/parksh/_macaque/Art/ROIs/i64_colorscale.pal');
+A = fscanf(fid, '%s');
+fclose(fid);
+matRGB = sscanf(A(8:end), '#%2x%2x%2x', [3 inf])';
+matRGB = flipud(unique(matRGB, 'rows', 'stable'));
 % 
-% orderROI = [1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
+orderROI = indSortROI'; %[1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
 % 
-% fig_colorROI = figure;
-% set(fig_colorROI, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 300 20 740]);
-% ax = subplot('Position', [0 0 1 1]);
-% image(orderROI');
-% colormap(matRGB./255);
-% axis off
+fig_colorROI = figure;
+set(fig_colorROI, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [300 300 20 740]);
+ax = subplot('Position', [0 0 1 1]);
+image(orderROI');
+colormap(matRGB./255);
+axis off
 % % print(fig_colorROI, fullfile(dirFig, 'colormap_ROIset01_reorder'), '-depsc')
-% % print(fig_colorROI, fullfile(dirFig, 'colormap_ROIset01_reorder'), '-r200', '-dtiff')
+print(fig_colorROI, fullfile(dirFig, 'colormap_ROIset01_reorder_ROIclustering'), '-r200', '-dtiff')
 % 
 % 
 % %% Fig 3B bottom panel bar graph

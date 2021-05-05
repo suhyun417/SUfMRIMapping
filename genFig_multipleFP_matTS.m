@@ -18,7 +18,7 @@ dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 % locCell = find(cellfun(@numel, infoTS_subj(4).validChanID)<3);
 % get only face selective cells
 load('/procdata/parksh/_macaque/multipleFP_fsi.mat')
-locFaceCell = 1:389; % find(abs(fsi.matFSI(:,1))>0.33);
+locFaceCell =  find(fsi.matFSI(:,1)>0.33); % find(abs(fsi.matFSI(:,1))>0.33);
 
 matFR_TR = matTS_FP.matFR_TR(:, locFaceCell);
 matTS_norm = zscore(matFR_TR); 
@@ -40,6 +40,7 @@ cMap_Area = [179 226 205; 141 160 203; 252 141 98; 231 41 138]./255; %
 [sortedScore, indSortChan] = sort(score(:,1));
 
 %% plot
+% Fig S1a
 fig_matTS = figure;
 set(fig_matTS, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [500 30 550 1030]);
 imagesc(matTS_norm(:, indSortChan)')
@@ -97,6 +98,40 @@ print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_%d_%s_%s', ...
     iPP, catChanID{setPairHighRDiffArea_indChan(iPP,1)}, catChanID{setPairHighRDiffArea_indChan(iPP,2)})), '-depsc')
 end
 
+% Example cell with dissimilar time course from same area
+iArea = 4; 
+clear sortedR indPair
+locArea = find(catAreaID==iArea);
+[matR] = corr(matTS_norm(:,catAreaID==iArea), 'type', 'Spearman'); %corr(matTS_FP.matFR_TR);
+matR_uni = tril(matR, -1);
+vectR_uni = matR_uni(:);
+[sortedR, indPair] = sort(abs(vectR_uni), 'ascend');
+find(sortedR>0.03,1)
+[i, j] = ind2sub(size(matR_uni), indPair(1:10));
+catChanID(locArea([i j])) %matTS_FP.catChanID([i j])
+
+setPairs = {'157AFMoc','138AFMoc'; '145AFMoc', '138AFMoc'; '232AFMoc', '137AFMoc'; ...
+    '21AMWas', '14AMWas'; '112AMMoc', '111AMMoc'; '27Dan', '18Dan'; '17Dav', '11Dav'; '37Dav', '33Dav'};
+
+for iPP = 1:size(setPairs, 1)
+curCellID = setPairs(iPP,:);
+tLoc = contains(catChanID, curCellID); 
+
+figure;
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
+P = plot(2.4:2.4:900, matTS_norm(:, tLoc), 'LineWidth', 1);
+P(1).Color = cMap_Area(catAreaID(find(tLoc, 1)), :); %
+P(2).Color = cMap_Area(catAreaID(find(tLoc, 1)), :).*0.5;
+% set(P(:), 'Color', cMap_Area(catAreaID(find(tLoc, 1)), :)); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,1)), :);
+% P(2).LineStyle = '-'; %cMap_Area(catAreaID(setPairHighRDiffArea_indChan(iPP,2)), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,2)), :);
+set(gca, 'TickDir', 'out', 'box', 'off')
+% legend(catChanID(setPairHighRDiffArea_indChan(iPP,:))) %legend(matTS_FP.catChanID(setPairHighRDiffArea_indChan(iPP,:)))
+print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_sameFPdiffCell_%s_%s', ...
+    curCellID{1}, curCellID{2})), '-depsc')
+end
+
+
+
 %% example 3 cells with similar time course 
 figure;
 set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
@@ -123,7 +158,7 @@ for iCell = 1:length(setIndCell)
     curCellID = catChanID{setIndCell(iCell)};
     nameSubjNeural = char(curCellID(end-2:end));
     chanID = char(curCellID(1:end-3));
-    iMov = 2; %1;
+    iMov = 1;
     
     load(sprintf('/procdata/parksh/_macaque/%s/%smov%dsig%s.mat', ...
         nameSubjNeural, lower(nameSubjNeural), iMov, chanID))

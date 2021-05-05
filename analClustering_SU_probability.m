@@ -1,5 +1,7 @@
 % analyClustering_SU_probability.m
 %
+% 2020/05/03 SHP
+% Apply this to multiple face patch clustering results
 % 2017/02/04 SHP
 % Compute the probability that one cell is clustered with another cell
 % 1. Load the "*probability.mat" data 
@@ -13,12 +15,15 @@ dirDataHome = '/procdata/parksh/_macaque';
 dirDataBOLD= fullfile(dirDataHome, nameSubjBOLD); %fullfile('/procdata/parksh/', nameSubjBOLD); %
 
 % load  clustering results
-fname = fullfile(dirDataBOLD, 'Clustering_CorrMap_Movie123_ArtRHROI_probability.mat');
+% fname = fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_probability.mat'); %, 'Clustering_brainmask', 'param*') 
+
+fname = fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat');
 load(fname);
 % load(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked_probability_critCorr1.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)))  
 % load(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked_voxel_probability_critCorr2.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)))  
  
-Clustering = Clustering_meanROI; %Clustering_moviemask_valid;
+Clustering = Clustering_meanROI; %Clustering_brainmask; %Clustering_meanROI; %Clustering_moviemask_valid;
+paramClustering_global.numRepeat = 100;
 
 for iK=1:length(paramClustering_global.setK)
 
@@ -49,6 +54,12 @@ for iK=1:length(paramClustering_global.setK)
 %     fprintf(1, 'K = %d: movie mask: Results saved \n', targetK);
 
 end
+
+% Clustering_brainmask = Clustering;
+Clustering_meanROI = Clustering; %
+clear Clustering
+
+save(fname, 'Clustering*', 'param*', '-append');
 
 % save(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked_probability_critCorr1.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)), ...
 %     'Clustering*', 'param*')  

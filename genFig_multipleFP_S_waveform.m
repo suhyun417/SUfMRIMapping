@@ -7,6 +7,7 @@
 % genFigs_waveformDataMining.m
 %
 % 2021/02/23 SHP
+% 2021/05/03 SHP: modified the FSI computation part
 
 
 % Directory for saving figures as graphic files
@@ -75,11 +76,16 @@ axis off
  
  
  %% Face selectivity of these examples
+ setExampleCellIDs = {'29Dav', '30Dav', '130AFMoc', '131AFMoc', '28AMWas', '29AMWas', '108AMMoc', '109AMMoc'};
+
  % Read the spreadsheet to load corresponding fingerprinting data file name
 filename_xls = '/procdata/parksh/_macaque/multipleFP_4FPneurons_CellIDFingerPrinting.xls';
 C = readcell(filename_xls); % 1st col: cell ID in movie data, 2st col: fingerprinting results directory, 3rd col: cell file name
 
 %% Cell-by-cell computation of FSI etc.
+cond_face = 1:2; % human face & monkey face
+cond_obj = 4; % object
+
 matFaceSelective = NaN(size(setExampleCellIDs));
 for iCell = 1:numel(setExampleCellIDs)
     curCellID = setExampleCellIDs{iCell};
@@ -98,9 +104,9 @@ for iCell = 1:numel(setExampleCellIDs)
     
     % compute fsi & other things
     fprintf(1, ':::::%s:::::\n', curCellID)
-    curFSI = calc_fr_from_multidays_for_fsi(multiday);
+    curFSI = calc_fr_from_multidays_for_fsi(multiday, cond_face, cond_obj);
     
-    if abs(curFSI) > 0.33
+    if curFSI > 0.33 % abs(curFSI) > 0.33
         matFaceSelective(iCell) = 1; %face-selective
     else
         matFaceSelective(iCell) = 0; % not face-selective
