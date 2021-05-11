@@ -138,10 +138,9 @@ fr_face = reshape(fr(1:20), [], 1);
 fr_obj = reshape(fr(31:40), [], 1);
 
 
-
 xC_face = 1;
 xC_obj = 2;
-disp_wd = 0.1; % dispersion width of scattered markers
+disp_wd = 0.05; % dispersion width of scattered markers
 boxGroup = cat(1, ones(size(fr_face)), ones(size(fr_obj)).*2);
 fr_cat = cat(1, fr_face, fr_obj);
 
@@ -149,13 +148,25 @@ color_face = [0 0 0]; %
 color_obj = [1 1 1].*0.6;
 
 fig2a_inset = figure;
-set(fig2a_inset, 'Color', 'w', 'PaperPositionMode', 'auto','Position', [600 600 330 425])
+set(fig2a_inset, 'Color', 'w', 'PaperPositionMode', 'auto','Position', [600 600 370 343])
 
-boxplot(fr_cat, boxGroup,'Whisker', 5, 'ColorGroup', boxGroup, 'Colors', [0 0 0; 0.6 0.6 0.6]);
+boxplot(fr_cat, boxGroup,'Whisker', 5, 'ColorGroup', boxGroup, 'Colors', [0 0 0; 0.6 0.6 0.6]) %, 'Positions', [1 1.2]);
 set(findobj(gca, 'type', 'line'), 'LineWidth', 3, 'LineStyle', '-')
 hold on
-plot((xC_face-0.5)+disp_wd.*randn(size(fr_face)), fr_face, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_face, 'LineWidth', 2);
-plot((xC_obj-0.5)+disp_wd.*randn(size(fr_obj)), fr_obj, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_obj, 'LineWidth', 2);
+plot((xC_face-0.3)+disp_wd.*randn(size(fr_face)), fr_face, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_face, 'LineWidth', 2);
+plot((xC_obj-0.3)+disp_wd.*randn(size(fr_obj)), fr_obj, 'o', 'MarkerSize', 10, 'MarkerEdgeColor', color_obj, 'LineWidth', 2);
+% line([xC_face-0.3 xC_face+0.3], [mean(fr_face) mean(fr_face)], 'Color', color_face, 'LineWidth', 2)
+% line([xC_obj-0.3 xC_obj+0.3], [mean(fr_obj) mean(fr_obj)], 'Color', color_obj, 'LineWidth', 2)
+
+ylim([-0.1 2])
+xlim([0.3 2.6])
+set(gca, 'Box', 'off', 'TickDir', 'out', 'LineWidth', 3)
+set(gca, 'YTick', [0 2], 'TickLength', [0.05 0.02])
+set(gca, 'XTick', [xC_face, xC_obj]-0.15)
+
+% save
+print(fig2a_inset, fullfile(dirFig, sprintf('multipleFP_Fig2a_inset_faceobj_%s', curCellID)), '-depsc')
+
 
 % % first, boxplot
 % b1 = boxchart(ones(size(fr_face)).*xC_face, fr_face);

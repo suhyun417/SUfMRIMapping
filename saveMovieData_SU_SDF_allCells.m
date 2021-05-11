@@ -114,30 +114,30 @@ for iSubj = 1:length(setNameSubjNeural) %curSetNameSubjNeural)
         infoTS_subj(iSubj).validChan_subjID(locNFP) = subjID(2);
     end
        
-%     indMovieNeuron = find(ismember(paramSDF.setMovIDs, setMovie)>0);
-%     % 1. No MION, TR resolution (375 time points)
-%     matFR_TR = NaN(nt, length(validC));
-%     for iChan = 1:length(validC)
-%         tempFR = [];
-%         tempFR = cat(1, S(validC(iChan), indMovieNeuron).mnFR);
-%         matFR_TR(:,iChan) = tempFR;
-%     end
-%     matTS_subj(iSubj).matFR_TR = matFR_TR;
-%     
-%     % 2. MION convolved, TR resolution
-%     matNeuralRGR = NaN(nt, length(validC));
-%     for iChan = 1:length(validC)
-%         neuralrgrs=[];
-%         for iMov = 1:length(indMovieNeuron)
-%             curNeuralTC = S(validC(iChan), indMovieNeuron(iMov)).mnFR(8:125); %S(validC(iChan), indMovieNeuron(iMov)).mnFR
-%             curNeuralTC = curNeuralTC-mean(curNeuralTC); % centering
-%             curNeuralTC = doConv(curNeuralTC,k); % convolve MION kernel %conv(neuralrgrs,k,'same');
-%             curNeuralTC = cat(2, NaN(1,7), curNeuralTC); %curNeuralTC(1:7) = NaN;
-%             neuralrgrs = cat(2, neuralrgrs, curNeuralTC); % concatenation across movies
-%         end
-%         matNeuralRGR(:,iChan) = neuralrgrs';
-%     end
-%     matTS_subj(iSubj).matNeuralRGR = matNeuralRGR;
+    indMovieNeuron = find(ismember(paramSDF.setMovIDs, setMovie)>0);
+    % 1. No MION, TR resolution (375 time points)
+    matFR_TR = NaN(nt, length(validC));
+    for iChan = 1:length(validC)
+        tempFR = [];
+        tempFR = cat(1, S(validC(iChan), indMovieNeuron).mnFR);
+        matFR_TR(:,iChan) = tempFR;
+    end
+    matTS_subj(iSubj).matFR_TR = matFR_TR;
+    
+    % 2. MION convolved, TR resolution
+    matNeuralRGR = NaN(nt, length(validC));
+    for iChan = 1:length(validC)
+        neuralrgrs=[];
+        for iMov = 1:length(indMovieNeuron)
+            curNeuralTC = S(validC(iChan), indMovieNeuron(iMov)).mnFR(8:125); %S(validC(iChan), indMovieNeuron(iMov)).mnFR
+            curNeuralTC = curNeuralTC-mean(curNeuralTC); % centering
+            curNeuralTC = doConv(curNeuralTC,k); % convolve MION kernel %conv(neuralrgrs,k,'same');
+            curNeuralTC = cat(2, NaN(1,7), curNeuralTC); %curNeuralTC(1:7) = NaN;
+            neuralrgrs = cat(2, neuralrgrs, curNeuralTC); % concatenation across movies
+        end
+        matNeuralRGR(:,iChan) = neuralrgrs';
+    end
+    matTS_subj(iSubj).matNeuralRGR = matNeuralRGR;
     
     % 3. Fine temporal resolution, normalized (z-scored) for each movie
     sizeTimeBin_sec = 0.1;
@@ -151,13 +151,13 @@ for iSubj = 1:length(setNameSubjNeural) %curSetNameSubjNeural)
     end
     matTS_subj(iSubj).matFR_SU_10hz = matFR_SU;
     
-%     % normalized (z-scored) for each movie
-%     matFR_SU_norm=[];
-%     for iM = 1:length(setMovie)
-%         tempFR = cat(2, FR_dTfine_10hz(:, iM).mnFR);
-%         matFR_SU_norm = cat(1, matFR_SU_norm, zscore(tempFR)); % normalized time series for each movie and concatenate across movies
-%     end
-%     matTS_subj(iSubj).matFR_SU_10hz_norm = matFR_SU_norm;
+    % normalized (z-scored) for each movie
+    matFR_SU_norm=[];
+    for iM = 1:length(setMovie)
+        tempFR = cat(2, FR_dTfine_10hz(:, iM).mnFR);
+        matFR_SU_norm = cat(1, matFR_SU_norm, zscore(tempFR)); % normalized time series for each movie and concatenate across movies
+    end
+    matTS_subj(iSubj).matFR_SU_10hz_norm = matFR_SU_norm;
     
     % 4. Fine temporal resolution, 1Hz (1 per second)
     sizeTimeBin_sec = 1;
@@ -171,13 +171,13 @@ for iSubj = 1:length(setNameSubjNeural) %curSetNameSubjNeural)
     end
     matTS_subj(iSubj).matFR_SU_1hz = matFR_SU;
     
-%     % normalized (z-scored) for each movie
-%     matFR_SU_norm=[];
-%     for iM = 1:length(setMovie)
-%         tempFR = cat(2, FR_dTfine_1hz(:, iM).mnFR);
-%         matFR_SU_norm = cat(1, matFR_SU_norm, zscore(tempFR)); % normalized time series for each movie and concatenate across movies
-%     end
-%     matTS_subj(iSubj).matFR_SU_1hz_norm = matFR_SU_norm;
+    % normalized (z-scored) for each movie
+    matFR_SU_norm=[];
+    for iM = 1:length(setMovie)
+        tempFR = cat(2, FR_dTfine_1hz(:, iM).mnFR);
+        matFR_SU_norm = cat(1, matFR_SU_norm, zscore(tempFR)); % normalized time series for each movie and concatenate across movies
+    end
+    matTS_subj(iSubj).matFR_SU_1hz_norm = matFR_SU_norm;
     
 end
 

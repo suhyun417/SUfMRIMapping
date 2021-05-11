@@ -18,7 +18,7 @@ dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 % locCell = find(cellfun(@numel, infoTS_subj(4).validChanID)<3);
 % get only face selective cells
 load('/procdata/parksh/_macaque/multipleFP_fsi.mat')
-locFaceCell =  find(fsi.matFSI(:,1)>0.33); % find(abs(fsi.matFSI(:,1))>0.33);
+locFaceCell =  1:389; %find(fsi.matFSI(:,1)>0.33); % find(abs(fsi.matFSI(:,1))>0.33);
 
 matFR_TR = matTS_FP.matFR_TR(:, locFaceCell);
 matTS_norm = zscore(matFR_TR); 
