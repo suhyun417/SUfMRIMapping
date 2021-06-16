@@ -1,8 +1,11 @@
 function [] = doClusteringCorrMap_multipleSubjects_multiplePatches_parallel(curK, flagSave)
 %
+% 2020/06/16 SHP 
+%       modified to cluster only face-selective neurons from 4
+%       face patches. removed the parts using only movie-driven voxels
 % 2020/08/13 SHP
-% K-means clustering of correlation maps of single units from 4 face
-% patches using biowulf
+%       K-means clustering of correlation maps of single units from 4 face
+%       patches using biowulf
 
 
 % Set directories
@@ -16,7 +19,7 @@ end
 
 
 %% Load the data
-fname = 'matR4clusteringmultiplepatches.mat';
+fname = 'matR4clusteringmultiplepatches_faceselective.mat'; %'matR4clusteringmultiplepatches.mat';
 load(fullfile(dirDataBOLD, fname))
 
 % Take care of possible string-double issue from compile
@@ -34,7 +37,7 @@ paramClustering_global.methods = 'KMeans';
 paramClustering_global.setK = setK;
 paramClustering_global.numReplicates = numReplicates;
 paramClustering_global.descriptions = 'Clustering of neurons based on the whole-brain correlation maps with brainmask and moviemask';
-% paramClustering_global.numRepeat = numRepeat;
+paramClustering_global.numRepeat = numRepeat;
 
 
 
@@ -44,11 +47,11 @@ Clustering_brainmask.totalSS_SU = totalSS;
 [a, c, totalSS] = kmeans(matR_brainmask, 1); % voxel
 Clustering_brainmask.totalSS_Vox = totalSS;
 
-% totalSS: moviemask
-[a, c, totalSS] = kmeans(matR_moviemask', 1); % single unit
-Clustering_moviemask.totalSS_SU = totalSS;
-[a, c, totalSS] = kmeans(matR_moviemask, 1); % voxel
-Clustering_moviemask.totalSS_Vox = totalSS;
+% % totalSS: moviemask
+% [a, c, totalSS] = kmeans(matR_moviemask', 1); % single unit
+% Clustering_moviemask.totalSS_SU = totalSS;
+% [a, c, totalSS] = kmeans(matR_moviemask, 1); % voxel
+% Clustering_moviemask.totalSS_Vox = totalSS;
 
 % for K = setK
     
@@ -87,52 +90,54 @@ Clustering_moviemask.totalSS_Vox = totalSS;
     Clustering_brainmask.resultKMeans.Vox_sumD = Vox_sumD_brainmask;
     
     if flagSave
-        save(fullfile(dirSaveFile, sprintf('Clustering_CorrMap_4FPs_Movie123_probability_K%d.mat', curK)),...
+        save(fullfile(dirSaveFile, sprintf('Clustering_CorrMap_4FPs_faceselective_Movie123_probability_K%d.mat', curK)),...
             'Clustering*', 'paramClustering*');
-%         save(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)), ... %nameSubjNeural, nameSubjBOLD)),...
-%             'Clustering_moviemask', 'paramClustering*');
+%         save(fullfile(dirSaveFile, sprintf('Clustering_CorrMap_4FPs_Movie123_probability_K%d.mat', curK)),...
+%             'Clustering*', 'paramClustering*');
+% %         save(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)), ... %nameSubjNeural, nameSubjBOLD)),...
+% %             'Clustering_moviemask', 'paramClustering*');
         fprintf(1, ':: K = %d; Results saved \n', curK);
     end
     
-    %% moviemask
-    SU_indCluster_moviemask = NaN(size(matR_moviemask, 2), numRepeat);
-    SU_sumD_moviemask = NaN(curK, numRepeat);
+%     %% moviemask
+%     SU_indCluster_moviemask = NaN(size(matR_moviemask, 2), numRepeat);
+%     SU_sumD_moviemask = NaN(curK, numRepeat);
+%     
+%     Vox_indCluster_moviemask = NaN(size(matR_moviemask, 1), numRepeat);
+%     Vox_sumD_moviemask = NaN(curK, numRepeat);
+%     
+%     for iRep = 1:numRepeat
+%         
+%         fprintf(1, ':: K = %d; Rep = %d/%d; moviemask ::\n', curK, iRep, numRepeat);
+%         
+%         % Cluster single units based on whole brain correlation
+%         [IDX_SU, C_SU, SUMD_SU] = kmeans(matR_moviemask', curK,...
+%             'Replicates', numReplicates, 'Options', opts);
+%         
+%         SU_indCluster_moviemask(:, iRep) = IDX_SU;
+%         SU_sumD_moviemask(:, iRep) = SUMD_SU;
+%         
+%         % Cluster voxels based on single unit correlation
+%         [IDX_Vox, C_Vox, SUMD_Vox] = kmeans(matR_moviemask, curK,...
+%             'Replicates', numReplicates, 'Options', opts);
+%         
+%         Vox_indCluster_moviemask(:, iRep) = IDX_Vox;
+%         Vox_sumD_moviemask(:, iRep) = SUMD_Vox;
+%         
+%     end
+%     
+%     Clustering_moviemask.resultKMeans.SU_indCluster = SU_indCluster_moviemask;
+%     Clustering_moviemask.resultKMeans.SU_sumD = SU_sumD_moviemask;
+%     Clustering_moviemask.resultKMeans.Vox_indCluster = Vox_indCluster_moviemask;
+%     Clustering_moviemask.resultKMeans.Vox_sumD = Vox_sumD_moviemask;
     
-    Vox_indCluster_moviemask = NaN(size(matR_moviemask, 1), numRepeat);
-    Vox_sumD_moviemask = NaN(curK, numRepeat);
-    
-    for iRep = 1:numRepeat
-        
-        fprintf(1, ':: K = %d; Rep = %d/%d; moviemask ::\n', curK, iRep, numRepeat);
-        
-        % Cluster single units based on whole brain correlation
-        [IDX_SU, C_SU, SUMD_SU] = kmeans(matR_moviemask', curK,...
-            'Replicates', numReplicates, 'Options', opts);
-        
-        SU_indCluster_moviemask(:, iRep) = IDX_SU;
-        SU_sumD_moviemask(:, iRep) = SUMD_SU;
-        
-        % Cluster voxels based on single unit correlation
-        [IDX_Vox, C_Vox, SUMD_Vox] = kmeans(matR_moviemask, curK,...
-            'Replicates', numReplicates, 'Options', opts);
-        
-        Vox_indCluster_moviemask(:, iRep) = IDX_Vox;
-        Vox_sumD_moviemask(:, iRep) = SUMD_Vox;
-        
-    end
-    
-    Clustering_moviemask.resultKMeans.SU_indCluster = SU_indCluster_moviemask;
-    Clustering_moviemask.resultKMeans.SU_sumD = SU_sumD_moviemask;
-    Clustering_moviemask.resultKMeans.Vox_indCluster = Vox_indCluster_moviemask;
-    Clustering_moviemask.resultKMeans.Vox_sumD = Vox_sumD_moviemask;
-    
-    if flagSave
-        save(fullfile(dirSaveFile, sprintf('Clustering_CorrMap_4FPs_Movie123_probability_K%d.mat', curK)),...
-            'Clustering*', 'paramClustering*');
-%         save(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)), ... %nameSubjNeural, nameSubjBOLD)),...
-%             'Clustering_moviemask', 'paramClustering*');
-        fprintf(1, ':: K = %d; Results saved \n', curK);
-    end
+%     if flagSave
+%         save(fullfile(dirSaveFile, sprintf('Clustering_CorrMap_4FPs_Movie123_probability_K%d.mat', curK)),...
+%             'Clustering*', 'paramClustering*');
+% %         save(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)), ... %nameSubjNeural, nameSubjBOLD)),...
+% %             'Clustering_moviemask', 'paramClustering*');
+%         fprintf(1, ':: K = %d; Results saved \n', curK);
+%     end
     
 % end
 
