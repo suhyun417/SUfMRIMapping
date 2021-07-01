@@ -1,5 +1,7 @@
 % analyClustering_SU_probability.m
 %
+% 2021/06/21 SHP
+% Apply this to multiple face patch clustering results using only face cells
 % 2020/05/03 SHP
 % Apply this to multiple face patch clustering results
 % 2017/02/04 SHP
@@ -16,13 +18,14 @@ dirDataBOLD= fullfile(dirDataHome, nameSubjBOLD); %fullfile('/procdata/parksh/',
 
 % load  clustering results
 % fname = fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_probability.mat'); %, 'Clustering_brainmask', 'param*') 
+% fname = fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat');
 
-fname = fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat');
+fname = fullfile(dirDataBOLD, 'Clustering_CorrMap_4FPs_faceselective_Movie123_probability.mat'); %, 'Clustering_brainmask', 'param*') 
 load(fname);
 % load(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked_probability_critCorr1.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)))  
 % load(fullfile(dirDataBOLD, sprintf('Clustering_%s%sMovie123_new_masked_voxel_probability_critCorr2.mat', cell2mat(setNameSubjNeural), nameSubjBOLD)))  
  
-Clustering = Clustering_meanROI; %Clustering_brainmask; %Clustering_meanROI; %Clustering_moviemask_valid;
+Clustering = Clustering_brainmask; %Clustering_meanROI; %Clustering_brainmask; %Clustering_meanROI; %Clustering_moviemask_valid;
 paramClustering_global.numRepeat = 100;
 
 for iK=1:length(paramClustering_global.setK)
@@ -55,8 +58,8 @@ for iK=1:length(paramClustering_global.setK)
 
 end
 
-% Clustering_brainmask = Clustering;
-Clustering_meanROI = Clustering; %
+Clustering_brainmask = Clustering;
+% Clustering_meanROI = Clustering; %
 clear Clustering
 
 save(fname, 'Clustering*', 'param*', '-append');

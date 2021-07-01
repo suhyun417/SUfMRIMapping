@@ -8,7 +8,7 @@ flagRecompile = 1;
 setK = 2:40;
 % setEdK = setStK+1;
 
-script_path = '/data/parks20/analysis/NeuroMRI/_compiled/_clusteringMultiplePatches'; % where the compiled script is
+script_path = '/data/parks20/analysis/Biowulf/_compiled/_clusteringMultiplePatches'; % where the compiled script is
 compiled_script = 'run_doClusteringCorrMap_multipleSubjects_multiplePatches_parallel.sh';
 matlab_path = '/usr/local/matlab-compiler/v94'; % matlab component runtime (MCR): version must match the version of Matlab
 mcrcachestring = 'export MCR_CACHE_ROOT=/lscratch/$SLURM_JOBID;';
