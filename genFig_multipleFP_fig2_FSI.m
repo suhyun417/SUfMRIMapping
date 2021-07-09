@@ -98,7 +98,7 @@ set(gca, 'XTick', [], 'YTick', [])
 
 
 %% Fig 2a example: heatmap?
-curCellID = '33Dav';
+curCellID = '10Dan'; %'130AFMoc'; %'33Dav';
 nameSubjNeural = char(curCellID(end-2:end));
     
 % get the index from the spreadsheet
@@ -131,12 +131,31 @@ end
 fr = nanmean(fr,1);
 baseline_fr = nanmean(multiday.fr.base(:));
 
-max_fr = nanmax(abs(fr-baseline_fr));
-norm_fr = (fr - baseline_fr)/(max_fr);
 
-fr_face = reshape(fr(1:20), [], 1);
-fr_obj = reshape(fr(31:40), [], 1);
+%% face-selective index (fsi)
+% stimulus index for face & object category
+cond_face = 1:2; % human face & monkey face
+cond_obj = 4; % object
+ind_face = [];
+for icond_face = 1:length(cond_face)
+     ind_face = cat(2, ind_face, (cond_face(icond_face)-1)*10+1:cond_face(icond_face)*10);
+end
+ind_nonface = [];
+for icond_obj = 1:length(cond_obj)
+     ind_nonface = cat(2, ind_nonface, (cond_obj(icond_obj)-1)*10+1:cond_obj(icond_obj)*10);
+end
 
+fsi_fun = @(x,y) (x-y)/(abs(x)+abs(y))*sign(double(sign(x)>0|sign(y)>0)-0.5);
+response_face    = nanmean(fr(ind_face)) -baseline_fr;  % face category
+response_nonface = nanmean(fr(ind_nonface))-baseline_fr;  % non-face category 
+fsi = fsi_fun(response_face,response_nonface);
+
+disp(['FSI: ' num2str(fsi)]);
+
+
+%% Boxplot
+fr_face = fr(ind_face)';
+fr_obj = fr(ind_nonface)';
 
 xC_face = 1;
 xC_obj = 2;
@@ -158,14 +177,16 @@ plot((xC_obj-0.3)+disp_wd.*randn(size(fr_obj)), fr_obj, 'o', 'MarkerSize', 10, '
 % line([xC_face-0.3 xC_face+0.3], [mean(fr_face) mean(fr_face)], 'Color', color_face, 'LineWidth', 2)
 % line([xC_obj-0.3 xC_obj+0.3], [mean(fr_obj) mean(fr_obj)], 'Color', color_obj, 'LineWidth', 2)
 
-ylim([-0.1 2])
+% ylim([-0.1 2])
 xlim([0.3 2.6])
 set(gca, 'Box', 'off', 'TickDir', 'out', 'LineWidth', 3)
-set(gca, 'YTick', [0 2], 'TickLength', [0.05 0.02])
+set(gca, 'YTick', 10:10:50, 'TickLength', [0.05 0.02]) %set(gca, 'YTick', [0 2], 'TickLength', [0.05 0.02])
 set(gca, 'XTick', [xC_face, xC_obj]-0.15)
 
+[H,P,CI,STATS] = ttest2(fr_face, fr_obj)
+
 % save
-print(fig2a_inset, fullfile(dirFig, sprintf('multipleFP_Fig2a_inset_faceobj_%s', curCellID)), '-depsc')
+print(fig2a_inset, fullfile(dirFig, sprintf('multipleFP_Fig2a_inset_faceobj_%s_nolabel', curCellID)), '-depsc')
 
 
 % % first, boxplot

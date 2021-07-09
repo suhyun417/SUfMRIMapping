@@ -12,7 +12,7 @@ function [fsi] = calc_fr_from_multidays_for_fsi(multiday, cond_face, cond_obj)
 % load /procdata/parksh/_macaque/Dav/_orgData/Davida180723/FPrint/22_109_1.mat
 
 %% parameters
-response_time_win = [50 250];    % [0 200]; %[50 250];    % calculation window, ms
+response_time_win =  [0 200]; %[50 250];    % [0 200]; %[50 250];    % calculation window, ms
 baseline_time_win = [-50 0]; %[-100 50];    % calculation window, ms
 
 min_mean_fr = 1;  % minimum mean firing rate required

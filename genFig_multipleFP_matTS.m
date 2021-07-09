@@ -14,6 +14,9 @@
 load('/procdata/parksh/_macaque/matSDF_Movie123_allCells.mat', 'infoTS_subj', 'matTS_FP')
 dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
 
+% face selectivity
+load('/procdata/parksh/_macaque/multipleFP_fsi.mat') 
+
 % % Option A: get only face selective cells
 % load('/procdata/parksh/_macaque/multipleFP_fsi.mat')
 % locFaceCell =  find(fsi.matFSI(:,1)>0.33); % find(abs(fsi.matFSI(:,1))>0.33);
@@ -47,21 +50,41 @@ cMap_Area = [179 226 205; 141 160 203; 252 141 98; 231 41 138]./255; %
 %% Fig S1a
 fig_matTS = figure;
 set(fig_matTS, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [500 30 550 1030]);
+sp1 = subplot('Position', [0.05 0.1 0.75 0.85]);
 imagesc(matTS_norm(:, indSortChan)')
 set(gca, 'XTick', 0:25:375, 'XTickLabel', 0:1:15, 'YTick', [])
-colormap(hot); %jet)
+colormap(sp1, hot); %jet)
 set(gca, 'CLim', [-1 1].*5) %[0 5])
 xlabel('time (m)')
 ylabel('cells')
 set(gca, 'YColor', 'none', 'TickDir', 'out', 'Box', 'off')
 
-fig_matTS_sites = figure;
-set(fig_matTS_sites, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [500 30 50 1030]);
+% fig_matTS_sites = figure;
+% set(fig_matTS_sites, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [500 30 50 1030]);
+sp2 = subplot('Position', [0.81 0.1 0.07 0.85]);
 imagesc(catAreaID(indSortChan)) %magesc(matTS_FP.catAreaID(indSortChan))
-colormap(cMap_Area)
+colormap(sp2, cMap_Area)
 set(gca, 'Box', 'off')
 axis off
-% colormap(cMap_Area_temp)
+
+% option: mark the face selectivity 
+setFSI = fsi.matFSI(:,2); % taking only FSI
+setFSI(abs(fsi.matFSI(:,2))<1) = 0; % no fingerprinting data available
+setFSI(fsi.matFSI(:,2)<0) = 0.5; % not face selective
+
+cMap_fsi = [1 1 1; 0.7 0.7 0.7; 0 0 0]; % no data = white, not face selective = gray, face selective = black
+
+figure(fig_matTS);
+sp3 = subplot('Position', [0.89 0.1 0.03 0.85]);
+imagesc(setFSI(indSortChan))
+colormap(sp3, cMap_fsi)
+set(sp3, 'XTick', [], 'YTick', [])
+% set(sp4, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
+% set(sp4,  'YColor', 'none', 'Box', 'off', 'XColor', 'none', 'XTick', [])
+% set(sp4, 'XLim', [0.5 3.5]);
+
+print(fig_matTS, fullfile(dirFig, 'multipleFP_FigS_matTS_allCells_PCsorted_areas_faceCellMark'), '-r200', '-dtiff');
+
 
 % figure
 % plot(zscore(matTS_FP.matFR_TR(:, indSortChan(389-10:389))))
@@ -165,8 +188,8 @@ print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_width1_1minScaleB
 %% Raster
 % setIndCell = [153 74 141 200 26];
 setCellIDs = {'47AMWas', '232AFMoc', '10Dan'};
-% tLoc = find(contains(catChanID, setCellIDs)); 
-for iCell = 1:length(setIndCell)
+tLoc = find(contains(catChanID, setCellIDs)); 
+for iCell = 1:length(setCellIDs)
     curCellID = setCellIDs{iCell}; %catChanID{setIndCell(iCell)};
     nameSubjNeural = char(curCellID(end-2:end));
     chanID = char(curCellID(1:end-3));
@@ -194,14 +217,14 @@ for iCell = 1:length(setIndCell)
             plotdat_x = repmat(dat.s{indTrial}',[3 1]);
         end
         plotdat_y = repmat([i-1; i; NaN],[1 size(plotdat_x,2)]);
-        plot(ax_raster, plotdat_x(:),plotdat_y(:),'-','LineWidth',0.01, 'Color', cMap_Area(catAreaID(setIndCell(iCell)), :));
+        plot(ax_raster, plotdat_x(:),plotdat_y(:),'-','LineWidth',0.01, 'Color', cMap_Area(catAreaID(tLoc(iCell)), :));
     end
     xlim([0 300000]);
     ylim([0 length(locValidTrial)]);
     axis off
     box off
 %     print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d_newColor', curCellID, iMov)), '-depsc');
-    print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d_newColor', curCellID, iMov)), '-dpng');
+    print(fig_raster, fullfile(dirFig, sprintf('multipleFP_FigS_raster_exampleCell_%s_movie%d_newColor', curCellID, iMov)), '-depsc');
 end
 
 

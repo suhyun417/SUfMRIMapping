@@ -240,61 +240,63 @@ L2 = line(repmat([0.5;1.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Co
     'LineWidth', 2, 'LineStyle', ':');
 set(sp2, 'XLim', [0.5 1.5]);
 
-sp3 = subplot('Position', [0.8 0.05 0.1 0.9]);
-% imagesc(setFSI(indSortChan_reorder))
-% colormap(sp3, cMap_fsi)
-% set(sp3, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
-set(sp3,  'YDir', 'reverse', 'YColor', 'none', 'Box', 'off', 'XColor', 'none', 'XTick', [])
-L3 = line(repmat([0.5; 1], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k',...
-    'LineWidth', 2, 'LineStyle', ':');
-set(sp3, 'YLim', [0.5 389.5]);
-
-% print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_newColor'), '-r200', '-dtiff');
-
-% Mark fig 2 example neurons?
-setExampleCellIDs = {'33Dav', '130AFMoc', '097aMat', '10Dan'; ...
-    '27Dav', '065aTor', '39AMWas', '117AMMoc'; ...
-    '25Dav', '022bSpi', '51AMWas', '109AMMoc'; ...
-    '16Dav', '045aSpi', '33AMWas', '05Dan'; ...
-    '06Dav', '122AFMoc', '06AMWas', '115AMMoc'};
-
-chanID_reorder = Clustering_meanROI.catChanID(indSortChan_reorder);
-locExampleCell = find(contains(Clustering_meanROI.catChanID(indSortChan_reorder), setExampleCellIDs')>0);
-
-fig_temp = figure;
-set(fig_temp, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 350 1000]);
-sp1 = subplot('Position', [0.08 0.05 0.62 0.9]);
-imagesc(Clustering_meanROI.matR(indSortChan_reorder, indSortROI))
-set(sp1, 'YAxisLocation', 'right')
-set(gca, 'CLim', [-1 1].*0.5)
-locDiff = find(abs(diff(sortedClust_reorder))>0);
-L = line(repmat([-0.8 37.5]', 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k');
-colormap(sp1, cMap_corrSUMA)
-set(sp1, 'YTick', locExampleCell, 'YTIckLabel', chanID_reorder(locExampleCell))
-set(sp1, 'TickDir', 'out')
-set(sp1, 'XColor', 'none')
-
-% %Temp: fsi
-% load('/procdata/parksh/_macaque/multipleFP_fsi.mat') 
-% 
-% setFSI = fsi.matFSI(:,2); % taking only FSI
-% setFSI(abs(fsi.matFSI(:,2))<1) = 0; % no fingerprinting data available
-% setFSI(fsi.matFSI(:,2)<0) = 0.5; % not face selective
-% 
-% locDiff = find(abs(diff(sortedClust_reorder))>0);
-% cMap_fsi = [1 1 1; 0.7 0.7 0.7; 0 0 0]; % no data = white, not face selective = gray, face selective = black
-% 
-% figure(fig3b2);
-% sp3 = subplot('Position', [0.78 0.05 0.05 0.9]);
-% imagesc(setFSI(indSortChan_reorder))
-% colormap(sp3, cMap_fsi)
-% set(sp3, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
-% set(sp3,  'YColor', 'none', 'Box', 'off', 'XColor', 'none', 'XTick', [])
-% L3 = line(repmat([0.5; 2.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k',...
+% sp3 = subplot('Position', [0.8 0.05 0.1 0.9]);
+% % imagesc(setFSI(indSortChan_reorder))
+% % colormap(sp3, cMap_fsi)
+% % set(sp3, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
+% set(sp3,  'YDir', 'reverse', 'YColor', 'none', 'Box', 'off', 'XColor', 'none', 'XTick', [])
+% L3 = line(repmat([0.5; 1], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k',...
 %     'LineWidth', 2, 'LineStyle', ':');
-% set(sp3, 'XLim', [0.5 2.5]);
+% set(sp3, 'YLim', [0.5 389.5]);
+
+%Temp: fsi
+load('/procdata/parksh/_macaque/multipleFP_fsi.mat') 
+ 
+setFSI = fsi.matFSI(:,2); % taking only FSI
+setFSI(abs(fsi.matFSI(:,2))<1) = 0; % no fingerprinting data available
+setFSI(fsi.matFSI(:,2)<0) = 0.5; % not face selective
+
+locDiff = find(abs(diff(sortedClust_reorder))>0);
+cMap_fsi = [1 1 1; 0.7 0.7 0.7; 0 0 0]; % no data = white, not face selective = gray, face selective = black
+
+figure(fig3b2);
+sp4 = subplot('Position', [0.8 0.05 0.1 0.9]);
+imagesc(setFSI(indSortChan_reorder))
+colormap(sp4, cMap_fsi)
+set(sp4, 'XColor', 'none') %1, 'YTickLabel', 'Area info for each cell')
+set(sp4,  'YColor', 'none', 'Box', 'off', 'XColor', 'none', 'XTick', [])
+L4 = line(repmat([0.5; 3.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k',...
+    'LineWidth', 2, 'LineStyle', ':');
+set(sp4, 'XLim', [0.5 3.5]);
+
+print(fig3b2, fullfile(dirFig, 'multipleFP_Fig3B2_matR_meanROIbyCells_allCells_sortedGroup_K10_newColor_faceCellMark'), '-r200', '-dtiff');
+
+% % Mark fig 2 example neurons?
+% setExampleCellIDs = {'33Dav', '130AFMoc', '097aMat', '10Dan'; ...
+%     '27Dav', '065aTor', '39AMWas', '117AMMoc'; ...
+%     '25Dav', '022bSpi', '51AMWas', '109AMMoc'; ...
+%     '16Dav', '045aSpi', '33AMWas', '05Dan'; ...
+%     '06Dav', '122AFMoc', '06AMWas', '115AMMoc'};
 % 
-% % print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_purplegreen_fsi'), '-r200', '-dtiff');
+% chanID_reorder = Clustering_meanROI.catChanID(indSortChan_reorder);
+% locExampleCell = find(contains(Clustering_meanROI.catChanID(indSortChan_reorder), setExampleCellIDs')>0);
+% 
+% fig_temp = figure;
+% set(fig_temp, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 350 1000]);
+% sp1 = subplot('Position', [0.08 0.05 0.62 0.9]);
+% imagesc(Clustering_meanROI.matR(indSortChan_reorder, indSortROI))
+% set(sp1, 'YAxisLocation', 'right')
+% set(gca, 'CLim', [-1 1].*0.5)
+% locDiff = find(abs(diff(sortedClust_reorder))>0);
+% L = line(repmat([-0.8 37.5]', 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k');
+% colormap(sp1, cMap_corrSUMA)
+% set(sp1, 'YTick', locExampleCell, 'YTIckLabel', chanID_reorder(locExampleCell))
+% set(sp1, 'TickDir', 'out')
+% set(sp1, 'XColor', 'none')
+
+
+
+% print(fig3b2, fullfile(dirFig, 'Fig3B2_matR_meanROIbyCells_sortedGroup_K10_purplegreen_fsi'), '-r200', '-dtiff');
 
 %% Fig 3C: average correlation map of each cell cluster: generate colormap with color-code of correlation in each fROI
 % For each cell cluster, average correlation for each fROI across cells
