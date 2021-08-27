@@ -139,6 +139,7 @@ clear ttt
 numROI = length(Clustering_meanROI.nameROI);
 % orderROI = [1 2 22 3 4 35 34 12 13 14 29 30 6 7 8 36 9 10 11 32 15 5 23 26 37 27 28 16 17 33 18 19 20 21 31 24 25]; % 1:37;
 
+tempS = struct([]);
 % ordering of cells: ML-AF-AM-AAM, while maintaining the grouping
 for iK = 1:curK
     tempS(iK).indSortChan_org = indSortChan(sortedClust==iK);
