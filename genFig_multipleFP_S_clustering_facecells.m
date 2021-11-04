@@ -11,7 +11,7 @@ if ~isempty(strfind(ss, 'Volume')) % if it's local
     dirProcdata = '/Volumes/PROCDATA';
     dirLibrary = '/Volumes/LIBRARY';
 else % on virtual machine
-    dirProjects = '/projects';
+    dirProjects = '/nifvault/NIFVAULT/projects';
     dirProcdata = '/procdata';
     dirLibrary = '/library';
 end
@@ -22,7 +22,7 @@ addpath(fullfile(dirProjects, 'parksh/_toolbox/afni_matlab'))
 addpath(fullfile(dirProjects, 'parksh/_toolbox/hslcolormap'))
 
 % Directory for saving figures as graphic files
-dirFig = '/projects/parksh/NeuroMRI/_labNote/_figs';
+dirFig = '/nifvault/NIFVAULT/projects/parksh/NeuroMRI/_labNote/_figs';
 
 %% Load data
 % load('/procdata/parksh/_macaque/Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat', 'Clustering_meanROI')

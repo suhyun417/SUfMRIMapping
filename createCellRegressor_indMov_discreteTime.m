@@ -1,20 +1,11 @@
-function FR_dT = createCellRegressor_indMov_discreteTime(dirDataNeural, setCellIDs, setMovIDs, sizeTimeBin_sec) % , indDataMov) %, flagConcat)
+function spikeCounts = createCellRegressor_indMov_discreteTime(dirDataNeural, setCellIDs, setMovIDs, sizeTimeBin_sec) % , indDataMov) %, flagConcat)
 
-% clear global S
-% global S
+% 2021/11/04 SHP
+% modified the previous function to use histcounts
+% The more appropriate field name for matFR (and mnFR) is matSpikeCounts
+% (and mnSpikeCounts), because they are not firing rate but some of spikes,
+% but for back compatibility just kept the original field name
 
-% global flagLocal
-% 
-% if flagLocal
-%     addpath('/Volumes/share/UCNI_Library/matlab_utils/');
-%     dirData = '/Volumes/USRlab/data/parksh/'; %/rmov/';
-% else
-%     addpath('/einstein0/share/UCNI_Library/matlab_utils/');
-%     dirData = '/einstein0/USRlab/data/parksh/'; %/rmov/';
-% end
-
-% dirData = '/einstein0/USRlab/data/parksh/'; %/rmov/';
-% W = what(dirDataNeural);
 d_n = dir(fullfile(dirDataNeural, '*sig*.mat'));
 d_n = d_n(cellfun(@length, {d_n(:).name})<30);
 [listMatSUFile{1:length(d_n), 1}] = deal(d_n.name);
@@ -36,8 +27,6 @@ for iCh=1:length(listSUchannelID) % go throucgh channel-by-channel
 end
 
 
-
-
 % %cellIDs = {'003a';'007a';'013a';'013b';'014a'};
 % cellIDs = {'003a'};
 % %movIDs  = [1 2 3 7 8 9];
@@ -47,8 +36,7 @@ end
 % fMRI_TR_sec = 2.4;
 % timeResNeural_sec = 0.001; %f
 
-
-FR_dT = [];
+spikeCounts = [];
 
 for iChan = 1:length(setCellIDs)
   
@@ -70,96 +58,81 @@ for iChan = 1:length(setCellIDs)
       fprintf(1, 'cell: %s, movie: %d, data: %d \n', cur_cellID, cur_movID, indDataMov(indCurChan, iMov))
       fprintf(1, 'filename: %s\n', filename)
 
-      FR_dT(iChan, iMov).cellID = cur_cellID;
-      FR_dT(iChan, iMov).movID = cur_movID;
-      FR_dT(iChan, iMov).SUfilename = filename;
-      [FR_dT(iChan, iMov).matFR{1}, FR_dT(iChan, iMov).mnFR] = computeMeanFR(dirDataNeural, filename, sizeTimeBin_sec); % averaged SDF across trials
+      spikeCounts(iChan, iMov).cellID = cur_cellID;
+      spikeCounts(iChan, iMov).movID = cur_movID;
+      spikeCounts(iChan, iMov).SUfilename = filename;
+      spikeCounts(iChan, iMov).timeBin_ms = sizeTimeBin_sec*1000;
+      [spikeCounts(iChan, iMov).matFR{1}, spikeCounts(iChan, iMov).mnFR] = computeSpikeCount(dirDataNeural, filename, sizeTimeBin_sec); % averaged SDF across trials
 
 %       [S(iChan, iMov).matsdf{1}, S(iChan, iMov).mnsdf] = computeMeanSDF(dirDataNeural, filename); % averaged SDF across trials
 %       [S(iChan, iMov).rgrsMION, S(iChan, iMov).rgrsMION_resample] = computeMIONrgrs(SDF_dT(iChan, iMov).mnsdf, timeResNeural_sec, fMRI_TR_sec);
-
       
   end
-      
-  
+        
 end
     
-function [matFR, mnFR]= computeMeanFR(dirDataNeural, filename, sizeTimeBin_sec)
+function [matSpikeCounts, mnSpikeCounts]= computeSpikeCount(dirDataNeural, filename, sizeTimeBin_sec)
   
-% global dat flagLocal
-% 
-% if flagLocal
-%     addpath('/Volumes/share/UCNI_Library/matlab_utils/');
-%     dirData = '/Volumes/USRlab/data/parksh/'; %/rmov/';
-% else
-%     addpath('/einstein0/share/UCNI_Library/matlab_utils/');
-%     dirData = '/einstein0/USRlab/data/parksh/'; %/rmov/';
-% end
+
 load(fullfile(dirDataNeural, filename))
 
 nTrial = length(dat.s);
 
-% prop = 'Color';
-% val = 'k';
-
 switch lower(dat.h.units)
     case 'sec'
-        win = [0 300]; % seconds or milliseconds
+        unitsamp = 1000;
     case 'ms'
-        win = [0 300*1000];
-end
-
-spikes = {};
-for t=1:nTrial %[1 2 5 6 7 8]
-    ts = dat.s{t};
-    spikes{t} = ts((ts>=win(1)) & ts<=win(2));
-end
-
-% % sdf sample period=;/fghipr
-% sdf_samp = 100;
-% 
-
-matFR = [];
-for i=1:length(spikes)
-  matFR(:,i) = getFR(spikes{i}, win, sizeTimeBin_sec);
-end
-
-mnFR = mean(matFR,2);
-
-
-function fr_out = getFR(ts, win, sizeTimeBin_sec)
-upsamp = 1000;
-%   TR = 2.4;
-%   MION_k = gampdf(-3*TR*upsamp:3*TR*upsamp,TR,2*TR);
-%   MION_k = MION_k./sum(MION_k);
-
-if max(win)<1000 % if window is in seconds, we need to upsample it
-    % it's not the exact way to do this, but just for now..
-    timeline = zeros(upsamp*win(2)-upsamp*win(1),1);
-    its = (ceil(ts*upsamp));
-%     timeline(its) = 1;
-    
-else % units are milliseconds
-    timeline = zeros(win(2)-win(1),1);
-    its = ceil(ts);
-%     timeline(its) = 1;
-    
+        unitsamp = 1;
 end
 
 sizeTimeBin_ms = sizeTimeBin_sec*1000;
-nBin = round(length(timeline)/sizeTimeBin_ms);
 
-timeBin = [0:nBin].*sizeTimeBin_ms;
-% if timeBin(end) < length(timeline) % if there is a remaining window 
-%     timeBin = cat(2, timeBin, length(timeline));
-% end
+% millisecond bin
+edges = 0:sizeTimeBin_ms:300000;
 
-fr_out = zeros(nBin,1);
-for iBin = 1:nBin
-    fr_out(iBin,1) = sum(its >= timeBin(iBin)+1 & its < timeBin(iBin+1));
+matSpikeCounts = [];
+for t = 1:nTrial %[1 2 5 6 7 8]
+%     spikes = ts((ts>=edges(1)) & ts<=edges(end));
+    [sc, ~] = histcounts(dat.s{t}*unitsamp, edges); % spike counts for each bin 
+    matSpikeCounts(:, t) = sc;
 end
 
-  
+mnSpikeCounts = mean(matSpikeCounts,2);
+
+
+% function fr_out = getFR(ts, win, sizeTimeBin_sec)
+% upsamp = 1000;
+% %   TR = 2.4;
+% %   MION_k = gampdf(-3*TR*upsamp:3*TR*upsamp,TR,2*TR);
+% %   MION_k = MION_k./sum(MION_k);
+% 
+% if max(win)<1000 % if window is in seconds, we need to upsample it
+%     % it's not the exact way to do this, but just for now..
+%     timeline = zeros(upsamp*win(2)-upsamp*win(1),1);
+%     its = (ceil(ts*upsamp));
+% %     timeline(its) = 1;
+%     
+% else % units are milliseconds
+%     timeline = zeros(win(2)-win(1),1);
+%     its = ceil(ts);
+% %     timeline(its) = 1;
+%     
+% end
+% 
+% sizeTimeBin_ms = sizeTimeBin_sec*1000;
+% nBin = round(length(timeline)/sizeTimeBin_ms);
+% 
+% timeBin = [0:nBin].*sizeTimeBin_ms;
+% % if timeBin(end) < length(timeline) % if there is a remaining window 
+% %     timeBin = cat(2, timeBin, length(timeline));
+% % end
+% 
+% fr_out = zeros(nBin,1);
+% for iBin = 1:nBin
+%     fr_out(iBin,1) = sum(its >= timeBin(iBin)+1 & its < timeBin(iBin+1));
+% end
+% 
+%   
 
 
 %% Compute Spike Density Function and MION convolution
