@@ -16,7 +16,22 @@ function [fullRGR4fps] = createMovieRGR_4fps_indMov(setMovID, flagSM)
 
 flagfig = 0; %1; %0; % 1 to check the compression and smoothing 
 
-dataDir ='/procdata/parksh/MovieRegressors/'; %'/Volumes/PROCDATA/parksh/MovieRegressors/'; %'/procdata/parksh/MovieRegressors/';
+ss = pwd;
+if ~isempty(strfind(ss, 'Volume')) % if it's local
+    directory.projects = '/Volumes/NIFVAULT/projects';
+    directory.procdata = '/Volumes/PROCDATA';
+    directory.dataHome = fullfile(directory.procdata, 'parksh', '_macaque');
+    directory.library = '/Volumes/LIBRARY';
+    addpath(fullfile(directory.library, 'matlab_utils'));
+else % on virtual machine
+    directory.projects = '/nifvault/NIFVAULT/projects';
+    directory.procdata = '/procdata';
+    directory.dataHome = fullfile(directory.procdata, 'parksh', '_macaque');
+    directory.library = '/library';
+    addpath(fullfile(directory.library, 'matlab_utils'));
+end
+
+dataDir = fullfile(directory.procdata, '/parksh/MovieRegressors/'); %'/Volumes/PROCDATA/parksh/MovieRegressors/'; %'/procdata/parksh/MovieRegressors/';
 load(fullfile(dataDir, 'HighLevelRGR.mat'))
 
 
@@ -122,7 +137,7 @@ for iMov = 1:length(setMovID);
     end
     
     % DM's scene-based features (face, torso, arms, legs)
-    load(sprintf('/procdata/parksh/MovieRegressors/annotationMovie%d.mat', movID))
+    load(fullfile(directory.procdata, sprintf('/parksh/MovieRegressors/annotationMovie%d.mat', movID)))
     sceneInfo = cat(2, sta', sto');
     nScene = length(epoch);
     validFrame_range = [1 9000];  % in 30fps

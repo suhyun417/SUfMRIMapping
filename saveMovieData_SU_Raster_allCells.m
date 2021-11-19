@@ -137,24 +137,24 @@ matTS_all.infoCell.catSubjName = catSubjName;
 matTS_all.infoCell.catSubjID = catSubjID;
 matTS_all.infoCell.catAreaID = catAreaID;
 
-% %% For each area (recording sites), concatenate across subject
-% cat_matRaster = matTS_all.matRaster;
+%% For each area (recording sites), concatenate across subject
+cat_matRaster = matTS_all.matRaster;
 % cat_matNeuralRGR = matTS_all.matNeuralRGR;
-% 
-% % matTS_area = struct([]);
-% setArea = {'AF', 'AM', 'AAM', 'ML', 'NFP'};
-% for iArea = 1:length(setAreaID)
-%     idArea = setAreaID(iArea);
-%     
-%     matTS_area(iArea).nameArea = setArea{iArea};
-%     matTS_area(iArea).setSubjID = unique(catSubjID(catAreaID == idArea));
-%     matTS_area(iArea).setSubjName = unique(catSubjName(catAreaID == idArea, :));
-%     matTS_area(iArea).setChanID = catChanID(catAreaID == idArea);
-%     matTS_area(iArea).catSubjID = catSubjID(catAreaID==idArea);
-%     matTS_area(iArea).matFR_TR = cat_matRaster(:, catAreaID == idArea);
+
+% matTS_area = struct([]);
+setArea = {'AF', 'AM', 'AAM', 'ML', 'NFP'};
+for iArea = 1:length(setAreaID)
+    idArea = setAreaID(iArea);
+    
+    matTS_area(iArea).nameArea = setArea{iArea};
+    matTS_area(iArea).setSubjID = unique(catSubjID(catAreaID == idArea));
+    matTS_area(iArea).setSubjName = unique(catSubjName(catAreaID == idArea, :));
+    matTS_area(iArea).setChanID = catChanID(catAreaID == idArea);
+    matTS_area(iArea).catSubjID = catSubjID(catAreaID==idArea);
+    matTS_area(iArea).matRaster = cat_matRaster(:, catAreaID == idArea);
 %     matTS_area(iArea).matNeuralRGR = cat_matNeuralRGR(:, catAreaID == idArea);
-%     
-% end
+    
+end
 
 %% Merge only face patches
 setAreaFP = 1:4;
