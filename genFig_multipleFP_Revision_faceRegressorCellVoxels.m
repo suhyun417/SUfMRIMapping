@@ -14,7 +14,8 @@ clear all;
 flagBiowulf = 1; %0;
 
 if flagBiowulf
-    directory.dirDataHome = '/data/parks20/procdata/NeuroMRI/';
+    directory.dataHome = '/data/parks20/procdata/NeuroMRI/';
+    dirFig = '/data/parks20/analysis/_figs';
 %     addpath('/data/parks20/analysis/NeuroMRI/'); % to use doConv.m function
 else
     ss = pwd;
@@ -33,6 +34,14 @@ else
     end
 end
 % dirFig = fullfile(directory.projects, 'parksh/NeuroMRI/_labNote/_figs');
+
+load(fullfile(directory.dataHome, 'tempRevisionAnalysis_faceRegressorCellVoxel.mat'))
+
+flagBiowulf = 1;
+if flagBiowulf
+clear directory
+directory.dataHome = '/data/parks20/procdata/NeuroMRI/';
+end
 
 
 % %% 1. Retrieve all the necessary data
@@ -54,14 +63,14 @@ end
 % faceRegressor_mion = doConv(faceRegressor, k); % 
 % 
 % 
-% %% 1-2.Load cell time series
-% load(fullfile(directory.dataHome, 'matSDF_Movie123_allCells.mat'), 'matTS_FP')
-% 
-% setCellIDs = {'33Dav', '27Dav', '25Dav'};
-% tLoc = find(contains(matTS_FP.catChanID, setCellIDs));  
-% 
-% cellTS = matTS_FP.matNeuralRGR(1:125, tLoc);
-% cellTS_norm = (cellTS-nanmean(cellTS))./nanstd(cellTS);
+%% 1-2.Load cell time series
+load(fullfile(directory.dataHome, 'matSDF_Movie123_allCells.mat'), 'matTS_FP')
+
+setCellIDs = {'06Dav', '25Dav', '27Dav'};
+tLoc = find(contains(matTS_FP.catChanID, setCellIDs));  
+
+cellTS = matTS_FP.matNeuralRGR(:, tLoc);
+cellTS_norm = (cellTS-nanmean(cellTS))./nanstd(cellTS);
 % 
 % %% 1-3.Load voxel time series
 % % 1-3-1. Load entire brain
@@ -81,10 +90,6 @@ end
 %     fmritc = cat(4,fmritc,pcvoltc);
 % end
 
-
-load(fullfile(directory.dirDataHome, 'tempRevisionAnalysis_faceRegressorCellVoxel.mat'))
-
-
 % 2. ROIs
 % nameSubjBOLD = 'Art';
 % 
@@ -93,7 +98,7 @@ load(fullfile(directory.dirDataHome, 'tempRevisionAnalysis_faceRegressorCellVoxe
 % dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
 % dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
-dirROI = fullfile(directory.dirDataHome, 'Art/ROIs');
+dirROI = fullfile(directory.dataHome, 'Art/ROIs');
 
 d_vis = dir(fullfile(dirROI, '*VisROIs.mat'));
 d_face = dir(fullfile(dirROI, '*faceROIs2.mat'));
@@ -146,29 +151,43 @@ end
 % faceRegressor, faceRegressor_mion
 % cellTS, cellTS_norm
 % matTS(iROI).matTS_ROI(:, 10), matTS(iROI).meanTS_ROI
-fmriTS = cat(2, matTS.meanTS_ROI); %cat(2, matTS(1).matTS_ROI(:,10), matTS(2).matTS_ROI(:,10), matTS(3).matTS_ROI(:, 7));
+% fmriTS = cat(2, matTS.meanTS_ROI); %cat(2, matTS(1).matTS_ROI(:,10), matTS(2).matTS_ROI(:,10), matTS(3).matTS_ROI(:, 7));
+fmriTS = cat(2, matTS(1).matTS_ROI(:,7), matTS(2).matTS_ROI(:,45), matTS(3).matTS_ROI(:, 20));
+
 fmriTS_norm = (fmriTS-nanmean(fmriTS))./nanstd(fmriTS);
 
 cMap_Area = [179 226 205; 141 160 203; 252 141 98; 231 41 138]./255; % AF-pAM-aAM-ML
 
 %% example 3 cells with similar time course 
+taxis = 2.4:2.4:900;
+cMap_fmri = cool(3); %ones(3).*([0.77 0.5 0]'); %winter(3); %cool(3); %ones(3).*([0.7 0.3 0]'); % gray scale for three fMRI voxels from different ROIs
+for iCell = 1:3
+    figure;
+    set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [1200 100 650 160]);
+    pp = plot(taxis, fmriTS_norm, 'LineWidth', 1);%
+    hold on;
+    plot(taxis, cellTS_norm(:, iCell), 'k-', 'LineWidth', 1);
+    set(pp, {'Color'}, mat2cell(cMap_fmri, [1 1 1], [3]))   
+    ylim([-4 4.5])
+    
+    set(gca, 'TickDir', 'out', 'box', 'off', 'XColor', 'k', 'YColor', 'k')
+    print(gcf, fullfile(dirFig, sprintf('multipleFP_sFig_cellVoxTS_%s', setCellIDs{iCell})), '-depsc')
+end
+
+%% Correlation values
+matR = corr(cellTS, fmriTS, 'rows', 'complete', 'type', 'spearman');
+% matR = matR*(-1); %becuase of the MION
+
+%% face regressor ts
+taxis = 2.4:2.4:900;
+
+faceRegressor_mion([1:7,126:126+7, 251:251+7]) = NaN;
+faceRegressor_mion_norm = (faceRegressor_mion-nanmean(faceRegressor_mion))./nanstd(faceRegressor_mion);
+
 figure;
-set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 665 145]);
+set(gcf, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [1200 100 650 160]);
+plot(taxis, faceRegressor_mion_norm, '-', 'LineWidth', 1, 'Color', [154 205 50]./255);
+set(gca, 'TickDir', 'out', 'box', 'off', 'XColor', 'k', 'YColor', 'k')
+set(gca, 'YColor', 'none')
+print(gcf, fullfile(dirFig, 'multipleFP_sFig_faceRegressor_mion'), '-depsc')
 
-
-P = plot(2.4:2.4:900, matTS_norm(:, tLoc), 'LineWidth', 1); %2);
-P(1).Color = cMap_Area(catAreaID(tLoc(1)), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,1)), :);
-P(2).Color = cMap_Area(catAreaID(tLoc(2)), :); %cMap_Area(matTS_FP.catAreaID(setPairHighRDiffArea_indChan(iPP,2)), :);
-P(3).Color = cMap_Area(catAreaID(tLoc(3)), :); 
-set(gca, 'TickDir', 'out', 'box', 'off')
-% % legend(catChanID(setPairHighRDiffArea_indChan(iPP,:))) %legend(matTS_FP.catChanID(setPairHighRDiffArea_indChan(iPP,:)))
-% print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_width1_%s_%s_%s', ...
-%     catChanID{153}, catChanID{74}, catChanID{141})), '-depsc')
-
-
-set(gca, 'XColor', 'none')
-ylim([-4 4])
-L = line([5 65], [-1.8 -1.8], 'Color', 'k', 'LineWidth', 3);
-xlim([-5 900])
-print(gcf, fullfile(dirFig, sprintf('matTS_FR_TR_exampleTSPair_width1_1minScaleBar_newColor_%s_%s_%s', ...
-    catChanID{tLoc(1)}, catChanID{tLoc(2)}, catChanID{tLoc(3)})), '-depsc')

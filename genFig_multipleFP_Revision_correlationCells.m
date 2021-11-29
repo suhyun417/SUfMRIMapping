@@ -8,11 +8,11 @@
 clear all;
 
 %% Settings
-flagBiowulf = 0;
+flagBiowulf = 1; %0;
 
 if flagBiowulf
-    directory.dirDataHome = '/data/parks20/procdata/NeuroMRI/';
-    addpath('/data/parks20/analysis/NeuroMRI/'); % to use doConv.m function
+    directory.dataHome = '/data/parks20/procdata/NeuroMRI/';
+    dirFig = '/data/parks20/analysis/_figs';
 else
     ss = pwd;
     if ~isempty(strfind(ss, 'Volume')) % if it's local
@@ -291,8 +291,57 @@ colormap(jet)
 set(gca, 'CLim', [-1 1].*0.4);
 set(gca, 'XTick', cumsum(numCells), 'YTick', cumsum(numCells))
 
+%% Correlation between single cells and population activity (averaged signal from each patch)
+load(fullfile(directory.dataHome, '/multipleFP_Revision_corrSDF.mat'), 'matSDF_area')
+% Let's start with ML and aAM
+numCells = cat(1, matSDF_area(:, 1).numCell);
+
+orderArea = [4 1 2 3];
+for iArea = 1:4 %size(matSDF_area, 1)
+    matSDF_area_5ms{iArea} = matSDF_area(orderArea(iArea), 1).matSDF;
+    matSDF_area_2400ms{iArea} = matSDF_area(orderArea(iArea), 4).matSDF;
+    avgSDF_area(:, iArea) = mean(matSDF_area_5ms{iArea}, 2);     
+    avgSDF_area_2400ms(:, iArea) = mean(matSDF_area_2400ms{iArea}, 2);  
+end
+
+for iArea = 1:4
+    R_MUA_5ms{iArea} = corr(matSDF_area_5ms{iArea}, avgSDF_area(:, iArea), 'type', 'Spearman');
+    R_MUA_2400ms{iArea} = corr(matSDF_area_2400ms{iArea}, avgSDF_area_2400ms(:, iArea), 'type', 'Spearman');
+end
+
+setMedian(1,:) = cellfun(@median, R_MUA_5ms);
+setMedian(2,:) = cellfun(@median, R_MUA_2400ms);
+
+edges = -1:0.1:1;
+figure;
+set(gcf, 'Position', [500 720 1190 260])
+for iArea = 1:4
+    sss(iArea) = subplot(1, 4, iArea);
+    histogram(R_MUA_5ms{iArea}, edges, 'faceColor', 'b', 'edgecolor', 'none'); hold on;
+    histogram(R_MUA_2400ms{iArea}, edges, 'faceColor', 'm', 'edgecolor', 'none');    
+    hold on
+    line([0 0], get(gca, 'YLim'), 'Color', 'k', 'LineStyle', '--')
+%     P1(iArea) = plot(setMedian(1, iArea), max(get(gca, 'YLim')), 'bv', 'MarkerFaceColor', 'b');
+%     P2(iArea) = plot(setMedian(2, iArea), max(get(gca, 'YLim')), 'mv', 'MarkerFaceColor', 'm');    
+end
+set(sss, 'XColor', 'k', 'YColor', 'k', 'TickDir', 'out', 'Box', 'off')
+print(gcf, fullfile(dirFig, 'multipleFP_Revision_corrCellsMUA_MLAFpAMaAM_distMedian'), '-depsc')
+
+figure;
+set(gcf, 'Position', [500 720 1190 260])
+for iArea = 1:4
+    ssss(iArea) = subplot(1, 4, iArea);
+    plot(R_MUA_2400ms{iArea}, R_MUA_5ms{iArea}, 'bo', 'MarkerFaceColor', 'w', 'LineWidth', 1);
+    set(gca, 'XLim', [-0.5 1], 'YLim', [-0.5 1]);
+    line([0 0; -0.5 1; -0.5 1]', [-0.5 1; 0 0; -0.5 1]', 'Color', 'k', 'LIneStyle', '--') 
+%     histogram(R_MUA_5ms{iArea}, edges, 'faceColor', 'b'); hold on;
+%     histogram(R_MUA_2400ms{iArea}, edges, 'faceColor', 'm');       
+end
+set(ssss, 'XColor', 'k', 'YColor', 'k', 'TickDir', 'out', 'Box', 'off')
+print(gcf, fullfile(dirFig, 'multipleFP_Revision_corrCellsMUA_MLAFpAMaAM_2400vs5'), '-depsc')
+
 %% Cross-correlation 
-load('/procdata/parksh/_macaque/multipleFP_Revision_corrSDF.mat', 'matSDF_area')
+load(fullfile(directory.dataHome, '/multipleFP_Revision_corrSDF.mat'), 'matSDF_area')
 % Let's start with ML and aAM
 numCells = cat(1, matSDF_area(:, 1).numCell);
 

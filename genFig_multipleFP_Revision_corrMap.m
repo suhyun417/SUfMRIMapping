@@ -12,8 +12,8 @@ clear all;
 flagBiowulf = 1; %0;
 
 if flagBiowulf
-    directory.dirDataHome = '/data/parks20/procdata/NeuroMRI/';
-%     addpath('/data/parks20/analysis/NeuroMRI/'); % to use doConv.m function
+    directory.dataHome = '/data/parks20/procdata/NeuroMRI/';
+    dirFig = '/data/parks20/analysis/_figs';
 else
     ss = pwd;
     if ~isempty(strfind(ss, 'Volume')) % if it's local
@@ -32,11 +32,11 @@ else
 end
 
 %% Load SU and fMRI tc
-load(fullfile(directory.dirDataHome, 'matSDF_Movie123_allCells.mat'), 'matTS_FP') % matTS_FP.matNeuralRGR: [375×389 double]
-load(fullfile(directory.dirDataHome, 'Art/fmritc4computeCorrcoeffCI_Art.mat')) % fmritc: time x movie x voxels
+load(fullfile(directory.dataHome, 'matSDF_Movie123_allCells.mat'), 'matTS_FP') % matTS_FP.matNeuralRGR: [375×389 double]
+load(fullfile(directory.dataHome, 'Art/fmritc4computeCorrcoeffCI_Art.mat')) % fmritc: time x movie x voxels
 
 % get only face selective cells
-load(fullfile(directory.dirDataHome, 'multipleFP_fsi.mat'))
+load(fullfile(directory.dataHome, 'multipleFP_fsi.mat'))
 locFaceCell =  find(fsi.matFSI(:,1)>0.33); % find(abs(fsi.matFSI(:,1))>0.33);
 
 matNeuralRGR = matTS_FP.matNeuralRGR(:, locFaceCell);
@@ -76,12 +76,12 @@ end
 toc;
 delete(my_pool)
 
-% save(fullfile(directory.dirDataHome, 'multipleFP_Revision_corrMapIndMov.mat'), 'corrMap_indMov');
+% save(fullfile(directory.dataHome, 'multipleFP_Revision_corrMapIndMov.mat'), 'corrMap_indMov');
 
 
 %% Compare fROI-versions
 % Load the ROI indices
-load(fullfile(directory.dirDataHome, 'Art/ROIs/Art_ROIs_set01_RH.mat')) %%s_ROIs_set00_RH.mat', nameSubjBOLD));
+load(fullfile(directory.dataHome, 'Art/ROIs/Art_ROIs_set01_RH.mat')) %%s_ROIs_set00_RH.mat', nameSubjBOLD));
 
 % % Load correlation matrix of all cortical cells
 % load(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), 'info*', 'corrMap_merged_FP'); %, 'info*', 'corrMap_Area', 'corrMap_merged');
@@ -106,13 +106,13 @@ end
 
 
 %% Compare SUfMRI maps from each movie and the entire set of three movies
-load(fullfile(directory.dirDataHome, 'Art', 'Art_MaskArrays.mat'), 'movieDrivenAmp')
+load(fullfile(directory.dataHome, 'Art', 'Art_MaskArrays.mat'), 'movieDrivenAmp')
 nx = 40; ny = 64; nz = 32;
 nVox = nx*ny*nz;
 brainmask_vec = reshape(movieDrivenAmp.map_sm_brain>0, nVox, 1); % change the 3D mask to 1D
 % matR_SU_all_brainmask = matR_SU_all(brainmask_vec,:); %matR_SU(brainmask_vec,:); % 27113 voxels
 
-load(fullfile(directory.dirDataHome, 'Art', 'matR4clusteringmultiplepatches_faceselective.mat'))
+load(fullfile(directory.dataHome, 'Art', 'matR4clusteringmultiplepatches_faceselective.mat'))
 
 setPair = nchoosek(1:3, 2);
 for iPair = 1:length(setPair)
@@ -145,7 +145,7 @@ for iPair = 1:length(setPair)
     corrMap_indMov_comparison(iPair).ROI_setR_diffPairs = ROI_setR_diffPairs; 
 end    
 
-% save(fullfile(directory.dirDataHome, 'multipleFP_Revision_corrMapIndMov.mat'), 'corrMap_indMov_comparison', '-append');
+% save(fullfile(directory.dataHome, 'multipleFP_Revision_corrMapIndMov.mat'), 'corrMap_indMov_comparison', '-append');
 
 figure
 for iP = 1:3
@@ -154,8 +154,8 @@ histogram(corrMap_indMov_comparison(iP).ROI_setR, 20)
 end
 
 %% Compare with the current 3-movie results
-load(fullfile(directory.dirDataHome, 'Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat'), 'Clustering_meanROI')
-load(fullfile(directory.dirDataHome, 'Art/Clustering_CorrMap_4FPs_faceselective_Movie123_probability.mat'), 'Clustering_brainmask', 'param*') 
+load(fullfile(directory.dataHome, 'Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat'), 'Clustering_meanROI')
+load(fullfile(directory.dataHome, 'Art/Clustering_CorrMap_4FPs_faceselective_Movie123_probability.mat'), 'Clustering_brainmask', 'param*') 
 
 % ROI sorting
 setK = 2:20; %paramClustering_global.setK; %Clustering.setK;
@@ -184,7 +184,7 @@ locMin_roi = find(propExplained_roi(:,curK_roi-1)==min(propExplained_roi(:,curK_
 % Colormap
 cMap_Area = [179 226 205; 141 160 203; 252 141 98; 231 41 138]./255; % 
 
-fname = fullfile(directory.dirDataHome, 'Art/BCWYRColorMap.txt');
+fname = fullfile(directory.dataHome, 'Art/BCWYRColorMap.txt');
 ttt = dlmread(fname);
 cMap_corrSUMA = ttt(:, 1:3); % blue-cyan-white-yellow-red map for correlation
 clear ttt
@@ -208,6 +208,12 @@ set(sp, 'CLim', [-1 1].*0.7)
 set(sp, 'YTick', [], 'XTick', []);
 
 %% similarity of fROI-based correlation patterns
+load(fullfile(directory.dataHome, 'multipleFP_Revision_corrMapIndMov.mat'), 'corrMap_indMov')
+load(fullfile(directory.dataHome, 'Art/Clustering_CorrMap_4FPs_Movie123_ArtRHROI_set01_probability.mat'), 'Clustering_meanROI')
+% get only face selective cells
+load(fullfile(directory.dataHome, 'multipleFP_fsi.mat'))
+locFaceCell =  find(fsi.matFSI(:,1)>0.33); % find(abs(fsi.matFSI(:,1))>0.33);
+
 for iM = 1:3
     
     % between each movie version and three-movie version
@@ -221,6 +227,22 @@ for iM = 1:3
     corrMap_indMov_comparison_withOriginal(iM).ROI_setR_median = median(ROI_setR);
     corrMap_indMov_comparison_withOriginal(iM).ROI_setR_ste = std(ROI_setR)./sqrt(length(ROI_setR)-1);
 end
+
+figure;
+set(gcf, 'Position', [330 400 860 225])
+for iM = 1:3
+spp(iM) = subplot(1,3,iM);
+histogram(corrMap_indMov_comparison_withOriginal(iM).ROI_setR, 20, 'EdgeColor', 'none'); hold on;
+line([0 0], [0 30], 'LineStyle', '--', 'Color', 'k');
+hold on;
+plot(corrMap_indMov_comparison_withOriginal(iM).ROI_setR_median, 30, 'rv', 'MarkerSize', 6, 'MarkerFaceColor', 'r')
+% title(sprintf('Movie %d (5-min) and 15-min', iM))
+end
+set(spp,'XLim', [-1 1], 'Box', 'off', 'TickDir', 'out')
+set(spp, 'YTick', 0:10:30, 'XColor', 'k', 'YColor', 'k', 'FontSize', 12)
+% axis(spp, 'square')
+print(gcf, fullfile(dirFig, 'multipleFP_Revision_figS_5minvs15min_withinCellbetweenMapCorr'), '-depsc')
+
 
 figure;
 set(gcf, 'Position', [330 400 860 530])
