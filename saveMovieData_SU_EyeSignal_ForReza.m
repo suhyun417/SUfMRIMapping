@@ -19,8 +19,11 @@ setSession = {'Wasabi190304', 'Wasabi190305', 'Wasabi190306'}; %{'Davida180723',
 for iSession = 1:length(setSession)
     nameSession = setSession{iSession};
     
-%     d_session = dir(sprintf('/procdata/koyanok/physiology/cells/%s', nameSession));
-    d_session = dir(sprintf('/procdata/waidmannen/physiology/cells/%s', nameSession));
+    if contains(nameSession, 'Spice')
+        d_session = dir(sprintf('/procdata/koyanok/physiology/cells/%s', nameSession));
+    else
+        d_session = dir(sprintf('/procdata/waidmannen/physiology/cells/%s', nameSession));
+    end
     setBlockName = {d_session.name}';
     locMovieBlock = find(contains(setBlockName, 'Movie')>0);
     
