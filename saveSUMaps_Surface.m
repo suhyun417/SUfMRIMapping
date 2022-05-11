@@ -9,7 +9,7 @@
 
 % setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was'};
 %
-addpath('/library/matlab_utils/')
+addpath('/nifvault/library/matlab_utils/')
 
 % for iSubj = 1:length(setNameSubjNeural)
 nameSubjNeural = 'Spi'; %'Dav'; %'Dan'; % 'Dav'; %setNameSubjNeural{iSubj}; %'Tor'; %'Was'; %'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';

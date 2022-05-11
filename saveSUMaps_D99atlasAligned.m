@@ -1,5 +1,8 @@
 % saveSUMaps_D99atlasAligned.m
 %
+% 2022/5/9 SHP
+% Modified to match the cell IDs to CorrMap_SU_**Movie123_new.mat
+%
 % 2018/09/11 SHP
 % Generate single-unit fMRI maps in D99-atlas segmentation space 
 % using afni function "3dresample" with -master option
@@ -16,18 +19,20 @@
 % 4) Read the new resampled BRIK file of correlation maps and save the data matrix (3d volume)
 % of all cells in /procdata/parksh/nameSubjNeural
 
+clear all;
+
 %%
-addpath('/library/matlab_utils/')
-addpath('/projects/parksh/_toolbox/afni_matlab/')
+addpath('/nifvault/library/matlab_utils/')
+addpath('/nifvault/projects/parksh/_toolbox/afni_matlab/')
 
 %% Set directories
 % Important input
-nameSubjNeural = 'Was'; %'Spi'; % 'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
-nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
-setMovie = [1 2 3]; %1; %[1 2 3]; %[4 5 6]; %[1 2 3 4 5 6]; %
+nameSubjNeural = 'Was'; %'Dav'; %'Dan'; %'Mat'; %'Dav'; %'Dan'; %'Was'; %'Spi'; % 'Moc'; %'Dex'; %'Tor'; %'Dav'; %'Spi'; %'Mat'; %'Ava'; %'Mat'; %'Spi'; %'Sig'; %'Rho'; % 'Sig'; %'Tor';
+nameSubjBOLD = 'Art'; %'Ava'; %'Art'; % 'AvaDan'; %'Art'; %'Ava'; %'Art';
+setMovie = [1 2 3]; %[4 5 6]; %[1 2 3]; %1; %[1 2 3]; %[4 5 6]; %[1 2 3 4 5 6]; %
 
 % Load files
-dirDataHome = '/procdata/parksh/_macaque';
+dirDataHome = '/nifvault/procdata/parksh/_macaque';
 dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
@@ -71,11 +76,17 @@ end
 dirOrgData = fullfile(dirDataBOLD, 'tempSURF');
 d = dir(fullfile(dirOrgData, sprintf('%s*Movie%s_noFiltering_refit+orig.BRIK', nameSubjNeural, MovieStr))); % only convert non-masked maps
 
-numFile = length(d);
+% get the info of cells from "CorrMap_SU_**Movie*_new.mat"
+load(fullfile(dirDataNeural, sprintf('CorrMap_SU_%s%sMovie%s_new.mat', nameSubjNeural, nameSubjBOLD, MovieStr)),'paramCorr')
+
+% get the file indices that match to the cells selected in *_new.mat
+setIndFile = find(contains({d.name}', cellstr(paramCorr.validChanID)));
+
+numFile = length(setIndFile);
 catVoltc_new = NaN(info_seg.DATASET_DIMENSIONS(1), info_seg.DATASET_DIMENSIONS(2), info_seg.DATASET_DIMENSIONS(3), numFile);
 % catInfo_new = struct([]);
 for iFile = 1:numFile
-    fname = d(iFile).name;
+    fname = d(setIndFile(iFile)).name;
     doti = strfind(fname,'+');
     prefix = fname(1:doti-1);
     

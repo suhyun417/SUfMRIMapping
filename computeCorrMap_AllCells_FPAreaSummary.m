@@ -15,13 +15,13 @@ clear all;
 %% Settings
 ss = pwd;
 if ~isempty(strfind(ss, 'Volume')) % if it's local
-    dirProjects = '/Volumes/PROJECTS';
-    dirProcdata = '/Volumes/PROCDATA';
-    dirLibrary = '/Volumes/LIBRARY';
+    dirProjects = '/Volumes/NIFVAULT/PROJECTS';
+    dirProcdata = '/Volumes/NIFVAULT/PROCDATA';
+    dirLibrary = '/Volumes/NIFVAULT/LIBRARY';
 else % on virtual machine
-    dirProjects = '/projects';
-    dirProcdata = '/procdata';
-    dirLibrary = '/library';
+    dirProjects = '/nifvault/projects';
+    dirProcdata = '/nifvault/procdata';
+    dirLibrary = '/nifvault/library';
 end
     
 % Add necessary toolbox 
@@ -29,7 +29,7 @@ addpath(fullfile(dirLibrary, 'matlab_utils')) % for convolution
 
 % Set directories 
 setNameSubjNeural = {'Tor', 'Rho', 'Sig', 'Spi', 'Mat', 'Dan', 'Moc', 'Was', 'Dav'};
-nameSubjBOLD = 'Ava'; % 'Ava'; %'Art';  %'Ava'; % 'Art'; 
+nameSubjBOLD = 'Art';  %'Ava'; % 'Ava'; %'Art';  %'Ava'; % 'Art'; 
 dirDataHome = fullfile(dirProcdata, 'parksh/_macaque');
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
@@ -160,7 +160,7 @@ corrMap_merged_FP.grandMeanR = mean(catMap_matR_avg_FP, 2);
 
 
 %% save the file
-save(sprintf('/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), ...
+save(sprintf('/nifvault/procdata/parksh/_macaque/CorrMap_SU_AllCells%s_corticalFPMerged.mat', nameSubjBOLD), ...
     'info*', 'corrMap_*')
     
     

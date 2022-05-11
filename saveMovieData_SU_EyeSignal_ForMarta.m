@@ -21,10 +21,10 @@ clear all;
 % load transformation matrix
 load /nifvault/projects/koyanok/Codes/BehaviorControl/MonkeyLogic/Volt2DegRig1.mat;
 
-flagSaveMovie = 0; % movie
-flagSaveFP = 1; % fingerprinting
+flagSaveMovie = 1; %0; % movie
+flagSaveFP = 0; %1; % fingerprinting
 
-setSession = {'Wasabi190304', 'Wasabi190305', 'Wasabi190306'}; %{'Davida180723', 'Davida180724', 'Davida180725'}; %{'Spice180124', 'Spice180126'}; %
+setSession = {'Mochi181023', 'Mochi181024'}; %{'Mochi190313', 'Mochi190314'}; %{'Mochi181023', 'Mochi181024'}; %{'Wasabi190304', 'Wasabi190305', 'Wasabi190306'}; %{'Davida180723', 'Davida180724', 'Davida180725'}; %{'Spice180124', 'Spice180126'}; %
 
 for iSession = 1:length(setSession)
     nameSession = setSession{iSession};
@@ -100,6 +100,8 @@ for iSession = 1:length(setSession)
                 nameArea = 'AM';
             case 'davida'
                 nameArea = 'ML';
+            case 'mochi'
+                nameArea = 'AFaAM';
         end
 %         nameArea = 'AM';
         saveFileName = sprintf('/nifvault/procdata/parksh/_macaque/_Marta/%s_%s_FPrint.mat', nameArea, nameSession);
@@ -152,8 +154,17 @@ for iSession = 1:length(setSession)
             
         end
         fprintf(1, 'Session: %s ....saving... \n', nameSession)
-        nameArea = 'AM';
-        saveFileName = sprintf('/procdata/parksh/_macaque/_Marta/%s_%s.mat', nameArea, nameSession);
+        switch lower(char(regexp(nameSession, '\D*', 'match')))
+            case 'spice'
+                nameArea = 'AF';
+            case 'wasabi'
+                nameArea = 'AM';
+            case 'davida'
+                nameArea = 'ML';
+            case 'mochi'
+                nameArea = 'AFaAM';
+        end
+        saveFileName = sprintf('/nifvault/procdata/parksh/_macaque/_Marta/%s_%s.mat', nameArea, nameSession);
         save(saveFileName, 'movieData')
         fprintf(1, 'Session: %s ....DONE! Data saved as %s \n', nameSession, saveFileName)
     end
