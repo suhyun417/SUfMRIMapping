@@ -57,6 +57,53 @@ for iArea = 1:length(indParietalArea)
     indParietalArea(iArea).locVox = locArea;
 end
 
+% %% Any way we can do it in EPI space?
+% for iArea = 1:length(indParietalArea)
+%     clear locVox*
+%     locVox_vol = voltc_seg==indParietalArea(iArea).indROI;
+%     locVox_epi = permute(locVox_vol, [3 1 2]);
+%     locVox_epi = decimate3D(locVox_epi, [3 3 3], .25);
+%     
+%     indParietalArea(iArea).locVox_epi = locVox_epi;
+% end
+
+%% checking the voxel locations that we are selecting (just for the sanity check)
+setIndROI = cat(1, indParietalArea.indROI);
+temp = ismember(voltc_seg, setIndROI); % voxels of any of the selected ROIs (UNION)
+
+% Coronal
+figure;
+for iSlice = 85:140
+
+    clf;
+    ax1 = axes;
+    im1 = imagesc(ax1, squeeze(voltc_seg(iSlice, :, :)));
+    hold all;
+    ax2 = axes;
+    im2 = imagesc(ax2, squeeze(temp(iSlice, :, :)));
+    im2.AlphaData = 0.7;
+    linkaxes([ax1, ax2])
+    ax2.Visible = 'off';
+    input('')
+end
+
+% Sagittal
+figure;
+for iSlice = 2:100
+
+    clf;
+    ax1 = axes;
+    im1 = imagesc(ax1, voltc_seg(:, :, iSlice));
+    hold all;
+    ax2 = axes;
+    im2 = imagesc(ax2, temp(:, :, iSlice));
+    im2.AlphaData = 0.7;
+    linkaxes([ax1, ax2])
+    ax2.Visible = 'off';
+    input('')
+end
+
+
 
 %% Load correlation matrix of neurons 
 setNameSubjNeural = {'Spi', 'Mat', 'Dan', 'Moc', 'Was', 'Dav'}; % Tor/Rho/Sig data cannot be converted to D99

@@ -8,22 +8,22 @@
 
 clear all;
 
-addpath('/projects/parksh/_toolbox/afni_matlab/')
+addpath('/nifvault/projects/parksh/_toolbox/afni_matlab/')
 
 for typeMotionROI = 1:2
     switch typeMotionROI
         case 1
-            roifname{1,1} = '/procdata/parksh/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion1_rh_surfVolFun+orig.BRIK'; % labels are 1 (visual cortex) and 2 (motion areas)
-            roifname{1,2} = '/procdata/parksh/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion1_lh_surfVolFun+orig.BRIK';
-            roifname{2,1} = '/procdata/parksh/Art/ROIs/e66_faceROIs2.mat'; % RH face patches
-            roifname{2,2} = '/procdata/parksh/Art/ROIs/e66_faceROIs_L.mat'; % LH face patches
+            roifname{1,1} = '/nifvault/procdata/parksh/_macaque/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion1_rh_surfVolFun+orig.BRIK'; % labels are 1 (visual cortex) and 2 (motion areas)
+            roifname{1,2} = '/nifvault/procdata/parksh/_macaque/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion1_lh_surfVolFun+orig.BRIK';
+            roifname{2,1} = '/nifvault/procdata/parksh/_macaque/Art/ROIs/e66_faceROIs2.mat'; % RH face patches
+            roifname{2,2} = '/nifvault/procdata/parksh/_macaque/Art/ROIs/e66_faceROIs_L.mat'; % LH face patches
             manualROILabel = [1 2]; % for motion1 % [1 3]; % for motion2
             
         case 2
-            roifname{1,1} = '/procdata/parksh/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion2_rh_surfVolFun+orig.BRIK';  % labels are 1 (visual cortex) and 3 (motion areas)
-            roifname{1,2} = '/procdata/parksh/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion2_lh_surfVolFun+orig.BRIK';
-            roifname{2,1} = '/procdata/parksh/Art/ROIs/e66_faceROIs2.mat'; % RH face patches
-            roifname{2,2} = '/procdata/parksh/Art/ROIs/e66_faceROIs_L.mat'; % LH face patches
+            roifname{1,1} = '/nifvault/procdata/parksh/_macaque/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion2_rh_surfVolFun+orig.BRIK';  % labels are 1 (visual cortex) and 3 (motion areas)
+            roifname{1,2} = '/nifvault/procdata/parksh/_macaque/Art/Anatomy/_suma/Art_ROIs_CentralVC+Motion2_lh_surfVolFun+orig.BRIK';
+            roifname{2,1} = '/nifvault/procdata/parksh/_macaque/Art/ROIs/e66_faceROIs2.mat'; % RH face patches
+            roifname{2,2} = '/nifvault/procdata/parksh/_macaque/Art/ROIs/e66_faceROIs_L.mat'; % LH face patches
             manualROILabel = [1 3]; % for motion2
     end
     
@@ -69,11 +69,11 @@ for typeMotionROI = 1:2
         end
     end
     
-    paramROI.analCode = '/projects/parksh/NeuralBOLD/analysis/prepROI.m';
+    paramROI.analCode = '/nifvault/projects/parksh/NeuralBOLD/analysis/prepROI.m';
     paramROI.roifname = roifname;
     paramROI.manualROILabel = manualROILabel;
     paramROI.nameROI = nameROI;
 
-    save(sprintf('/procdata/parksh/Art/ROIs/Art_ROIs_RetinoMotion%dFace_bothH.mat', typeMotionROI), 'matROIIndices', 'paramROI')
+    save(sprintf('/nifvault/procdata/parksh/_macaque/Art/ROIs/Art_ROIs_RetinoMotion%dFace_bothH.mat', typeMotionROI), 'matROIIndices', 'paramROI')
 
 end
