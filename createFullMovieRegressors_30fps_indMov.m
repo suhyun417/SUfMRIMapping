@@ -6,11 +6,11 @@ function [fullRGR30fps] = createFullMovieRegressors_30fps_indMov(unimov)
 
 
 % Get the raw highlevel movie features
-highlevpath = '/procdata/russbe/CodingXLS';
-lowlevpath = '/procdata/parksh/MovieRegressors'; %/procdata/russbe/LowlevelMovRegressors';
+highlevpath = '/nifvault/procdata/russbe/CodingXLS';
+lowlevpath = '/nifvault/procdata/parksh/MovieRegressors'; %/procdata/russbe/LowlevelMovRegressors';
 %   eyempath   = '/procdata/russbe/EyeMovements';
 
-nFramePerMovie = 30*300; % 4 frames per second for 5-min (300 sec) movie
+nFramePerMovie = 30*300; % 30 frames per second for 5-min (300 sec) movie
 fullRGR30fps = struct([]);
 
 % First, get all regressors available
@@ -37,7 +37,7 @@ for m=1:length(unimov)
     end
     
     % DM's scene-based features (face, torso, arms, legs)
-    load(sprintf('/procdata/parksh/MovieRegressors/annotationMovie%d.mat', unimov(m)))
+    load(sprintf('/nifvault/procdata/parksh/MovieRegressors/annotationMovie%d.mat', unimov(m)))
     sceneInfo = cat(2, sta', sto');
     nScene = length(epoch);
     validFrame_range = [1 nFramePerMovie]; 

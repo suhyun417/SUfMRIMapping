@@ -28,7 +28,7 @@ for iSubj = 1:length(setNameSubjNeural) %curSetNameSubjNeural)
     
     % Load the data
     nameSubjNeural = setNameSubjNeural{iSubj}; %curSetNameSubjNeural{iSubj};
-    dirDataNeural = sprintf('/procdata/parksh/_macaque/%s', nameSubjNeural); %fullfile(directory.dataHome, nameSubjNeural);
+    dirDataNeural = sprintf('/nifvault/procdata/parksh/_macaque/%s', nameSubjNeural); %fullfile(directory.dataHome, nameSubjNeural);
     
 %     filenameNeural = [nameSubjNeural, '_movieTS_SU_indMov.mat'];
 %     load(fullfile(dirDataNeural, filenameNeural))
@@ -78,11 +78,11 @@ for iSubj = 1:length(setNameSubjNeural) %curSetNameSubjNeural)
     end
     
     % 10 millisecond binned time series for each trial
-    sizeTimeBin_sec = 0.01;
-    FR_10msBin = createCellRegressor_indMov_discreteTime(dirDataNeural, CellID(validC), ... %paramSDF.setCellIDs(validC), ... %cellstr(paramCorr.validChanID),...
+    sizeTimeBin_sec = 1/30; %0.033; %0.01;
+    FR_30fps = createCellRegressor_indMov_discreteTime(dirDataNeural, CellID(validC), ... %paramSDF.setCellIDs(validC), ... %cellstr(paramCorr.validChanID),...
         setMovie, sizeTimeBin_sec); % in 100Hz (number of spikes for every 10ms)
     
-    TS_subj(iSubj) = FR_10msBin;   
+    TS_subj(iSubj).FR_30fps = FR_30fps;   
     
 end
 
@@ -91,10 +91,12 @@ for iSubj = 1:9
     matSDF(iSubj).validChanID = infoTS_subj(iSubj).validChanID;
     matSDF(iSubj).validChan_subjID = infoTS_subj(iSubj).validChan_subjID;
     matSDF(iSubj).validChanIndex_org = infoTS_subj(iSubj).validChanIndex_org;
-    matSDF(iSubj).FR_10msBin = TS_subj(iSubj).FR_10msBin;
+    matSDF(iSubj).FR_30fps = TS_subj(iSubj).FR_30fps;
+%     matSDF(iSubj).FR_10msBin = TS_subj(iSubj).FR_10msBin;
 end
 
-save('/procdata/parksh/_macaque/_Harish/TS_movie123_10msBin.mat', 'matSDF', '-v7.3');
+save('/nifvault/procdata/parksh/_macaque/_Harish/TS_movie123_30fps.mat', 'matSDF', '-v7.3');
+% save('/nifvault/procdata/parksh/_macaque/_Harish/TS_movie123_10msBin.mat', 'matSDF', '-v7.3');
     
     
     

@@ -19,11 +19,11 @@ cond_obj = 4; % object
 
 %% FSI
 %% Read the spreadsheet to load corresponding fingerprinting data file name
-filename_xls = '/procdata/parksh/_macaque/multipleFP_4FPneurons_CellIDFingerPrinting.xls';
+filename_xls = '/nifvault/procdata/parksh/_macaque/multipleFP_4FPneurons_CellIDFingerPrinting.xls';
 C = readcell(filename_xls); % 1st col: cell ID in movie data, 2st col: fingerprinting results directory, 3rd col: cell file name
 
 % load Matcha's data
-load('/procdata/parksh/_macaque/Mat/_orgData/MatMov1to6_CatData.mat');
+load('/nifvault/procdata/parksh/_macaque/Mat/_orgData/MatMov1to6_CatData.mat');
 
 %% Cell-by-cell computation of FSI etc.
 matFaceSelective = NaN(size(C, 1), 2);
@@ -73,7 +73,7 @@ end
 fsi.matFSI = matFaceSelective;
 fsi.catChanID = C(:,1);
 
-save('/procdata/parksh/_macaque/multipleFP_fsi.mat', 'fsi') 
+save('/nifvault/procdata/parksh/_macaque/multipleFP_fsi.mat', 'fsi') 
 
  
 % %% loop for cell

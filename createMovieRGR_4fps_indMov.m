@@ -19,15 +19,15 @@ flagfig = 0; %1; %0; % 1 to check the compression and smoothing
 ss = pwd;
 if ~isempty(strfind(ss, 'Volume')) % if it's local
     directory.projects = '/Volumes/NIFVAULT/projects';
-    directory.procdata = '/Volumes/PROCDATA';
+    directory.procdata = '/Volumes/NIFVAULT/procdata';
     directory.dataHome = fullfile(directory.procdata, 'parksh', '_macaque');
-    directory.library = '/Volumes/LIBRARY';
+    directory.library = '/Volumes/NIFVAULT/library';
     addpath(fullfile(directory.library, 'matlab_utils'));
 else % on virtual machine
-    directory.projects = '/nifvault/NIFVAULT/projects';
-    directory.procdata = '/procdata';
+    directory.projects = '/nifvault/projects';
+    directory.procdata = '/nifvault/procdata';
     directory.dataHome = fullfile(directory.procdata, 'parksh', '_macaque');
-    directory.library = '/library';
+    directory.library = '/nifvault/library';
     addpath(fullfile(directory.library, 'matlab_utils'));
 end
 

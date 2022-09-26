@@ -5,9 +5,9 @@ function [indDataMovie, listSUchannelID, listMovie] = genDataMatrix_SU(nameSubj,
 % particular cell (channel) for a movie
 
 ss = pwd;
-dirData = '/procdata/parksh/_macaque';
+dirData = '/nifvault/procdata/parksh/_macaque';
 if ~isempty(strfind(ss, 'Volume')) % if it's local
-    dirData = '/Volumes/PROCDATA/parksh/_macaque';   
+    dirData = '/Volumes/NIFVAULT/procdata/parksh/_macaque';   
 end
 dirDataNeural = fullfile(dirData, nameSubj); 
 % if sum(strcmpi(nameSubj, {'spice', 'spi'}))

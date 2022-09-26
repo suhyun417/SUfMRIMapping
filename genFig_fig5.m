@@ -7,19 +7,19 @@
 %% Settings
 ss = pwd;
 if ~isempty(strfind(ss, 'Volume')) % if it's local
-    dirProjects = '/Volumes/PROJECTS';
-    dirProcdata = '/Volumes/PROCDATA';
-    dirLibrary = '/Volumes/LIBRARY';
+    dirProjects = '/Volumes/NIFVAULT/projects';
+    dirProcdata = '/Volumes/NIFVAULT/PROCDATA';
+    dirLibrary = '/Volumes/NIFVAULT/LIBRARY';
 else % on virtual machine
-    dirProjects = '/projects';
-    dirProcdata = '/procdata';
-    dirLibrary = '/library';
+    dirProjects = '/nifvault/projects';
+    dirProcdata = '/nifvault/procdata';
+    dirLibrary = '/nifvault/library';
 end
 
 % Set directories 
 nameSubjNeural = 'Tor';
 nameSubjBOLD ='Art'; % 'Ava'; %'Art'; % 'Ava'; %'Art'; %'Ava'; %'Art';
-dirDataHome = fullfile(dirProcdata, 'parksh');
+dirDataHome = fullfile(dirProcdata, 'parksh', '_macaque');
 dirDataNeural = fullfile(dirDataHome, nameSubjNeural);
 dirDataBOLD = fullfile(dirDataHome, nameSubjBOLD);
 
@@ -30,7 +30,7 @@ load(fullfile(dirDataNeural, sprintf('Clustering_%s%sMovie123_new_masked.mat', n
 % load(fullfile(dirDataNeural, sprintf('ClusteringSDF_%sMovie123.mat', nameSubjNeural)))
 
 % Directory for saving figures as graphic files
-dirFig = '/projects/parksh/NeuralBOLD/_labNote/_figs/';
+dirFig = '/nifvault/projects/parksh/NeuralBOLD/_labNote/_figs/';
 
 
 %% Compare different clustering
