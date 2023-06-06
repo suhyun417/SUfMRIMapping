@@ -1,4 +1,4 @@
-% exampleScript_SUCorrMap.m
+% saveMovieData_SUCorrMapCluster_ForHarish.m
 %
 % 2023/06/05 SHP
 % - load the correlation matrix between individual neurons and fMRI ROIs
@@ -35,8 +35,6 @@ locMode_roi = find(propExplained_roi(:,curK_roi-1)==mode(propExplained_roi(:,cur
 locMin_roi = find(propExplained_roi(:,curK_roi-1)==min(propExplained_roi(:,curK_roi-1)));
 [sortedClust_roi, indSortROI] = sort(Clustering_meanROI.resultKMeans(curK_roi-1).roi_indCluster(:, locMode_roi(1)));
 
-fROIs.nameROI = Clustering_meanROI.nameROI;
-fROIs.orderROI_figS8 = indSortROI;
 
 %% Fig 3B: correlation matrix before & after cell clustering
 
@@ -111,5 +109,59 @@ set(sp2,  'YColor', 'none', 'Box', 'off', 'XColor', 'none', 'XTick', [])
 L2 = line(repmat([0.5;1.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k',...
     'LineWidth', 2, 'LineStyle', ':');
 set(sp2, 'XLim', [0.5 1.5]);
+
+
+
+%% save the data for Harish
+corrMap_multipleFP.matR_SUfROI_org = Clustering_meanROI.matR;
+
+infoSU.catSubjID = Clustering_meanROI.catSubjID;
+infoSU.catAreaID = Clustering_meanROI.catAreaID;
+infoSU.setArea = Clustering_meanROI.setArea;
+infoSU.catChanID = Clustering_meanROI.catChanID;
+
+% for Harish, so that he can match the cluster labels shown in Fig.S8 to
+% the cells
+remap = [2 10 5 7 4 9 6 1 3 8]; % because I reordered and renamed clusters sorted based on the number of cells in each cluster
+tempC_org = Clustering_brainmask.resultKMeans(curK-1).SU_indCluster(:, locMode(1));
+c_org_newlabel = remap(tempC_org)';
+% c_org_newlabel_sort = c_org_newlabel(corrMap_multipleFP.orderSU_figS8); %just checking
+
+infoSU.catCorrMapClusterID = c_org_newlabel;
+infoSU.orderSU_figS8 = indSortChan_reorder;
+
+infofROIs.nameROI = Clustering_meanROI.nameROI;
+infofROIs.orderROI_figS8 = indSortROI;
+
+save('/nifvault/procdata/parksh/_macaque/_Harish/multipleFP_corrMapSUfROI.mat', ...
+    'corrMap_multipleFP', 'infoSU', 'infofROIs')
+
+% replicate Fig.S8 panel D
+fig3b2 = figure;
+set(fig3b2, 'Color', 'w', 'PaperPositionMode', 'auto', 'Position', [100 100 350 1000]);
+
+sp1 = subplot('Position', [0.08 0.05 0.62 0.9]);
+imagesc(corrMap_multipleFP.matR_SUfROI_org(infoSU.orderSU_figS8, infofROIs.orderROI_figS8))
+set(gca, 'CLim', [-1 1].*0.5)
+locDiff = find(abs(diff(infoSU.catCorrMapClusterID(infoSU.orderSU_figS8)))>0);
+set(sp1, 'YTick', [], 'YTickLabel', []) 
+set(sp1, 'XTick', []) 
+% colormap(sp1, cMap_corrSUMA)
+set(sp1,  'YColor', 'none', 'Box', 'off', 'XColor', 'none')
+L = line(repmat([-0.8 37.5]', 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k',...
+    'LineWidth', 2, 'LineStyle', ':');
+set(sp1, 'XLim', [-0.8 37.5]);
+
+sp2 = subplot('Position', [0.7 0.05 0.1 0.9]);
+imagesc(infoSU.catAreaID(infoSU.orderSU_figS8)) 
+set(sp2, 'XColor', 'none') 
+set(sp2, 'YTick', locDiff+0.5, 'YTickLabel', [])
+cMap_Area = [179 226 205; 141 160 203; 252 141 98; 231 41 138]./255; % 
+colormap(sp2, cMap_Area)
+set(sp2,  'YColor', 'none', 'Box', 'off', 'XColor', 'none', 'XTick', [])
+L2 = line(repmat([0.5;1.5], 1, length(locDiff)), [locDiff+0.5 locDiff+0.5]', 'Color', 'k',...
+    'LineWidth', 2, 'LineStyle', ':');
+set(sp2, 'XLim', [0.5 1.5]);
+
 
 
